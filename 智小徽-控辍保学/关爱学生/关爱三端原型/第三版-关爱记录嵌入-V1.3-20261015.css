@@ -250,3 +250,4 @@
 .c3m-retry{display:block;width:100%;border:0;background:none;color:#3079ed;cursor:pointer;font-family:inherit}
 .c3x-flash{animation:c3xflash .5s ease-in-out 3}
 @keyframes c3xflash{50%{background:#ffe7ba;border-radius:4px}}
+.c3w-date input[readonly]{cursor:pointer;background:#fff}

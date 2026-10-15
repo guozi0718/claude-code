@@ -573,7 +573,7 @@
     renderWeb();
   }
   function syncOrgUrl(){if(isSchool)return;var rel=W.org.slice(ROOT.length).join('/');setUrl('care',rel?{org:rel}:null)}
-  function dateField(name,value){return '<span class="c3w-date"><input name="'+name+'" value="'+esc(value)+'" placeholder="YYYY-MM-DD" autocomplete="off" aria-label="'+(name==='start'?'创建开始日期':'创建结束日期')+'"><button type="button" data-cal="'+name+'" aria-label="选择日期">'+CAL_ICON+'</button></span>'}
+  function dateField(name,value){return '<span class="c3w-date"><input name="'+name+'" value="'+esc(value)+'" placeholder="请选择日期" readonly autocomplete="off" aria-label="'+(name==='start'?'创建开始日期':'创建结束日期')+'"><button type="button" data-cal="'+name+'" aria-label="选择日期">'+CAL_ICON+'</button></span>'}
   function renderWeb(){
     var list=atList(),orgName=W.org.length?W.org[W.org.length-1]:'',drilled=W.org.length>ROOT.length,prevScroll=section.querySelector('.c3w-table-wrap');
     if(prevScroll)W.scrollLeft=prevScroll.scrollLeft;
@@ -617,13 +617,12 @@
     var form=section.querySelector('[data-form]'),err=form.querySelector('[data-err]');
     form.onsubmit=function(e){
       e.preventDefault();var next=Object.assign({},W.filter,Object.fromEntries(new FormData(form)));next.start=(next.start||'').trim();next.end=(next.end||'').trim();if(next.name!=null)next.name=next.name.trim();
-      if((next.start&&!validDate(next.start))||(next.end&&!validDate(next.end))){err.textContent=MSG.dateFmt;return}
       if(next.start&&next.end&&next.start>next.end){err.textContent=MSG.dateRange;return}
       if(takeFault('net')){err.textContent=MSG.net;return}
       W.filter=next;W.page=1;W.scrollLeft=0;W.err='';renderWeb();
     };
     form.querySelector('[data-reset]').onclick=function(){if(takeFault('net')){err.textContent=MSG.net;return}W.filter=defaults();W.page=1;W.scrollLeft=0;W.err='';renderWeb()};
-    form.querySelectorAll('[data-cal]').forEach(function(b){b.onclick=function(e){e.stopPropagation();webCalendar(form.querySelector('[name='+b.dataset.cal+']'))}});
+    form.querySelectorAll('[data-cal]').forEach(function(b){var inp=form.querySelector('[name='+b.dataset.cal+']');b.onclick=inp.onclick=function(e){e.stopPropagation();webCalendar(inp)}});
     var name=form.querySelector('[name=name]');
     if(name){var sug=name.parentElement.querySelector('.c3w-suggest');
       var show=function(){var q=name.value.trim();if(!q){sug.hidden=true;return}var seen={},hits=scopeRecords().filter(function(r){if(r.student.name.indexOf(q)<0||seen[r.studentId])return false;seen[r.studentId]=1;return true}).slice(0,8);if(!hits.length){sug.hidden=true;return}sug.innerHTML=hits.map(function(r){return '<button type="button" data-n="'+esc(r.student.name)+'">'+esc(r.student.name)+'<small>'+esc(r.student.grade+' · '+r.student.className)+'</small></button>'}).join('');sug.hidden=false;sug.querySelectorAll('[data-n]').forEach(function(b){b.onmousedown=function(e){e.preventDefault();name.value=b.dataset.n;sug.hidden=true}})};
@@ -673,7 +672,7 @@
     return atList()?webListHelp():webSummaryHelp();
   }
   function fillAndQuery(vals){return function(){var form=section.querySelector('[data-form]');Object.keys(vals).forEach(function(k){var el=form.querySelector('[name='+k+']');if(el)el.value=vals[k]});submitQuery()}}
-  function dateErrors(){return [{group:'查询校验（点击即在查询区演示）',label:MSG.dateFmt,sub:'开始日期输入“2026-13-01”后查询，原结果不变',run:fillAndQuery({start:'2026-13-01'})},{label:MSG.dateRange,sub:'开始日期晚于结束日期后查询，原结果不变',run:fillAndQuery({start:'2026-10-20',end:'2026-10-01'})}]}
+  function dateErrors(){return [{group:'查询校验（点击即在查询区演示）',label:MSG.dateRange,sub:'日期选择插件选出开始日期晚于结束日期后查询，原结果不变',run:fillAndQuery({start:'2026-10-20',end:'2026-10-01'})}]}
   function netItem(sub){return {group:'网络',label:MSG.net,sub:sub,run:function(){FAULT.net=true;hint('已模拟：下一次请求网络异常，请点击查询/翻页/详情/组织名称任一操作')}}}
   function webListHelp(){
     var firstRow=function(){var b=section.querySelector('[data-web-detail]');return b&&findRecord(b.dataset.webDetail)};
