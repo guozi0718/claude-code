@@ -101,7 +101,7 @@
     var screen=document.getElementById('sc-list');if(!screen)return;
     var oldCare=document.getElementById('sc-care-menu');if(oldCare)oldCare.remove();
     Array.from(document.querySelectorAll('#sc-home .gmenu button')).forEach(function(b){if(b.textContent.trim()==='关爱')b.remove()});
-    var back=screen.querySelector('.sub-hd .back');if(back){back.disabled=false;back.removeAttribute('title');back.setAttribute('aria-label','返回首页');back.onclick=function(){window.go('sc-home')}}
+    var back=screen.querySelector('.sub-hd .back');if(back){back.disabled=false;back.removeAttribute('title');back.setAttribute('aria-label','返回');back.removeAttribute('onclick');back.onclick=function(e){e.preventDefault();location.href='https://olivebird.netlify.app/ssb/teacher.html'}}
     var tabs=screen.querySelector('.fc-tabs'),tab=document.createElement('button');tab.className='fc-tab';tab.dataset.fctab='care';tab.type='button';tab.textContent='关爱记录';tab.onclick=function(){window.fcTab('care')};
     tab.style.cssText='flex:1;padding:13px 0;text-align:center;font-size:14px;font-weight:500;color:var(--ink-3);border:0;border-bottom:2px solid transparent;background:none;cursor:pointer';tabs.appendChild(tab);
     var panel=document.createElement('div');panel.id='fc-panel-care';panel.className='c3m';panel.style.display='none';screen.appendChild(panel);buildTeacherList(panel);
@@ -119,9 +119,7 @@
     };
     var originalGo=window.go;
     window.go=function(id){var r=originalGo.apply(this,arguments);if(id==='sc-list'&&window.CARE_V3_RETURN_TO_CARE){window.CARE_V3_RETURN_TO_CARE=false;window.fcTab('care')}return r};
-    var wantCare=window.CARE_V3_FORCE_OPEN||location.hash==='#care-v3';
-    function openCare(){window.go('sc-list');window.fcTab('care')}
-    if(wantCare){openCare();var later=function(){setTimeout(openCare,60)};if(document.readyState==='complete')later();else window.addEventListener('load',later)}
+    /* 进入控辍保学默认显示源文件的预警记录Tab，不强制打开关爱记录 */
   }
   function buildTeacherList(panel){
     panel.innerHTML='<div class="c3m-shell"><div class="c3m-fixed"><div class="c3m-search-wrap"><input class="c3m-search" type="search" placeholder="搜索学生姓名" aria-label="搜索学生姓名" autocomplete="off"><div class="c3m-suggest" hidden></div></div><div class="c3m-count"></div></div><div class="c3m-scroll"><div class="c3m-list"></div></div><div class="c3m-bottom"><button type="button" data-new>新增关爱记录</button></div></div>';

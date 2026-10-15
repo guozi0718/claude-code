@@ -10,3 +10,6 @@ node_modules/
 
 # 子文件夹的旧版 Git 历史备份（仅保留在本地）
 .git-本地历史备份/
+
+# 自动推送的运行日志
+.autopush/last-run.log
