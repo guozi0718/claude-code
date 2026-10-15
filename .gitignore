@@ -1,0 +1,12 @@
+# 系统 / Office 临时文件
+Thumbs.db
+desktop.ini
+.DS_Store
+~$*
+
+# 待删除与临时目录
+_to_delete/
+node_modules/
+
+# 子文件夹的旧版 Git 历史备份（仅保留在本地）
+.git-本地历史备份/

@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>校园小程序原型复刻</title>
+<style>
+  /* ============ app-miniprogram-design-style V1.0 token 令牌 ============ */
+  :root{
+    --sky:#54A8F2;        /* 顶部天蓝 */
+    --banner-blue:#2E8FF2;/* 横幅蓝 */
+    --primary:#2E7CF0;    /* 主蓝：当前导航/主操作/身份标签 */
+    --primary-grad-a:#6AAEFF;
+    --primary-grad-b:#2E7CF0;
+    --primary-tint:#EAF3FE; /* 主蓝浅底，用于高亮/选中态背景 */
+    --page-bg:#F0F3F7;
+    --card-white:#FFFFFF;
+    --text-main:#233047;
+    --text-sub:#5C6A80;
+    --text-muted:#9AA7BB;
+    --border:#E2EAF4;
+    --remind-bg:#FEF0E7;
+    --remind-text:#E8632E;
+    --remind-btn:#F2622A;
+    --teal:#10B5A2;
+    --teal-grad-a:#3ECFBB;
+    --teal-grad-b:#10B5A2;
+    --pink-grad-a:#FF9BC0;
+    --pink-grad-b:#F45E9E;
+    --orange-grad-a:#FFC46A;
+    --orange-grad-b:#F79A2E;
+    --purple-grad-a:#A99BFB;
+    --purple-grad-b:#7C66F2;
+    --red-grad-a:#FF8A7B;
+    --red-grad-b:#EA4F4A;
+    --deepgreen-grad-a:#5BC98A;
+    --deepgreen-grad-b:#2E9E5C;
+    --positive:#2E9E5C;   /* 加分/正向数值 */
+    --negative:#EA4F4A;   /* 扣分/负向数值/危险操作 */
+    --positive-tint:#E7F7EE;
+    --negative-tint:#FDECEB;
+    --card-shadow:0 2px 10px rgba(30,70,130,.07);
+    /* 向下兼容旧变量名，逐步指向新令牌 */
+    --nav-dark:var(--sky);
+    --blue-1:var(--primary-grad-a);
+    --blue-2:var(--primary-grad-b);
+    --green-1:var(--primary);
+    --green-2:var(--primary);
+    --red-warn-bg:var(--remind-bg);
+    --red-warn-text:var(--remind-text);
+    --red-btn:var(--remind-btn);
+    --text-sub-old:#8a8f99;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#e4e9f0;font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:var(--text-main);}
+  .stage{display:flex;justify-content:center;padding:24px 10px;}
+  .phone{
+    width:414px;max-width:100%;
+    background:#fff;
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+    position:relative;
+    height:860px;
+    display:flex;flex-direction:column;
+  }
+  .statusbar{
+    background:var(--sky);
+    color:#fff;
+    font-size:14px;font-weight:600;
+    height:44px;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    flex-shrink:0;
+    padding:0 24px;
+  }
+  .statusbar .dots{
+    position:absolute;right:16px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:6px;
+    font-size:12px;height:32px;width:88px;margin:auto 0;
+    background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.6);border-radius:16px;
+  }
+  .screens{flex:1;position:relative;overflow:hidden;}
+  .screen{
+    position:absolute;inset:0;
+    display:none;
+    flex-direction:column;
+    background:var(--page-bg);
+    overflow-y:auto;
+  }
+  .screen.active{display:flex;}
+  .page-head{
+    height:44px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    font-size:17px;font-weight:700;color:var(--text-main);
+    background:var(--card-white);border-bottom:1px solid var(--border);
+  }
+  .page-head .back{position:absolute;left:12px;font-size:20px;color:var(--text-main);cursor:pointer;}
+  .page-head.on-color{color:#fff;background:transparent;border-bottom:none;}
+  .page-head.on-color .back{color:#fff;}
+
+  /* ---------- HOME ---------- */
+  #screen-home{background:var(--page-bg);}
+  .home-userbar{
+    background:linear-gradient(135deg,var(--sky),var(--primary));
+    padding:14px 16px 18px;
+    display:flex;align-items:center;color:#fff;
+  }
+  .home-userbar .avatar-wrap{position:relative;margin-right:12px;}
+  .home-userbar .avatar{width:56px;height:56px;border-radius:50%;background:#ffd9a0;display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid rgba(255,255,255,.85);}
+  .home-userbar .badge{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:9px;padding:1px 6px;border-radius:8px;white-space:nowrap;border:1px solid rgba(255,255,255,.7);}
+  .home-userbar .info{flex:1;}
+  .home-userbar .info .name{font-size:18.5px;font-weight:700;display:flex;align-items:center;gap:2px;}
+  .home-userbar .info .role{font-size:12px;opacity:.85;margin-top:3px;}
+  .home-userbar .scan{text-align:center;font-size:11px;opacity:.95;cursor:pointer;}
+  .home-userbar .scan .icon{font-size:20px;display:block;margin-bottom:2px;}
+
+  .notice-bar{
+    background:var(--red-warn-bg);color:var(--red-warn-text);
+    font-size:12px;padding:8px 12px;display:flex;align-items:center;gap:6px;
+  }
+  .notice-bar .txt{flex:1;}
+  .notice-bar button{background:var(--red-btn);color:#fff;border:none;border-radius:14px;padding:4px 10px;font-size:11px;white-space:nowrap;}
+
+  .home-banner{
+    margin:12px;border-radius:14px 14px 0 0;overflow:hidden;
+    background:linear-gradient(135deg,var(--banner-blue),var(--primary) 65%,#1B4FB8);
+    color:#fff;padding:16px 16px 40px;position:relative;
+    box-shadow:var(--card-shadow);
+  }
+  .home-banner h2{font-size:18.5px;margin:0 0 6px;font-weight:800;line-height:1.4;letter-spacing:1px;text-shadow:0 1px 2px rgba(0,0,0,.15);}
+  .home-banner p{font-size:11px;margin:0;opacity:.9;}
+  .home-banner .mock{position:absolute;right:10px;bottom:34px;font-size:34px;opacity:.85;}
+  .banner-foot{
+    background:var(--card-white);margin:-24px 12px 12px;border-radius:0 0 14px 14px;
+    padding:10px 12px;display:flex;align-items:center;justify-content:space-between;
+    box-shadow:var(--card-shadow);position:relative;z-index:2;
+  }
+  .banner-foot span{font-size:12.5px;font-weight:600;color:var(--text-main);}
+  .banner-foot button{background:linear-gradient(135deg,#4A97F5,#2262E0);color:#fff;border:none;border-radius:18px;padding:6px 14px;font-size:12px;box-shadow:0 3px 8px rgba(46,124,240,.35);}
+
+  .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px 4px;padding:6px 10px 14px;}
+  .grid-item{display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--text-main);position:relative;cursor:pointer;}
+  .grid-item .ic{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:4px;color:#fff;box-shadow:var(--card-shadow);}
+  .grid-item .new{position:absolute;top:-4px;right:4px;background:var(--remind-btn);color:#fff;font-size:8px;padding:1px 4px;border-radius:6px;}
+
+  .tabbar{
+    height:62px;flex-shrink:0;background:var(--card-white);border-top:1px solid var(--border);
+    display:flex;align-items:center;padding-bottom:6px;
+  }
+  .tabbar .tab{flex:1;text-align:center;font-size:11px;color:var(--text-muted);cursor:pointer;}
+  .tabbar .tab .ti{font-size:19px;display:block;margin-bottom:2px;}
+  .tabbar .tab.active{color:var(--primary);font-weight:600;}
+  .tabbar .tab.center{position:relative;}
+  .tabbar .tab.center .fab{
+    width:44px;height:44px;border-radius:50%;background:var(--green-1);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:26px;margin:-26px auto 2px;
+    box-shadow:0 4px 10px rgba(63,194,95,.5);
+  }
+
+  /* ---------- CLASS REVIEW (排行榜) ---------- */
+  .rank-head{
+    background:radial-gradient(circle at 30% 20%,var(--primary-grad-a),var(--primary) 55%,#1F5FD1);
+    color:#fff;padding:14px 16px 18px;position:relative;overflow:hidden;
+  }
+  .rank-head::before,.rank-head::after{content:"";position:absolute;width:6px;height:6px;border-radius:50%;background:#fff;opacity:.7;}
+  .rank-head .title-row{display:flex;align-items:center;justify-content:space-between;}
+  .rank-head .big-title{font-size:30px;font-weight:900;letter-spacing:2px;text-shadow:0 2px 4px rgba(0,0,0,.2);}
+  .rank-head .trophy{font-size:46px;}
+  .rank-filters{
+    background:#eaf7ec;display:flex;justify-content:space-between;padding:10px 16px;font-size:13px;color:var(--text-main);
+  }
+  .rank-filters .f{cursor:pointer;display:flex;align-items:center;gap:4px;}
+  .rank-dims{display:flex;gap:8px;padding:10px 12px;overflow-x:auto;background:#fff;border-bottom:1px solid var(--border);}
+  .rank-dims .d{flex-shrink:0;font-size:12px;padding:5px 12px;border-radius:14px;color:var(--text-sub);background:#f4f5f7;white-space:nowrap;}
+  .rank-dims .d.active{color:var(--primary);border:1px solid var(--primary);background:var(--primary-tint);}
+  .rank-table-head{display:flex;padding:10px 16px;font-size:12px;color:var(--text-sub);}
+  .rank-table-head span:nth-child(1){width:60px;}
+  .rank-table-head span:nth-child(2){flex:1;}
+  .rank-row{display:flex;align-items:center;padding:10px 16px;font-size:14px;background:#fff;border-bottom:1px solid var(--border);}
+  .rank-row .medal{width:60px;font-size:18px;}
+  .rank-row .grade{flex:1;}
+  .rank-row .score{font-weight:700;}
+
+  /* ---------- CLASS COMMENT LIST (点评) ---------- */
+  .comment-head{background:linear-gradient(135deg,var(--blue-1),var(--blue-2));color:#fff;padding:10px 12px;}
+  .week-nav{display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:4px 6px 10px;}
+  .week-nav .mid{display:flex;align-items:center;gap:4px;}
+  .filters-row{display:flex;align-items:center;gap:16px;padding:10px 16px;background:#fff;font-size:13px;color:var(--text-main);border-bottom:1px solid var(--border);}
+  .filters-row .spacer{flex:1;}
+  .filters-row .edit{color:var(--green-1);display:flex;align-items:center;gap:3px;cursor:pointer;}
+  .grade-group{padding:0 12px;}
+  .grade-group h4{font-size:13px;color:var(--text-main);margin:12px 0 8px;display:flex;align-items:center;gap:4px;}
+  .class-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .class-card{background:#fff;border-radius:10px;padding:10px;text-align:center;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+  .class-card .cname{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .class-card .nums{display:flex;justify-content:space-around;font-size:11px;color:var(--text-sub);}
+  .class-card .nums b{display:block;font-size:13px;color:var(--text-sub);}
+  .class-card .nums b.pos{color:var(--positive);}
+  .class-card .nums b.neg{color:var(--negative);}
+  .scan-fab{
+    position:sticky;bottom:10px;margin:16px auto 4px;width:200px;background:#fff;border:1px solid var(--border);
+    border-radius:20px;padding:8px 14px;font-size:12px;color:var(--text-main);display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 8px rgba(0,0,0,.08);
+  }
+
+  /* ---------- TODAY COMMENT DETAIL ---------- */
+  .search-row{padding:8px 12px;background:#fff;}
+  .search-box{background:#f2f3f5;border-radius:16px;padding:7px 12px;font-size:12px;color:var(--text-sub);display:flex;align-items:center;gap:6px;}
+  .subtab-row{display:flex;background:#fff;border-bottom:1px solid var(--border);}
+  .subtab-row .st{flex:1;text-align:center;padding:8px 0;font-size:14px;color:var(--text-sub);cursor:pointer;}
+  .subtab-row .st.active{color:var(--green-1);font-weight:700;border-bottom:2px solid var(--green-1);}
+  .detail-body{flex:1;display:flex;overflow:hidden;}
+  .side-cats{width:96px;flex-shrink:0;background:#f7f8fa;overflow-y:auto;}
+  .side-cats .cat{padding:14px 10px;font-size:12px;color:var(--text-sub);border-left:3px solid transparent;cursor:pointer;}
+  .side-cats .cat.active{color:var(--green-1);border-left:3px solid var(--green-1);background:#fff;font-weight:600;}
+  .main-panel{flex:1;overflow-y:auto;padding-bottom:70px;}
+  .chip-row{display:flex;gap:8px;padding:10px;overflow-x:auto;background:#fff;}
+  .chip-row .c{flex-shrink:0;font-size:11px;padding:4px 10px;border-radius:12px;background:#f4f5f7;color:var(--text-sub);white-space:nowrap;}
+  .chip-row .c.active{color:var(--primary);border:1px solid var(--primary);background:var(--primary-tint);}
+  .sub-section h5{font-size:12px;color:var(--text-sub);margin:12px 12px 6px;}
+  .item-row{background:#fff;margin:0 10px 8px;padding:10px 12px;border-radius:8px;font-size:13px;line-height:1.5;position:relative;cursor:pointer;}
+  .item-row.scored{background:var(--positive-tint);}
+  .item-row .foot{font-size:11px;color:var(--text-sub);margin-top:4px;display:flex;align-items:center;gap:4px;}
+  .item-row .foot.pos{color:var(--positive);}
+  .item-row .foot.neg{color:var(--negative);}
+  .item-row.scored.negtype{background:var(--negative-tint);}
+  .item-row .check{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:var(--green-1);color:#fff;display:none;align-items:center;justify-content:center;font-size:12px;}
+  .item-row.scored .check{display:flex;}
+  .bottom-bar{
+    position:absolute;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--border);
+    padding:8px 14px;display:flex;align-items:center;gap:14px;
+  }
+  .bottom-bar .cls{font-size:12px;color:var(--text-sub);flex-shrink:0;}
+  .bottom-bar .cls b{color:var(--text-main);}
+  .bottom-bar .nums{flex:1;display:flex;gap:12px;font-size:12px;color:var(--text-sub);}
+  .bottom-bar .nums .pos{color:var(--positive);}
+  .bottom-bar .nums .neg{color:var(--negative);}
+  .bottom-bar button{background:var(--green-1);color:#fff;border:none;border-radius:16px;padding:8px 16px;font-size:12px;flex-shrink:0;}
+
+  /* ---------- MODALS ---------- */
+  .mask{position:absolute;inset:0;background:rgba(0,0,0,.4);display:none;align-items:flex-end;justify-content:center;z-index:50;}
+  .mask.center{align-items:center;}
+  .mask.show{display:flex;}
+  .modal{background:#fff;width:100%;border-radius:16px 16px 0 0;padding:16px;max-height:70%;overflow-y:auto;}
+  .modal.center-box{border-radius:14px;width:86%;max-height:60%;position:relative;}
+  .modal h3{font-size:15px;text-align:center;margin:0 0 14px;position:relative;}
+  .modal .closeX{position:absolute;right:0;top:-2px;font-size:16px;color:var(--text-muted);cursor:pointer;}
+  .grade-pick-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+  .grade-pick-grid .g{text-align:center;padding:10px 0;border-radius:8px;background:#f4f5f7;font-size:13px;color:var(--text-main);border:1px solid transparent;cursor:pointer;}
+  .grade-pick-grid .g.active{background:var(--primary-tint);color:var(--primary);border:1px solid var(--primary);}
+
+  .cal-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:4px 4px 12px;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;font-size:13px;}
+  .cal-grid .wd{color:var(--text-sub);font-size:11px;padding-bottom:6px;}
+  .cal-grid .day{padding:6px 0;border-radius:50%;cursor:pointer;}
+  .cal-grid .day.today{background:var(--green-1);color:#fff;}
+  .cal-grid .day.marked{background:var(--primary-tint);color:var(--primary);}
+  .cal-grid .day.dim{color:var(--text-muted);}
+
+  .info-modal p{font-size:13px;line-height:1.9;margin:4px 0;color:var(--text-main);}
+  .info-modal .ok{display:block;margin:14px auto 0;color:var(--green-1);font-weight:600;font-size:14px;cursor:pointer;}
+
+  .pick-class-group h4{font-size:13px;color:var(--text-main);margin:12px 0 8px;display:flex;align-items:center;gap:4px;}
+  .pick-class-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .pick-class-grid .pc{text-align:center;padding:10px 0;border-radius:8px;background:#f4f5f7;font-size:13px;color:var(--text-main);border:1px solid transparent;cursor:pointer;}
+  .pick-class-grid .pc.sel{background:var(--primary-tint);color:var(--primary);border:1px solid var(--primary);}
+  .modal-actions{display:flex;gap:10px;margin-top:16px;}
+  .modal-actions button{flex:1;padding:10px;border-radius:18px;font-size:14px;border:1px solid var(--border);background:#f4f5f7;color:var(--text-main);}
+  .modal-actions button.primary{background:var(--green-1);color:#fff;border:none;}
+
+  .sheet{background:#fff;border-radius:16px 16px 0 0;width:100%;padding:0 0 14px;}
+  .sheet-tabs{display:flex;border-bottom:1px solid var(--border);}
+  .sheet-tabs .t{flex:1;text-align:center;padding:12px 0;font-size:13px;color:var(--text-sub);cursor:pointer;}
+  .sheet-tabs .t.active{color:var(--green-1);font-weight:700;border-bottom:2px solid var(--green-1);}
+  .sheet-pane{display:none;padding:14px 16px;}
+  .sheet-pane.active{display:block;}
+  .sheet-pane .item-title{font-weight:700;font-size:14px;margin-bottom:10px;}
+  .sheet-pane .std-label{font-size:12px;color:var(--text-sub);margin-bottom:4px;}
+  .sheet-pane .std-text{font-size:13px;color:var(--text-main);line-height:1.6;margin-bottom:20px;}
+  .stepper{display:flex;align-items:center;justify-content:center;gap:18px;margin:20px 0;}
+  .stepper button{width:30px;height:30px;border-radius:50%;border:1px solid var(--green-1);color:var(--green-1);background:#fff;font-size:18px;line-height:1;}
+  .stepper .val{font-size:18px;font-weight:700;color:var(--green-1);width:40px;text-align:center;}
+  textarea.remark{width:100%;height:90px;border:1px solid var(--border);border-radius:8px;padding:10px;font-size:13px;resize:none;}
+  .charcount{text-align:right;font-size:11px;color:var(--green-1);margin:4px 0 14px;}
+  .upload-row{display:flex;gap:10px;margin-bottom:6px;}
+  .upload-row .u{flex:1;border:1px dashed var(--border);border-radius:8px;text-align:center;padding:10px 0;font-size:12px;color:var(--text-sub);}
+  .stu-search{background:#f2f3f5;border-radius:14px;padding:6px 12px;font-size:12px;color:var(--text-sub);margin-bottom:10px;}
+  .stu-group h4{font-size:12px;color:var(--text-sub);margin:8px 0;}
+  .stu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .stu-grid .s{text-align:center;background:#f4f5f7;border-radius:8px;padding:8px 0;font-size:12px;color:var(--text-main);cursor:pointer;border:1px solid transparent;}
+  .stu-grid .s.sel{background:var(--primary-tint);color:var(--primary);border:1px solid var(--primary);}
+  .sheet-tabs .t{position:relative;}
+  .tab-badge{position:absolute;top:4px;right:14px;background:var(--negative);color:#fff;font-size:9px;min-width:14px;height:14px;line-height:14px;border-radius:7px;padding:0 3px;}
+
+  /* ---------- 设置 ---------- */
+  .settings-list{background:#fff;}
+  .set-row{display:flex;align-items:center;justify-content:space-between;padding:16px 16px;font-size:14px;color:var(--text-main);border-bottom:1px solid var(--border);cursor:pointer;}
+  .set-row .val{color:var(--text-muted);font-size:13px;display:flex;align-items:center;gap:4px;}
+  .set-row.link{color:var(--text-muted);font-size:12px;cursor:default;}
+  .set-row.link .copy{color:var(--green-1);margin-left:6px;cursor:pointer;}
+  .set-gap{height:10px;background:var(--page-bg);}
+
+  .theme-card{margin-bottom:16px;}
+  .theme-preview{border-radius:10px 10px 0 0;padding:8px 10px 10px;color:#fff;font-size:11px;}
+  .theme-preview.blue{background:linear-gradient(135deg,#4a8fe0,#57a6ef);}
+  .theme-preview.green{background:linear-gradient(135deg,#6cc26a,#8fd98a);}
+  .theme-preview .tp-nav{display:flex;justify-content:space-between;margin-bottom:6px;}
+  .theme-preview .tp-days{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;background:rgba(255,255,255,.15);border-radius:8px;padding:6px 2px;}
+  .theme-preview .tp-days .today{background:#fff;color:#4a8fe0;border-radius:50%;width:20px;height:20px;line-height:20px;margin:0 auto;}
+  .theme-preview.green .tp-days .today{color:#4a9e48;}
+  .theme-card-foot{display:flex;align-items:center;justify-content:space-between;padding:8px 2px;font-size:13px;color:var(--text-main);}
+  .theme-card-foot button{border-radius:14px;padding:5px 14px;font-size:12px;border:none;}
+  .theme-card-foot button.current{background:#f0f0f0;color:var(--text-muted);}
+  .theme-card-foot button.use{background:var(--green-1);color:#fff;}
+
+  .duty-note{font-size:11px;color:#e0483a;background:#fff;padding:10px 14px;line-height:1.6;}
+  .duty-group{background:#fff;margin-top:8px;}
+  .duty-group-head{display:flex;align-items:center;padding:10px 14px;font-size:13px;color:var(--text-main);font-weight:600;}
+  .duty-group-head .cnt{font-weight:400;color:var(--text-sub);margin-left:2px;}
+  .duty-group-head .sub{font-size:11px;color:var(--text-muted);font-weight:400;margin-left:auto;margin-right:8px;}
+  .duty-group-head .more{color:var(--text-muted);cursor:pointer;padding:0 6px;}
+  .duty-member-row{display:flex;align-items:center;padding:8px 14px 8px 30px;font-size:13px;color:var(--text-main);}
+  .duty-member-row .av{width:32px;height:32px;border-radius:50%;background:var(--primary-tint);display:flex;align-items:center;justify-content:center;font-size:16px;margin-right:10px;overflow:hidden;}
+  .fab-bottom{position:sticky;bottom:10px;margin:14px 12px 4px;background:var(--green-1);color:#fff;text-align:center;border-radius:22px;padding:12px 0;font-size:14px;}
+
+  .field-row{display:flex;align-items:center;justify-content:space-between;padding:10px 2px;font-size:13px;color:var(--text-main);border-bottom:1px solid var(--border);margin-bottom:10px;}
+  .field-row input{border:none;outline:none;text-align:right;font-size:13px;flex:1;}
+  .field-row .cnt{color:var(--text-muted);font-size:12px;margin-left:6px;}
+  .avatar-row{display:flex;gap:14px;align-items:flex-start;margin:10px 0 16px;flex-wrap:wrap;}
+  .avatar-row .add-av{width:44px;height:44px;border-radius:50%;background:#f4f5f7;color:var(--text-muted);font-size:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .avatar-row .add-av + span{display:block;text-align:center;font-size:11px;color:var(--text-muted);margin-top:2px;}
+  .av-item{position:relative;text-align:center;font-size:11px;color:var(--text-main);width:44px;}
+  .av-item .av{width:44px;height:44px;border-radius:50%;background:#e8f0fb;display:flex;align-items:center;justify-content:center;font-size:20px;}
+  .av-item .rm{position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:var(--negative);color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;}
+  .grade-radio-row{display:flex;gap:20px;font-size:13px;color:var(--text-main);margin:8px 0 10px;}
+  .grade-radio-row .gr{display:flex;align-items:center;gap:6px;cursor:pointer;}
+  .grade-radio-row .gr .dot{width:16px;height:16px;border-radius:50%;border:1px solid #ccc;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;}
+  .grade-radio-row .gr.active .dot{background:var(--green-1);border-color:var(--green-1);}
+  .grade-chip-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
+  .grade-chip-row .gc{text-align:center;padding:8px 0;border-radius:8px;background:#f4f5f7;font-size:13px;color:var(--text-main);cursor:pointer;}
+  .grade-chip-row .gc.active{background:var(--primary-tint);color:var(--primary);border:1px solid var(--primary);}
+
+  .teacher-pick-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+  .teacher-pick-grid .tp{text-align:center;padding:9px 0;border-radius:8px;background:#f4f5f7;font-size:12px;color:var(--text-main);cursor:pointer;}
+  .teacher-pick-grid .tp.sel{background:var(--primary-tint);color:var(--primary);border:1px solid var(--primary);}
+
+  /* ---------- 点评记录 / 我的点评 / 点评审核 ---------- */
+  .record-head{background:linear-gradient(135deg,var(--blue-1),var(--blue-2));padding:10px 12px 46px;position:relative;overflow:hidden;color:#fff;}
+  .record-filter-row{display:flex;align-items:center;font-size:14px;padding:6px 4px;}
+  .record-filter-row .f{cursor:pointer;}
+  .record-filter-row .sep{flex:1;text-align:center;opacity:.5;}
+  .stats-card{
+    background:#eaf4ff;margin:-34px 12px 0;border-radius:12px;padding:14px 4px;
+    display:flex;position:relative;z-index:2;box-shadow:0 6px 16px rgba(0,0,0,.08);
+  }
+  .stats-card .st-item{flex:1;text-align:center;}
+  .stats-card .st-item b{display:block;font-size:20px;}
+  .stats-card .st-item span{font-size:11px;color:var(--text-sub);}
+  .stats-card .st-item.sub b{color:var(--negative);}
+  .stats-card .st-item.add b{color:var(--positive);}
+  .stats-card .st-item.cnt b{color:var(--primary);}
+  .icon-row{display:flex;gap:28px;padding:16px 16px 12px;background:#fff;}
+  .icon-row .ib{display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--text-main);cursor:pointer;}
+  .icon-row .ib .ic{font-size:30px;margin-bottom:4px;}
+  .section-title-row{display:flex;align-items:center;padding:10px 14px 4px;background:#fff;font-size:14px;font-weight:600;border-top:1px solid var(--border);}
+  .section-title-row .bar{width:3px;height:14px;background:var(--green-1);margin-right:6px;border-radius:2px;}
+  .section-title-row .spacer{flex:1;}
+  .section-title-row .filterbtn{font-size:12px;color:var(--text-sub);font-weight:400;cursor:pointer;}
+  .warn-banner{background:var(--red-warn-bg);color:var(--red-warn-text);font-size:12px;padding:8px 12px;}
+  .record-card{background:#fff;margin:8px 10px;border-radius:10px;padding:12px;font-size:12px;color:var(--text-main);line-height:1.8;position:relative;}
+  .record-card .rc-head{display:flex;align-items:center;margin-bottom:4px;}
+  .record-card .rc-avatar{width:28px;height:28px;border-radius:50%;background:#e8f0fb;display:flex;align-items:center;justify-content:center;font-size:16px;margin-right:8px;flex-shrink:0;}
+  .record-card .rc-title{font-weight:700;font-size:14px;color:var(--text-main);}
+  .record-card .rc-date{font-size:11px;color:var(--text-muted);margin-left:8px;}
+  .record-card .rc-tag{margin-left:auto;font-size:12px;font-weight:600;padding:2px 10px;border-radius:10px;}
+  .record-card .rc-tag.add{background:var(--positive-tint);color:var(--positive);}
+  .record-card .rc-tag.sub{background:var(--negative-tint);color:var(--negative);}
+  .record-card .rc-more{margin-left:8px;color:var(--text-muted);cursor:pointer;padding:0 4px;}
+  .record-card .rc-checkbox{margin-right:8px;flex-shrink:0;}
+  .empty-state{text-align:center;padding:60px 20px;color:var(--text-muted);font-size:13px;}
+  .empty-state .ic{font-size:50px;display:block;margin-bottom:10px;}
+  .review-bottombar{position:absolute;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:10px;}
+  .review-bottombar label{font-size:12px;color:var(--text-sub);display:flex;align-items:center;gap:6px;}
+  .review-bottombar .spacer{flex:1;}
+  .review-bottombar button{background:var(--green-1);color:#fff;border:none;border-radius:16px;padding:8px 16px;font-size:12px;}
+
+  .tree-modal .tm-all{display:flex;align-items:center;gap:8px;font-size:14px;padding:8px 2px;cursor:pointer;}
+  .tree-modal .tm-all .chk{width:18px;height:18px;border-radius:50%;background:var(--green-1);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;}
+  .tree-modal h4{font-size:13px;color:var(--text-main);margin:10px 0 6px;}
+  .tree-modal .tm-sub{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-sub);padding:6px 2px 6px 14px;cursor:pointer;}
+  .tree-modal .tm-sub .radio{width:16px;height:16px;border-radius:50%;border:1px solid #ccc;flex-shrink:0;}
+
+  .quick-chip-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-top:10px;}
+  .quick-chip-grid .qc{text-align:center;padding:8px 0;border-radius:16px;background:#f4f5f7;font-size:12px;color:var(--text-sub);cursor:pointer;}
+  .quick-chip-grid .qc.active{background:var(--green-1);color:#fff;}
+  .date-range-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:8px 2px;color:var(--text-main);cursor:pointer;}
+  .date-range-row .val{color:var(--text-main);}
+
+  .range-tabs{display:flex;gap:10px;padding:6px 2px 12px;}
+  .range-tabs .rt{flex:1;text-align:center;padding:8px 0;border-radius:16px;font-size:13px;border:1px solid var(--border);color:var(--text-muted);}
+  .range-tabs .rt.active{border:1px solid var(--green-1);color:var(--green-1);font-weight:700;}
+  .wheel{display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;font-size:13px;color:var(--text-muted);}
+  .wheel .wrow{display:contents;}
+  .wheel .wrow.mid span{color:var(--text-main);font-weight:700;}
+  .wheel span{padding:6px 0;}
+
+  .filter-section h4{font-size:13px;font-weight:700;color:var(--text-main);margin:14px 0 8px;}
+  .filter-section .chips{display:flex;gap:8px;flex-wrap:wrap;}
+  .filter-section .chips .fc{font-size:12px;padding:6px 14px;border-radius:14px;background:#f4f5f7;color:var(--text-sub);cursor:pointer;}
+  .filter-section .chips .fc.active{background:var(--primary-tint);color:var(--primary);border:1px solid var(--primary);}
+  .filter-section .sub-label{font-size:12px;color:var(--text-muted);margin:10px 0 6px;}
+
+  .plain-sheet{background:#fff;border-radius:16px 16px 0 0;overflow:hidden;}
+  .plain-sheet .ps-item{text-align:center;padding:15px 0;font-size:15px;color:var(--text-main);border-bottom:1px solid var(--border);cursor:pointer;}
+  .plain-sheet .ps-item.danger{color:var(--negative);}
+  .plain-sheet .ps-item:last-child{border-bottom:none;margin-top:6px;border-top:6px solid #f4f5f7;color:var(--text-sub);}
+
+  .confirm-dialog{background:#fff;border-radius:12px;width:78%;padding:20px 16px 16px;text-align:center;}
+  .confirm-dialog h4{font-size:15px;margin:0 0 16px;}
+  .confirm-dialog .row{display:flex;gap:10px;}
+  .confirm-dialog button{flex:1;padding:9px;border-radius:16px;font-size:14px;border:1px solid var(--border);background:#f4f5f7;color:var(--text-main);}
+  .confirm-dialog button.primary{background:var(--green-1);color:#fff;border:none;}
+
+  .toast{
+    position:absolute;left:50%;top:60%;transform:translate(-50%,-50%);
+    background:rgba(0,0,0,.75);color:#fff;font-size:12px;padding:8px 16px;border-radius:6px;
+    z-index:80;display:none;
+  }
+  .toast.show{display:block;}
+
+  .note{max-width:414px;margin:10px auto 0;font-size:12px;color:var(--text-sub);text-align:center;line-height:1.7;}
+</style>
+</head>
+<body>
+<div class="stage">
+<div class="phone">
+  <div class="statusbar" id="statusbarTitle">厦门第一实验小学<div class="dots">●●●&nbsp;&nbsp;—&nbsp;&nbsp;◎</div></div>
+  <div class="screens">
+
+    <!-- ============ HOME ============ -->
+    <div class="screen active" id="screen-home">
+      <div class="home-userbar">
+        <div class="avatar-wrap">
+          <div class="avatar">👤</div>
+          <div class="badge">校长</div>
+        </div>
+        <div class="info">
+          <div class="name">郭子 <span style="font-size:11px;">▾</span></div>
+          <div class="role">校领导</div>
+        </div>
+        <div class="scan"><span class="icon">⎘</span>扫一扫</div>
+      </div>
+      <div class="notice-bar">
+        <span>❗</span>
+        <div class="txt">为确保收到学校信息，请设置接收消息提醒！</div>
+        <button>去设置</button>
+      </div>
+      <div class="home-banner">
+        <h2>智能校徽登记办理与补办</h2>
+        <p>共同打造更智能、安全、温馨的校园环境</p>
+        <div class="mock">📱</div>
+      </div>
+      <div class="banner-foot">
+        <span>智能校徽申请与补办入口</span>
+        <button>查看活动</button>
+      </div>
+      <div class="grid">
+        <div class="grid-item"><div class="ic" style="background:linear-gradient(150deg,var(--teal-grad-a),var(--teal-grad-b));">🪪</div>智能校徽</div>
+        <div class="grid-item"><div class="new">new</div><div class="ic" style="background:linear-gradient(150deg,var(--purple-grad-a),var(--purple-grad-b));">🤖</div>素质评价</div>
+        <div class="grid-item" onclick="go('classreview')"><div class="new">new</div><div class="ic" style="background:linear-gradient(150deg,var(--red-grad-a),var(--red-grad-b));">⭐</div>班级评价</div>
+        <div class="grid-item"><div class="ic" style="background:linear-gradient(150deg,var(--primary-grad-a),var(--primary-grad-b));">🗓️</div>校园签到</div>
+        <div class="grid-item"><div class="ic" style="background:linear-gradient(150deg,var(--orange-grad-a),var(--orange-grad-b));">🏃</div>智慧放学</div>
+        <div class="grid-item"><div class="ic" style="background:linear-gradient(150deg,var(--red-grad-a),var(--red-grad-b));">🚗</div>违停挪车</div>
+        <div class="grid-item"><div class="ic" style="background:linear-gradient(150deg,var(--orange-grad-a),var(--orange-grad-b));">🕐</div>值岗打卡</div>
+        <div class="grid-item"><div class="ic" style="background:linear-gradient(150deg,var(--primary-grad-a),var(--primary-grad-b));">🖼️</div>校园相册</div>
+        <div class="grid-item"><div class="ic" style="background:linear-gradient(150deg,var(--red-grad-a),var(--red-grad-b));">📄</div>通知</div>
+        <div class="grid-item"><div class="new">new</div><div class="ic" style="background:linear-gradient(150deg,var(--teal-grad-a),var(--teal-grad-b));">🏃</div>智慧体育</div>
+        <div class="grid-item"><div class="ic" style="background:linear-gradient(150deg,var(--primary-grad-a),var(--primary-grad-b));">👨‍🎓</div>学生管理</div>
+        <div class="grid-item"><div class="ic" style="background:linear-gradient(150deg,var(--orange-grad-a),var(--orange-grad-b));">🧑‍🏫</div>老师管理</div>
+        <div class="grid-item"><div class="ic" style="background:linear-gradient(150deg,var(--primary-grad-a),var(--primary-grad-b));">📖</div>读书</div>
+        <div class="grid-item"><div class="ic" style="background:linear-gradient(150deg,var(--red-grad-a),var(--red-grad-b));">📰</div>校园新闻</div>
+        <div class="grid-item"><div class="ic" style="background:linear-gradient(150deg,var(--deepgreen-grad-a),var(--deepgreen-grad-b));">📕</div>必读书目</div>
+      </div>
+      <div style="flex:1"></div>
+      <div class="tabbar">
+        <div class="tab active"><span class="ti">🏠</span>首页</div>
+        <div class="tab"><span class="ti">🔔</span>动态</div>
+        <div class="tab center"><div class="fab">+</div></div>
+        <div class="tab"><span class="ti">💬</span>消息</div>
+        <div class="tab"><span class="ti">👤</span>我的</div>
+      </div>
+    </div>
+
+    <!-- ============ 班级评价 - 排行榜 ============ -->
+    <div class="screen" id="screen-classreview">
+      <div class="page-head" style="background:var(--primary);color:#fff;">
+        <span class="back" onclick="go('home')">‹</span>班级评价
+      </div>
+      <div class="rank-head">
+        <div class="title-row">
+          <div class="big-title">排行榜</div>
+          <div class="trophy">🏆</div>
+        </div>
+      </div>
+      <div class="rank-filters">
+        <div class="f" onclick="openModal('modal-grade')">一年级 ▾</div>
+        <div class="f" onclick="openModal('modal-date')">本周 ▾</div>
+      </div>
+      <div class="rank-dims">
+        <div class="d active">全部维度</div>
+        <div class="d">文明礼仪</div>
+        <div class="d">组织纪律</div>
+        <div class="d">卫生习惯</div>
+        <div class="d">校园安全</div>
+        <div class="d">参加活动</div>
+      </div>
+      <div class="rank-table-head">
+        <span>排名</span><span>年级</span><span onclick="openModal('modal-info')" style="cursor:pointer;">总分 ⓘ</span>
+      </div>
+      <div class="rank-row"><span class="medal">🥇</span><span class="grade">一年级-2班</span><span class="score">100</span></div>
+      <div class="rank-row"><span class="medal">🥈</span><span class="grade">一年级-1班</span><span class="score">98.4</span></div>
+      <div style="flex:1"></div>
+      <div class="tabbar">
+        <div class="tab active" style="color:var(--green-1);"><span class="ti">🏆</span>评比</div>
+        <div class="tab" onclick="go('classcomment')"><span class="ti">📝</span>点评</div>
+        <div class="tab" onclick="go('recordlist')"><span class="ti">📋</span>记录</div>
+        <div class="tab" onclick="go('settings')"><span class="ti">⚙️</span>设置</div>
+      </div>
+    </div>
+
+    <!-- ============ 班级评价 - 点评列表 ============ -->
+    <div class="screen" id="screen-classcomment">
+      <div class="page-head"><span class="back" onclick="go('classreview')">‹</span>班级评价</div>
+      <div class="comment-head">
+        <div class="week-nav">
+          <span>◂ 上一周</span>
+          <span class="mid" onclick="openModal('modal-date')">本周 ▾</span>
+          <span>下一周 ▸</span>
+        </div>
+      </div>
+      <div class="filters-row">
+        <span>全部年级 ▾</span>
+        <span>全部维度 ▾</span>
+        <span class="spacer"></span>
+        <span class="edit" onclick="openModal('modal-pickclass')">✏️ 多班点评</span>
+      </div>
+      <div style="padding:0 2px;flex:1;">
+        <div class="grade-group">
+          <h4>▾ 一年级 (2)</h4>
+          <div class="class-cards">
+            <div class="class-card" onclick="openDetail('一年级1班')">
+              <div class="cname">1班</div>
+              <div class="nums"><div><b id="g1-add">0</b>加分</div><div><b id="g1-sub">0</b>扣分</div></div>
+            </div>
+            <div class="class-card" onclick="openDetail('一年级2班')">
+              <div class="cname">2班</div>
+              <div class="nums"><div><b>0</b>加分</div><div><b>0</b>扣分</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="grade-group">
+          <h4>▾ 三年级 (2)</h4>
+          <div class="class-cards">
+            <div class="class-card"><div class="cname">1班</div><div class="nums"><div><b>0</b>加分</div><div><b>0</b>扣分</div></div></div>
+            <div class="class-card"><div class="cname">3班</div><div class="nums"><div><b>0</b>加分</div><div><b>0</b>扣分</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="scan-fab">⎘ 扫校徽码点评班级</div>
+      <div class="tabbar">
+        <div class="tab" onclick="go('classreview')"><span class="ti">🏆</span>评比</div>
+        <div class="tab active"><span class="ti">📝</span>点评</div>
+        <div class="tab" onclick="go('recordlist')"><span class="ti">📋</span>记录</div>
+        <div class="tab" onclick="go('settings')"><span class="ti">⚙️</span>设置</div>
+      </div>
+    </div>
+
+    <!-- ============ 今日点评 详情 ============ -->
+    <div class="screen" id="screen-detail">
+      <div class="page-head"><span class="back" onclick="go('classcomment')">‹</span>今日点评</div>
+      <div class="search-row"><div class="search-box">🔍 输入关键字搜索</div></div>
+      <div class="subtab-row" id="subtab-row">
+        <div class="st" data-tab="sub" onclick="switchTopTab('sub')">扣分</div>
+        <div class="st active" data-tab="add" onclick="switchTopTab('add')">加分</div>
+        <div class="st" data-tab="ing" onclick="switchTopTab('ing')">在评</div>
+      </div>
+      <div class="detail-body">
+        <div class="side-cats">
+          <div class="cat active">文明礼仪</div>
+          <div class="cat">组织纪律</div>
+          <div class="cat">卫生习惯</div>
+          <div class="cat">校园安全</div>
+          <div class="cat">参加活动</div>
+        </div>
+        <div class="main-panel" id="main-panel"></div>
+      </div>
+      <div class="bottom-bar">
+        <div class="cls">点评班级<br><b id="detail-class">一年级1班</b></div>
+        <div class="nums"><span>加分: <b class="pos" id="total-add">0</b></span><span>扣分: <b class="neg" id="total-sub">0</b></span></div>
+        <button onclick="finishCheck()">完成检查</button>
+      </div>
+    </div>
+
+    <!-- ============ 点评记录 ============ -->
+    <div class="screen" id="screen-recordlist">
+      <div class="page-head"><span class="back" onclick="go('classcomment')">‹</span>点评记录</div>
+      <div class="record-head">
+        <div class="record-filter-row">
+          <span class="f" onclick="openModal('modal-treeclass')">全部班级 ▾</span>
+          <span class="sep">|</span>
+          <span class="f" onclick="openModal('modal-quickdate')">本周 ▾</span>
+        </div>
+      </div>
+      <div class="stats-card">
+        <div class="st-item sub"><b id="stat-sub">4</b><span>扣分</span></div>
+        <div class="st-item add"><b id="stat-add">2.8</b><span>加分</span></div>
+        <div class="st-item cnt"><b id="stat-cnt">7</b><span>点评次数</span></div>
+      </div>
+      <div class="icon-row">
+        <div class="ib" onclick="go('mypoints')"><span class="ic">📋</span>我的点评</div>
+        <div class="ib" onclick="go('review')"><span class="ic">☁️⚙️</span>点评审核</div>
+      </div>
+      <div class="section-title-row"><span class="bar"></span>点评记录 ⓘ<span class="spacer"></span><span class="filterbtn" onclick="openModal('modal-filter')">筛选 ▽</span></div>
+      <div class="search-row"><div class="search-box">🔍 点评人、关联学生、检查项目搜索</div></div>
+      <div id="recordlist-body" style="flex:1;"></div>
+      <div class="tabbar">
+        <div class="tab" onclick="go('classreview')"><span class="ti">🏆</span>评比</div>
+        <div class="tab" onclick="go('classcomment')"><span class="ti">📝</span>点评</div>
+        <div class="tab active"><span class="ti">📋</span>记录</div>
+        <div class="tab" onclick="go('settings')"><span class="ti">⚙️</span>设置</div>
+      </div>
+    </div>
+
+    <!-- ============ 我的点评 ============ -->
+    <div class="screen" id="screen-mypoints">
+      <div class="page-head"><span class="back" onclick="go('recordlist')">‹</span>我的点评</div>
+      <div class="record-head">
+        <div class="record-filter-row">
+          <span class="f" onclick="openModal('modal-treeclass')">全部班级 ▾</span>
+          <span class="sep">|</span>
+          <span class="f" onclick="openModal('modal-quickdate')">本周 ▾</span>
+        </div>
+      </div>
+      <div class="stats-card">
+        <div class="st-item sub"><b id="stat-sub2">4</b><span>扣分</span></div>
+        <div class="st-item add"><b id="stat-add2">2.8</b><span>加分</span></div>
+        <div class="st-item cnt"><b id="stat-cnt2">7</b><span>点评次数</span></div>
+      </div>
+      <div class="section-title-row"><span class="bar"></span>点评记录 ⓘ<span class="spacer"></span><span class="filterbtn" onclick="openModal('modal-filter')">筛选 ▽</span></div>
+      <div class="search-row"><div class="search-box">🔍 关联学生、检查项目搜索</div></div>
+      <div id="mypoints-body" style="flex:1;"></div>
+    </div>
+
+    <!-- ============ 点评审核 ============ -->
+    <div class="screen" id="screen-review">
+      <div class="page-head"><span class="back" onclick="go('recordlist')">‹</span>点评审核</div>
+      <div class="search-row"><div class="search-box">🔍 点评人、关联学生、检查项目搜索</div></div>
+      <div class="filters-row" style="border-bottom:1px solid var(--border);">
+        <span class="f" onclick="openModal('modal-treeclass')">全部班级 ▾</span>
+        <span class="spacer"></span>
+        <span onclick="openModal('modal-filter-review')" style="cursor:pointer;">筛选 ▾</span>
+      </div>
+      <div class="warn-banner">注: 仅可对本周记录进行驳回、修改或删除!</div>
+      <div class="empty-state"><span class="ic">📦</span>暂无记录</div>
+      <div style="flex:1;"></div>
+      <div class="review-bottombar">
+        <label><input type="checkbox" disabled>全选</label>
+        <span class="spacer" style="font-size:12px;color:var(--text-muted);">已选: 0个</span>
+        <button disabled style="opacity:.5;">驳回点评</button>
+      </div>
+    </div>
+
+    <!-- ============ 设置 ============ -->
+    <div class="screen" id="screen-settings">
+      <div class="page-head"><span class="back" onclick="go('classcomment')">‹</span>设置</div>
+      <div class="settings-list">
+        <div class="set-row" onclick="openThemeModal()"><span>主题风格设置</span><span class="val" id="theme-label">星空蓝 ›</span></div>
+        <div class="set-row" onclick="go('dutyteacher')"><span>值周老师管理</span><span class="val">›</span></div>
+        <div class="set-row" onclick="go('dutystudent')"><span>值周学生管理</span><span class="val">›</span></div>
+        <div class="set-row link"><span>值周生登录链接：https://qhdwh.xiaohebook...<span class="copy" onclick="showToast('已复制')">复制</span></span></div>
+        <div class="set-row"><span>手动点评界面</span><span class="val">优先展示加分项 ›</span></div>
+      </div>
+    </div>
+
+    <!-- ============ 值周老师管理 ============ -->
+    <div class="screen" id="screen-dutyteacher">
+      <div class="page-head"><span class="back" onclick="go('settings')">‹</span>值周老师管理</div>
+      <div class="search-row"><div class="search-box">🔍 老师姓名搜索</div></div>
+      <div class="duty-note">注: 值周老师可审核驳回所负责年级的值周学生点评记录，如需点评权限请在后台职位权限配置；</div>
+      <div id="duty-groups"></div>
+      <div style="flex:1;"></div>
+      <div class="fab-bottom" onclick="openNewGroup()">新建分组</div>
+    </div>
+
+    <!-- ============ 值周学生管理（占位，截图未提供）============ -->
+    <div class="screen" id="screen-dutystudent">
+      <div class="page-head"><span class="back" onclick="go('settings')">‹</span>值周学生管理</div>
+      <div class="empty-state"><span class="ic">🚧</span>该页面截图暂未提供，等你补充后再还原</div>
+    </div>
+
+  </div>
+
+  <!-- ============ MODALS ============ -->
+
+  <!-- 选择年级 -->
+  <div class="mask" id="modal-grade" onclick="closeOnMask(event,'modal-grade')">
+    <div class="modal">
+      <h3>选择年级<span class="closeX" onclick="closeModal('modal-grade')">✕</span></h3>
+      <div class="grade-pick-grid">
+        <div class="g active">一年级</div>
+        <div class="g">三年级</div>
+        <div class="g">四年级</div>
+        <div class="g">五年级</div>
+        <div class="g">六年级</div>
+        <div class="g">七年级</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 选择日期(本周) -->
+  <div class="mask" id="modal-date" onclick="closeOnMask(event,'modal-date')">
+    <div class="modal">
+      <div class="cal-head"><span>◂ 上个月</span><b>2026年09月</b><span>下个月 ▸</span></div>
+      <div class="cal-grid">
+        <div class="wd">一</div><div class="wd">二</div><div class="wd">三</div><div class="wd">四</div><div class="wd">五</div><div class="wd">六</div><div class="wd">日</div>
+        <div class="day dim">31</div><div class="day marked">1</div><div class="day marked">2</div><div class="day marked">3</div><div class="day today">今</div><div class="day marked">5</div><div class="day marked">6</div>
+        <div class="day">7</div><div class="day">8</div><div class="day">9</div><div class="day">10</div><div class="day">11</div><div class="day">12</div><div class="day">13</div>
+        <div class="day">14</div><div class="day">15</div><div class="day">16</div><div class="day">17</div><div class="day">18</div><div class="day">19</div><div class="day">20</div>
+        <div class="day">21</div><div class="day">22</div><div class="day">23</div><div class="day">24</div><div class="day">25</div><div class="day">26</div><div class="day">27</div>
+        <div class="day">28</div><div class="day">29</div><div class="day">30</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 总分统计说明 -->
+  <div class="mask center" id="modal-info" onclick="closeOnMask(event,'modal-info')">
+    <div class="modal center-box info-modal">
+      <h3>总分统计说明</h3>
+      <p>1. 评比方式：按每周总分进行排名评比；</p>
+      <p>2. 总分计算：每周总分 = 初始分 - 扣分 + 加分；</p>
+      <p>3. 初始总分：为各指标维度初始分的总和；</p>
+      <p>4. 初始分设置：可在后台【班级评价】-【检查项管理】中配置各指标维度初始分；</p>
+      <span class="ok" onclick="closeModal('modal-info')">我知道了</span>
+    </div>
+  </div>
+
+  <!-- 选择点评班级 -->
+  <div class="mask" id="modal-pickclass" onclick="closeOnMask(event,'modal-pickclass')">
+    <div class="modal">
+      <h3>选择点评班级</h3>
+      <div class="pick-class-group">
+        <h4>▾ 一年级 (<span id="pk-count">0</span>/2)</h4>
+        <div class="pick-class-grid">
+          <div class="pc" id="pc-1" onclick="pickClass(this,'一年级1班')">1班</div>
+          <div class="pc" id="pc-2" onclick="pickClass(this,'一年级2班')">2班</div>
+        </div>
+        <h4>▾ 三年级 (0/2)</h4>
+        <div class="pick-class-grid">
+          <div class="pc">1班</div>
+          <div class="pc">3班</div>
+        </div>
+        <h4>▾ 四年级 (0/2)</h4>
+        <div class="pick-class-grid">
+          <div class="pc">1班</div>
+          <div class="pc">2班</div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button onclick="closeModal('modal-pickclass')">取消</button>
+        <button class="primary" onclick="goToPick()">去点评</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 点评项 底部弹层 -->
+  <div class="mask" id="modal-item" onclick="closeOnMask(event,'modal-item')">
+    <div class="sheet">
+      <div class="sheet-tabs">
+        <div class="t active" onclick="switchSheetTab(0)">评分</div>
+        <div class="t" onclick="switchSheetTab(1)">图文点评</div>
+        <div class="t" onclick="switchSheetTab(2)">关联学生<span class="tab-badge" id="stu-tab-badge" style="display:none;">0</span></div>
+      </div>
+      <div class="sheet-pane active" data-pane="0">
+        <div class="item-title" id="sheet-item-title">—</div>
+        <div class="std-label">评分标准：</div>
+        <div class="std-text" id="sheet-item-std">全班按要求穿着校服，佩戴红领巾/校徽，全班加分</div>
+        <div class="stepper">
+          <button onclick="stepVal(-1)">－</button>
+          <span class="val" id="stepper-val">0.2</span>
+          <button onclick="stepVal(1)">＋</button>
+        </div>
+        <div class="modal-actions">
+          <button onclick="closeModal('modal-item')">取消</button>
+          <button class="primary" onclick="confirmScore()">确定</button>
+        </div>
+      </div>
+      <div class="sheet-pane" data-pane="1">
+        <textarea class="remark" placeholder="请输入评语内容"></textarea>
+        <div class="charcount">0/300</div>
+        <div class="upload-row">
+          <div class="u">🖼️ 上传照片</div>
+          <div class="u">▶ 上传视频</div>
+        </div>
+        <div class="modal-actions">
+          <button onclick="closeModal('modal-item')">取消</button>
+          <button class="primary" onclick="closeModal('modal-item')">确定</button>
+        </div>
+      </div>
+      <div class="sheet-pane" data-pane="2">
+        <div class="stu-search">🔍 输入姓名搜索</div>
+        <div class="stu-group">
+          <h4>▾ 1班 (<span id="stu-sel-count">0</span>/157)</h4>
+          <div class="stu-grid" id="stu-grid"></div>
+        </div>
+        <div class="scan-fab" style="margin:12px auto;">⎘ 扫校徽添加学生</div>
+        <div class="modal-actions">
+          <button onclick="closeModal('modal-item')">取消</button>
+          <button class="primary" onclick="closeModal('modal-item')">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 选择班级 (树状) -->
+  <div class="mask" id="modal-treeclass" onclick="closeOnMask(event,'modal-treeclass')">
+    <div class="modal tree-modal">
+      <h3>选择班级<span class="closeX" onclick="closeModal('modal-treeclass')">✕</span></h3>
+      <div class="tm-all"><span class="chk">✓</span>全部班级</div>
+      <h4>▾ 一年级</h4>
+      <div class="tm-sub"><span class="radio"></span>一年级-1班</div>
+      <div class="tm-sub"><span class="radio"></span>一年级-2班</div>
+      <h4>▾ 三年级</h4>
+      <div class="tm-sub"><span class="radio"></span>三年级-1班</div>
+      <div class="tm-sub"><span class="radio"></span>三年级-3班</div>
+      <h4>▾ 四年级</h4>
+    </div>
+  </div>
+
+  <!-- 时间筛选(快捷) -->
+  <div class="mask" id="modal-quickdate" onclick="closeOnMask(event,'modal-quickdate')">
+    <div class="modal">
+      <h3>时间筛选<span class="closeX" onclick="closeModal('modal-quickdate')">✕</span></h3>
+      <div class="date-range-row" onclick="openModal('modal-daterange')">
+        <span>当前选择日期</span><span class="val">2026.08.31-2026.09.06 ›</span>
+      </div>
+      <div class="quick-chip-grid">
+        <div class="qc">今日</div>
+        <div class="qc">昨日</div>
+        <div class="qc active">本周</div>
+        <div class="qc">上周</div>
+        <div class="qc">本月</div>
+        <div class="qc">上个月</div>
+        <div class="qc">本学期</div>
+        <div class="qc">上学期</div>
+        <div class="qc">自定义</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 自定义日期范围(滚轮) -->
+  <div class="mask" id="modal-daterange" onclick="closeOnMask(event,'modal-daterange')">
+    <div class="modal">
+      <div class="range-tabs">
+        <div class="rt active">2026-08-31</div>
+        <div style="align-self:center;">至</div>
+        <div class="rt">2026-09-06</div>
+      </div>
+      <div class="wheel">
+        <div class="wrow"><span>2024年</span><span>06月</span><span>29日</span></div>
+        <div class="wrow"><span>2025年</span><span>07月</span><span>30日</span></div>
+        <div class="wrow mid"><span>2026年</span><span>08月</span><span>31日</span></div>
+        <div class="wrow"><span>2027年</span><span>09月</span><span></span></div>
+        <div class="wrow"><span>2028年</span><span>10月</span><span></span></div>
+      </div>
+      <div class="modal-actions">
+        <button onclick="closeModal('modal-daterange')">取消</button>
+        <button class="primary" onclick="closeModal('modal-daterange');closeModal('modal-quickdate')">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 筛选(点评记录/我的点评，含点评人员) -->
+  <div class="mask" id="modal-filter" onclick="closeOnMask(event,'modal-filter')">
+    <div class="modal">
+      <h3>筛选<span class="closeX" onclick="closeModal('modal-filter')">✕</span></h3>
+      <div class="filter-section">
+        <h4>点评人员</h4>
+        <div class="chips">
+          <div class="fc">全部</div><div class="fc">老师</div><div class="fc active">值周学生</div>
+        </div>
+        <h4>评价类型</h4>
+        <div class="chips">
+          <div class="fc">全部</div><div class="fc">扣分</div><div class="fc active">加分</div>
+        </div>
+        <h4>评价维度</h4>
+        <div class="chips">
+          <div class="fc active">全部</div><div class="fc">文明礼仪</div><div class="fc">组织纪律</div><div class="fc">卫生习惯</div>
+        </div>
+        <div class="sub-label">二级指标:</div>
+        <div class="chips">
+          <div class="fc active">全部</div><div class="fc">仪容规范</div><div class="fc">品德表现</div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button>重置</button>
+        <button class="primary" onclick="closeModal('modal-filter')">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 筛选(点评审核，无点评人员) -->
+  <div class="mask" id="modal-filter-review" onclick="closeOnMask(event,'modal-filter-review')">
+    <div class="modal">
+      <h3>筛选<span class="closeX" onclick="closeModal('modal-filter-review')">✕</span></h3>
+      <div class="filter-section">
+        <h4>评价类型</h4>
+        <div class="chips">
+          <div class="fc active">全部</div><div class="fc">扣分</div><div class="fc">加分</div>
+        </div>
+        <h4>评价维度</h4>
+        <div class="chips">
+          <div class="fc active">全部</div><div class="fc">文明礼仪</div><div class="fc">组织纪律</div><div class="fc">卫生习惯</div>
+        </div>
+        <div class="sub-label">二级指标:</div>
+        <div class="chips">
+          <div class="fc active">全部</div><div class="fc">仪容规范</div><div class="fc">品德表现</div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button>重置</button>
+        <button class="primary" onclick="closeModal('modal-filter-review')">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 记录卡片 "…" 操作菜单 -->
+  <div class="mask" id="modal-cardmenu" onclick="closeOnMask(event,'modal-cardmenu')">
+    <div class="plain-sheet">
+      <div class="ps-item" onclick="menuEditRecord()">修改</div>
+      <div class="ps-item danger" onclick="menuDeleteRecord()">删除</div>
+      <div class="ps-item" onclick="closeModal('modal-cardmenu')">取消</div>
+    </div>
+  </div>
+
+  <!-- 确认删除 -->
+  <div class="mask center" id="modal-confirmdelete" onclick="closeOnMask(event,'modal-confirmdelete')">
+    <div class="confirm-dialog">
+      <h4>提示</h4>
+      <p style="font-size:13px;color:var(--text-sub);margin:0 0 16px;">确认删除?</p>
+      <div class="row">
+        <button onclick="closeModal('modal-confirmdelete')">取消</button>
+        <button class="primary" onclick="confirmDeleteRecord()">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 主题风格设置 -->
+  <div class="mask" id="modal-theme" onclick="closeOnMask(event,'modal-theme')">
+    <div class="modal">
+      <h3>主题风格设置<span class="closeX" onclick="closeModal('modal-theme')">✕</span></h3>
+      <div id="theme-list"></div>
+    </div>
+  </div>
+
+  <!-- 新建/编辑分组 -->
+  <div class="mask" id="modal-newgroup" onclick="closeOnMask(event,'modal-newgroup')">
+    <div class="modal">
+      <h3 id="newgroup-title">新建分组</h3>
+      <div class="field-row">小组名称<input id="ng-name" maxlength="10" placeholder="请输入" oninput="document.getElementById('ng-name-cnt').innerText=this.value.length"><span class="cnt"><span id="ng-name-cnt">0</span>/10</span></div>
+      <div style="font-size:13px;color:var(--text-main);margin-bottom:2px;">值周老师 <span id="ng-teacher-cnt" style="color:var(--green-1);">0人</span></div>
+      <div class="avatar-row" id="ng-avatar-row">
+        <div style="text-align:center;"><div class="add-av" onclick="openSelectTeacher()">＋</div><span>添加</span></div>
+      </div>
+      <div style="font-size:13px;color:var(--text-main);margin-bottom:4px;">负责年级</div>
+      <div class="grade-radio-row">
+        <div class="gr active" id="gr-all" onclick="setGradeMode(true)"><span class="dot">✓</span>全部年级</div>
+        <div class="gr" id="gr-pick" onclick="setGradeMode(false)"><span class="dot"></span>指定年级</div>
+      </div>
+      <div class="grade-chip-row" id="ng-grade-chips" style="display:none;">
+        <div class="gc" onclick="toggleGradeChip(this)">一年级</div>
+        <div class="gc" onclick="toggleGradeChip(this)">三年级</div>
+        <div class="gc" onclick="toggleGradeChip(this)">四年级</div>
+        <div class="gc" onclick="toggleGradeChip(this)">五年级</div>
+        <div class="gc" onclick="toggleGradeChip(this)">六年级</div>
+        <div class="gc" onclick="toggleGradeChip(this)">七年级</div>
+      </div>
+      <div class="modal-actions">
+        <button onclick="closeModal('modal-newgroup')">取消</button>
+        <button class="primary" onclick="saveGroup()">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 选择值周老师 -->
+  <div class="mask" id="modal-selectteacher" onclick="closeOnMask(event,'modal-selectteacher')">
+    <div class="modal">
+      <h3>选择值周老师</h3>
+      <div class="stu-search">🔍 输入姓名搜索</div>
+      <div style="font-size:13px;color:var(--text-main);margin:10px 0 8px;">▾ 未分组 (<span id="teacher-pick-count">0</span>/270)</div>
+      <div class="teacher-pick-grid" id="teacher-pick-grid"></div>
+      <div class="modal-actions">
+        <button onclick="closeModal('modal-selectteacher')">取消</button>
+        <button class="primary" onclick="confirmSelectTeacher()">下一步</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 分组 "..." 操作菜单 -->
+  <div class="mask" id="modal-groupmenu" onclick="closeOnMask(event,'modal-groupmenu')">
+    <div class="plain-sheet">
+      <div class="ps-item" onclick="editGroup()">编辑分组</div>
+      <div class="ps-item danger" onclick="askDeleteGroup()">删除分组</div>
+      <div class="ps-item" onclick="closeModal('modal-groupmenu')">取消</div>
+    </div>
+  </div>
+
+  <!-- 确认删除分组 -->
+  <div class="mask center" id="modal-deletegroup" onclick="closeOnMask(event,'modal-deletegroup')">
+    <div class="confirm-dialog">
+      <h4>是否删除该分组？</h4>
+      <p style="font-size:12px;color:var(--text-sub);margin:0 0 16px;">删除后，将解散该组员，且不能恢复！</p>
+      <div class="row">
+        <button onclick="closeModal('modal-deletegroup')">取消</button>
+        <button class="primary" onclick="confirmDeleteGroup()">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">点评成功</div>
+
+</div>
+</div>
+<div class="note">还原自提供的截图；「扣分」子分类第4项「校…」在原图中仍被屏幕边缘截断，具体文字待你确认后补全；部分未截图到评分标准的项目暂标注为待补充。</div>
+
+<script>
+function go(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+}
+function openModal(id){ document.getElementById(id).classList.add('show'); }
+function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+function closeOnMask(e,id){ if(e.target.id===id) closeModal(id); }
+
+// grade picker select
+document.querySelectorAll('#modal-grade .g').forEach(el=>{
+  el.addEventListener('click',()=>{
+    document.querySelectorAll('#modal-grade .g').forEach(x=>x.classList.remove('active'));
+    el.classList.add('active');
+    setTimeout(()=>closeModal('modal-grade'),150);
+  });
+});
+
+// pick class multi-select
+let pickedClasses = [];
+function pickClass(el,name){
+  el.classList.toggle('sel');
+  if(el.classList.contains('sel')) pickedClasses.push(name);
+  else pickedClasses = pickedClasses.filter(n=>n!==name);
+  document.getElementById('pk-count').innerText = pickedClasses.length;
+}
+function goToPick(){
+  closeModal('modal-pickclass');
+  const target = pickedClasses[0] || '一年级1班';
+  openDetail(target);
+}
+
+function openDetail(className){
+  document.getElementById('detail-class').innerText = className;
+  switchTopTab('add');
+  go('detail');
+}
+
+// ---------- 今日点评 数据 ----------
+// 边界：本原型只收录截图中确认出现过的检查项文字；截图未覆盖到的评分标准/分类名称
+// 标注为“待补充”，不做臆造扩展。
+const TAB_DATA = {
+  add: {
+    unit: '次',
+    label: '加分',
+    chips: ['仪容规范','品德表现','行为规范','言行文明'],
+    sections: [
+      { title:'仪容规范', items:[
+        { id:'add-1', text:'按规定穿着校服，佩戴红领巾/校徽（+0.2分/次）', value:0.2,
+          std:'全班按要求穿着校服，佩戴红领巾/校徽，全班加分' }
+      ]},
+      { title:'品德表现', items:[
+        { id:'add-2', text:'劝阻不文明行为（+0.2分/次）', value:0.2, std:'（评分标准待补充）' },
+        { id:'add-3', text:'主动做好人好事（+0.2分/次）', value:0.2, std:'（评分标准待补充）' },
+        { id:'add-4', text:'团结同学、不欺凌他人（+0.3分/次）', value:0.3, std:'（评分标准待补充）' }
+      ]}
+    ]
+  },
+  sub: {
+    unit: '人',
+    label: '扣分',
+    chips: ['仪容规范','行为规范','言行文明','校…'],
+    sections: [
+      { title:'仪容规范', items:[
+        { id:'sub-1', text:'男生留长发（-0.2分/人）', value:-0.2,
+          std:'发型不符合学校规定，每人每次扣分' },
+        { id:'sub-2', text:'不佩戴红领巾/校徽（-0.2分/人）', value:-0.2, std:'（评分标准待补充）' },
+        { id:'sub-3', text:'穿奇装异服、戴首饰（-0.5分/人）', value:-0.5, std:'（评分标准待补充）' },
+        { id:'sub-4', text:'仪容仪表不规范（发型不整洁、染发烫发、佩戴首饰等）（-0.2分/人）', value:-0.2, std:'（评分标准待补充）' }
+      ]}
+    ]
+  },
+  ing: { unit:'', label:'在评', chips:[], sections:[] }
+};
+// per-item live state: { scored:bool, value:number }
+const itemState = {};
+Object.values(TAB_DATA).forEach(tab=>tab.sections.forEach(sec=>sec.items.forEach(it=>{
+  itemState[it.id] = { scored:false, value: it.value };
+})));
+
+let currentTopTab = 'add';
+let currentChipIndex = 0;
+
+function switchTopTab(tab){
+  currentTopTab = tab;
+  currentChipIndex = 0;
+  document.querySelectorAll('#subtab-row .st').forEach(el=>{
+    el.classList.toggle('active', el.dataset.tab===tab);
+  });
+  renderMainPanel();
+}
+
+function renderMainPanel(){
+  const data = TAB_DATA[currentTopTab];
+  const panel = document.getElementById('main-panel');
+  if(!data.sections.length){
+    panel.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--text-muted);font-size:13px;">暂无「在评」中的记录（原型未采集到该状态截图）</div>';
+    return;
+  }
+  let html = '<div class="chip-row">';
+  data.chips.forEach((c,i)=>{
+    html += `<div class="c ${i===currentChipIndex?'active':''}" onclick="selectChip(${i})">${c}</div>`;
+  });
+  html += '</div>';
+  data.sections.forEach(sec=>{
+    html += `<div class="sub-section"><h5>${sec.title}</h5>`;
+    sec.items.forEach(it=>{
+      const st = itemState[it.id];
+      const isNeg = st.value<0;
+      const sign = st.value>0 ? '+' : '';
+      const footLabel = data.label+': '+(st.scored ? sign+st.value.toFixed(1) : '0');
+      const rowClass = st.scored ? ('scored'+(isNeg?' negtype':'')) : '';
+      const footClass = st.scored ? (isNeg?'neg':'pos') : '';
+      html += `<div class="item-row ${rowClass}" id="row-${it.id}" onclick="openItem('${it.id}')">
+        ${it.text}
+        <div class="foot ${footClass}" id="foot-${it.id}">${footLabel}</div>
+        <div class="check">✓</div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+  panel.innerHTML = html;
+}
+function selectChip(i){ currentChipIndex = i; renderMainPanel(); }
+
+// ---------- item scoring sheet ----------
+let currentItemId = null;
+let sheetMode = 'detail'; // 'detail' | 'record-edit'
+function openItem(id){
+  sheetMode = 'detail';
+  currentItemId = id;
+  const data = TAB_DATA[currentTopTab];
+  let found=null;
+  data.sections.forEach(sec=>sec.items.forEach(it=>{ if(it.id===id) found=it; }));
+  if(!found) return;
+  document.getElementById('sheet-item-title').innerText = found.text.replace(/（[^）]*）$/,'');
+  document.getElementById('sheet-item-std').innerText = found.std;
+  document.getElementById('stepper-val').innerText = itemState[id].value.toFixed(1);
+  renderStudentGrid();
+  switchSheetTab(0);
+  openModal('modal-item');
+}
+function switchSheetTab(i){
+  document.querySelectorAll('.sheet-tabs .t').forEach((t,idx)=>t.classList.toggle('active',idx===i));
+  document.querySelectorAll('.sheet-pane').forEach((p,idx)=>p.classList.toggle('active',idx===i));
+}
+function stepVal(dir){
+  if(sheetMode==='record-edit'){
+    const rec = records[currentEditRecordIdx];
+    const step = 0.1 * (rec.value<0 ? -1 : 1);
+    rec.value = +(rec.value + dir*step).toFixed(1);
+    document.getElementById('stepper-val').innerText = rec.value.toFixed(1);
+    return;
+  }
+  const s = itemState[currentItemId];
+  const step = 0.1 * (s.value<0 ? -1 : 1);
+  s.value = +(s.value + dir*step).toFixed(1);
+  document.getElementById('stepper-val').innerText = s.value.toFixed(1);
+}
+let totalAdd = 0, totalSub = 0;
+function confirmScore(){
+  closeModal('modal-item');
+  if(sheetMode==='record-edit'){
+    const rec = records[currentEditRecordIdx];
+    const delta = rec.value - rec._originalValue;
+    if(rec.type==='add') stats.add = +(stats.add + delta).toFixed(1);
+    else stats.sub = +(stats.sub + Math.abs(rec.value) - Math.abs(rec._originalValue)).toFixed(1);
+    delete rec._originalValue;
+    renderAllRecordScreens();
+    showToast('修改成功');
+    return;
+  }
+  const s = itemState[currentItemId];
+  s.scored = true;
+  if(s.value>0) totalAdd = +(totalAdd + s.value).toFixed(1);
+  else totalSub = +(totalSub + Math.abs(s.value)).toFixed(1);
+  document.getElementById('total-add').innerText = totalAdd;
+  document.getElementById('total-sub').innerText = totalSub;
+  renderMainPanel();
+  showToast('点评成功');
+}
+function finishCheck(){
+  document.getElementById('g1-add').innerText = totalAdd;
+  if(totalAdd>0) document.getElementById('g1-add').classList.add('pos');
+  document.getElementById('g1-sub').innerText = totalSub;
+  if(totalSub>0) document.getElementById('g1-sub').classList.add('neg');
+  go('classcomment');
+}
+
+// ---------- 关联学生 ----------
+const STUDENT_LIST = ['沈春祥','孙美淇','白羽','成成','黄测试','魏同学','秦红英','周测试','莫'];
+let selectedStudents = [];
+function renderStudentGrid(){
+  const grid = document.getElementById('stu-grid');
+  grid.innerHTML = STUDENT_LIST.map(name=>{
+    const sel = selectedStudents.includes(name);
+    return `<div class="s ${sel?'sel':''}" onclick="toggleStudent(this,'${name}')">${name}</div>`;
+  }).join('');
+  updateStuCount();
+}
+function toggleStudent(el,name){
+  el.classList.toggle('sel');
+  if(el.classList.contains('sel')) selectedStudents.push(name);
+  else selectedStudents = selectedStudents.filter(n=>n!==name);
+  updateStuCount();
+}
+function updateStuCount(){
+  document.getElementById('stu-sel-count').innerText = selectedStudents.length;
+  const badge = document.getElementById('stu-tab-badge');
+  if(selectedStudents.length>0){ badge.style.display='inline-block'; badge.innerText = selectedStudents.length; }
+  else{ badge.style.display='none'; }
+}
+
+// ---------- 点评记录 / 我的点评 / 点评审核 ----------
+// 边界：只收录截图中出现过的两条记录，统计卡数值按截图演示的初始值起算，
+// 删除/修改会按截图展示的联动方式增减，不臆造额外记录。
+const stats = { sub:4, add:2.8, cnt:7 };
+const records = [
+  { cls:'一年级-1班', date:'2026-09-04 10:35', type:'add', value:0.2,
+    dim:'文明礼仪-仪容规范', item:'按规定穿着校服，佩戴红领巾/校徽',
+    reviewer:'郭子校长', students:'乐剑戈、111',
+    std:'全班按要求穿着校服，佩戴红领巾/校徽，全班加分' },
+  { cls:'一年级-1班', date:'2026-09-03 18:24', type:'sub', value:-4,
+    dim:'文明礼仪-仪容规范', item:'穿奇装异服、戴首饰',
+    reviewer:'郭子校长', students:'小黄、丁点、李智平、万亮',
+    std:'未按学校规定穿着校服，佩戴非规定饰品，每人每次扣分' }
+];
+
+function recordCardHtml(rec, idx){
+  const tagClass = rec.type==='add' ? 'add' : 'sub';
+  const tagText = rec.type==='add' ? '加分' : '扣分';
+  const sign = rec.value>0 ? '+' : '';
+  return `<div class="record-card">
+    <div class="rc-head">
+      <div class="rc-avatar">🛡️</div>
+      <div class="rc-title">${rec.cls}</div>
+      <div class="rc-date">${rec.date}</div>
+    </div>
+    <div>指标维度: ${rec.dim}</div>
+    <div>检查项目: ${rec.item}</div>
+    <div>点评人员: ${rec.reviewer}</div>
+    <div>关联学生: ${rec.students}</div>
+    <div class="rc-tag ${tagClass}" style="position:absolute;top:12px;right:34px;">${tagText} ${sign}${rec.value}</div>
+    <div class="rc-more" style="position:absolute;top:10px;right:8px;" onclick="openCardMenu(${idx})">…</div>
+  </div>`;
+}
+
+function renderAllRecordScreens(){
+  document.getElementById('stat-sub').innerText = stats.sub;
+  document.getElementById('stat-add').innerText = stats.add;
+  document.getElementById('stat-cnt').innerText = stats.cnt;
+  document.getElementById('stat-sub2').innerText = stats.sub;
+  document.getElementById('stat-add2').innerText = stats.add;
+  document.getElementById('stat-cnt2').innerText = stats.cnt;
+  // 手动点评界面设置为“优先展示加分项”：按时间逆序排列，同一时间加分排在扣分前面
+  const ordered = records.map((r,i)=>({r,i})).sort((a,b)=>{
+    if(a.r.date!==b.r.date) return b.r.date.localeCompare(a.r.date);
+    if(a.r.type!==b.r.type) return a.r.type==='add' ? -1 : 1;
+    return 0;
+  });
+  const html = ordered.map(({r,i})=>recordCardHtml(r,i)).join('');
+  document.getElementById('recordlist-body').innerHTML = html || '<div class="empty-state"><span class="ic">📦</span>暂无记录</div>';
+  document.getElementById('mypoints-body').innerHTML = html || '<div class="empty-state"><span class="ic">📦</span>暂无记录</div>';
+}
+
+let currentMenuIdx = null;
+function openCardMenu(idx){ currentMenuIdx = idx; openModal('modal-cardmenu'); }
+function menuEditRecord(){
+  closeModal('modal-cardmenu');
+  const rec = records[currentMenuIdx];
+  currentEditRecordIdx = currentMenuIdx;
+  rec._originalValue = rec.value;
+  sheetMode = 'record-edit';
+  document.getElementById('sheet-item-title').innerText = rec.item;
+  document.getElementById('sheet-item-std').innerText = rec.std;
+  document.getElementById('stepper-val').innerText = rec.value.toFixed(1);
+  selectedStudents = rec.students.split('、');
+  renderStudentGrid();
+  switchSheetTab(0);
+  openModal('modal-item');
+}
+let currentEditRecordIdx = null;
+function menuDeleteRecord(){
+  closeModal('modal-cardmenu');
+  openModal('modal-confirmdelete');
+}
+function confirmDeleteRecord(){
+  closeModal('modal-confirmdelete');
+  const rec = records[currentMenuIdx];
+  if(rec.type==='add') stats.add = +(stats.add - rec.value).toFixed(1);
+  else stats.sub = +(stats.sub - Math.abs(rec.value)).toFixed(1);
+  stats.cnt = stats.cnt - 1;
+  records.splice(currentMenuIdx,1);
+  renderAllRecordScreens();
+}
+
+// quick date chip select
+document.querySelectorAll('.quick-chip-grid .qc').forEach(el=>{
+  el.addEventListener('click',()=>{
+    if(el.innerText==='自定义'){ openModal('modal-daterange'); return; }
+    document.querySelectorAll('.quick-chip-grid .qc').forEach(x=>x.classList.remove('active'));
+    el.classList.add('active');
+  });
+});
+// filter chip toggles (visual only, single-select within its own row)
+document.querySelectorAll('.filter-section .chips').forEach(row=>{
+  row.querySelectorAll('.fc').forEach(el=>{
+    el.addEventListener('click',()=>{
+      row.querySelectorAll('.fc').forEach(x=>x.classList.remove('active'));
+      el.classList.add('active');
+    });
+  });
+});
+// tree class select (radio-style, single select, closes modal)
+document.querySelectorAll('#modal-treeclass .tm-sub').forEach(el=>{
+  el.addEventListener('click',()=>{
+    document.querySelectorAll('#modal-treeclass .tm-all .chk').forEach(x=>x.style.visibility='hidden');
+    document.querySelectorAll('#modal-treeclass .tm-sub .radio').forEach(x=>x.style.background='');
+    el.querySelector('.radio').style.background = 'var(--green-1)';
+    setTimeout(()=>closeModal('modal-treeclass'),150);
+  });
+});
+document.querySelector('#modal-treeclass .tm-all').addEventListener('click',()=>{
+  setTimeout(()=>closeModal('modal-treeclass'),150);
+});
+
+renderAllRecordScreens();
+
+// ---------- 设置 / 值周老师管理 ----------
+// 边界：校长组只在截图里以折叠态出现，未展开过，所以不臆造其成员姓名。
+let dutyGroups = [
+  { id:1, name:'管理层', teachers:['马亮','测试-姗姗老师','于洛'], gradeMode:'all', grades:[], expanded:true },
+  { id:2, name:'校长组', teachers:['?'], gradeMode:'all', grades:[], expanded:false, hideMembers:true }
+];
+function toggleGroupExpand(id){
+  const g = dutyGroups.find(x=>x.id===id);
+  g.expanded = !g.expanded;
+  renderDutyGroups();
+}
+let currentMenuGroupId = null;
+function openGroupMenu(id){ currentMenuGroupId = id; openModal('modal-groupmenu'); }
+function askDeleteGroup(){ closeModal('modal-groupmenu'); openModal('modal-deletegroup'); }
+function confirmDeleteGroup(){
+  closeModal('modal-deletegroup');
+  dutyGroups = dutyGroups.filter(g=>g.id!==currentMenuGroupId);
+  renderDutyGroups();
+}
+function renderDutyGroups(){
+  const html = dutyGroups.map(g=>{
+    const gradeTxt = g.gradeMode==='all' ? '全部' : (g.grades.join('、')||'未指定');
+    let membersHtml = '';
+    if(g.expanded){
+      membersHtml = g.hideMembers
+        ? `<div style="padding:6px 14px 10px 30px;font-size:12px;color:var(--text-muted);">（该分组成员未在截图中展开过，暂不还原）</div>`
+        : g.teachers.map(name=>`<div class="duty-member-row"><div class="av">🧑</div>${name}</div>`).join('');
+    }
+    return `<div class="duty-group">
+      <div class="duty-group-head" onclick="toggleGroupExpand(${g.id})">
+        <span>${g.expanded?'▾':'▸'} ${g.name}<span class="cnt">(${g.teachers.length})</span></span>
+        <span class="sub">负责年级：${gradeTxt}</span>
+        <span class="more" onclick="event.stopPropagation();openGroupMenu(${g.id})">...</span>
+      </div>
+      ${membersHtml}
+    </div>`;
+  }).join('');
+  document.getElementById('duty-groups').innerHTML = html;
+}
+
+// 新建/编辑分组 表单状态
+let currentEditGroupId = null;
+let ngTeachers = [];
+let ngGradeMode = 'all';
+let ngGrades = [];
+function openNewGroup(){
+  currentEditGroupId = null;
+  document.getElementById('ng-name').value = '';
+  document.getElementById('ng-name-cnt').innerText = '0';
+  ngTeachers = []; ngGradeMode='all'; ngGrades=[];
+  renderNgAvatars();
+  applyGradeUI(true);
+  document.querySelectorAll('#ng-grade-chips .gc').forEach(c=>c.classList.remove('active'));
+  openModal('modal-newgroup');
+}
+function editGroup(){
+  closeModal('modal-groupmenu');
+  const g = dutyGroups.find(x=>x.id===currentMenuGroupId);
+  currentEditGroupId = g.id;
+  document.getElementById('ng-name').value = g.name;
+  document.getElementById('ng-name-cnt').innerText = g.name.length;
+  ngTeachers = g.teachers.slice(); ngGradeMode = g.gradeMode; ngGrades = g.grades.slice();
+  renderNgAvatars();
+  applyGradeUI(ngGradeMode==='all');
+  document.querySelectorAll('#ng-grade-chips .gc').forEach(c=>c.classList.toggle('active', ngGrades.includes(c.innerText)));
+  openModal('modal-newgroup');
+}
+function renderNgAvatars(){
+  const row = document.getElementById('ng-avatar-row');
+  let html = '<div style="text-align:center;"><div class="add-av" onclick="openSelectTeacher()">＋</div><span>添加</span></div>';
+  ngTeachers.forEach((name,i)=>{
+    html += `<div class="av-item"><div class="av">🧑</div><div class="rm" onclick="removeNgTeacher(${i})">－</div><div>${name}</div></div>`;
+  });
+  row.innerHTML = html;
+  document.getElementById('ng-teacher-cnt').innerText = ngTeachers.length+'人';
+}
+function removeNgTeacher(i){ ngTeachers.splice(i,1); renderNgAvatars(); }
+function applyGradeUI(isAll){
+  document.getElementById('gr-all').classList.toggle('active', isAll);
+  document.getElementById('gr-pick').classList.toggle('active', !isAll);
+  document.getElementById('ng-grade-chips').style.display = isAll ? 'none' : 'grid';
+}
+function setGradeMode(isAll){
+  ngGradeMode = isAll ? 'all' : 'pick';
+  applyGradeUI(isAll);
+  if(isAll){ ngGrades=[]; document.querySelectorAll('#ng-grade-chips .gc').forEach(c=>c.classList.remove('active')); }
+}
+function toggleGradeChip(el){
+  el.classList.toggle('active');
+  const g = el.innerText;
+  if(el.classList.contains('active')){ if(!ngGrades.includes(g)) ngGrades.push(g); }
+  else{ ngGrades = ngGrades.filter(x=>x!==g); }
+}
+function saveGroup(){
+  const name = document.getElementById('ng-name').value.trim() || '未命名分组';
+  const grades = ngGradeMode==='all' ? [] : ngGrades.slice();
+  if(currentEditGroupId){
+    const g = dutyGroups.find(x=>x.id===currentEditGroupId);
+    g.name=name; g.teachers=ngTeachers.slice(); g.gradeMode=ngGradeMode; g.grades=grades;
+  } else {
+    dutyGroups.push({id:Date.now(), name, teachers:ngTeachers.slice(), gradeMode:ngGradeMode, grades, expanded:true});
+  }
+  closeModal('modal-newgroup');
+  renderDutyGroups();
+}
+
+// 选择值周老师
+const TEACHER_CANDIDATES = ['张苹波','财哥','测试','测试2','伍兵','卢姗','凌老师','林佳佳','肖豹发','奈小禾技术支持','格来教育','测试黄'];
+let teacherPickTemp = [];
+function openSelectTeacher(){
+  teacherPickTemp = ngTeachers.slice();
+  renderTeacherPickGrid();
+  openModal('modal-selectteacher');
+}
+function renderTeacherPickGrid(){
+  const grid = document.getElementById('teacher-pick-grid');
+  grid.innerHTML = TEACHER_CANDIDATES.map(name=>{
+    const sel = teacherPickTemp.includes(name);
+    return `<div class="tp ${sel?'sel':''}" onclick="toggleTeacherPick(this,'${name}')">${name}</div>`;
+  }).join('');
+  document.getElementById('teacher-pick-count').innerText = teacherPickTemp.length;
+}
+function toggleTeacherPick(el,name){
+  el.classList.toggle('sel');
+  if(el.classList.contains('sel')) teacherPickTemp.push(name);
+  else teacherPickTemp = teacherPickTemp.filter(n=>n!==name);
+  document.getElementById('teacher-pick-count').innerText = teacherPickTemp.length;
+}
+function confirmSelectTeacher(){
+  ngTeachers = teacherPickTemp.slice();
+  renderNgAvatars();
+  closeModal('modal-selectteacher');
+}
+
+// 主题风格设置：按用户提供的参考图收录全部 9 个主题
+const THEMES = [
+  { name:'星空蓝', c1:'#4a8fe0', c2:'#57a6ef', accent:'#4a8fe0' },
+  { name:'森林绿', c1:'#6cc26a', c2:'#8fd98a', accent:'#4a9e48' },
+  { name:'高贵紫', c1:'#8b7ff2', c2:'#a99bf5', accent:'#8b7ff2' },
+  { name:'海浪蓝', c1:'#4fa8e8', c2:'#7cc9f0', accent:'#4fa8e8' },
+  { name:'活力粉', c1:'#ec6fa0', c2:'#f79dc0', accent:'#ec6fa0' },
+  { name:'鎏光金', c1:'#c9a06a', c2:'#e0c090', accent:'#c9a06a' },
+  { name:'深海蓝', c1:'#2f5fae', c2:'#4a7fd0', accent:'#2f5fae' },
+  { name:'炫光橙', c1:'#f0a03f', c2:'#ffc670', accent:'#f0a03f' },
+  { name:'宇宙紫', c1:'#5a3fae', c2:'#7c5fd0', accent:'#5a3fae' }
+];
+let currentTheme = '星空蓝';
+function openThemeModal(){ renderThemeList(); openModal('modal-theme'); }
+function renderThemeList(){
+  document.getElementById('theme-list').innerHTML = THEMES.map(t=>{
+    const isCurrent = t.name===currentTheme;
+    return `<div class="theme-card">
+      <div class="theme-preview" style="background:linear-gradient(135deg, ${t.c1}, ${t.c2});">
+        <div class="tp-nav"><span>◂ 上一周</span><span>2025年12月 第3周 ▾</span><span>下一周 ▸</span></div>
+        <div class="tp-days"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+        <div class="tp-days"><span>11</span><span>12</span><span class="today" style="color:${t.accent};">13</span><span>14</span><span>15</span><span>16</span><span>17</span></div>
+      </div>
+      <div class="theme-card-foot">${t.name}${isCurrent
+        ? '<button class="current" disabled>当前使用</button>'
+        : `<button class="use" onclick="useTheme('${t.name}')">立即使用</button>`}</div>
+    </div>`;
+  }).join('');
+}
+function useTheme(name){
+  currentTheme = name;
+  document.getElementById('theme-label').innerText = name + ' ›';
+  renderThemeList();
+  closeModal('modal-theme');
+}
+
+renderDutyGroups();
+
+renderMainPanel();
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.innerText = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),1200);
+}
+</script>
+</body>
+</html>

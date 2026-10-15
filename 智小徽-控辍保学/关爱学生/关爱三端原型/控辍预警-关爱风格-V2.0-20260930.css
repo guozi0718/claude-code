@@ -1,0 +1,427 @@
+/* 两版 Web 关爱台账：原预警样式、统一内部滚动及固定操作列。 */
+#section-care-menu-v1 table.care-summary-table {
+  width: 2520px;
+  min-width: 2520px;
+  table-layout: fixed;
+}
+#section-care-menu-v1 table.care-summary-table th {
+  width: 180px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+#section-care-menu-v1 table.care-summary-table th:first-child {
+  width: 160px;
+}
+#section-care-menu-v1 table.care-summary-table th:nth-child(2),
+#section-care-menu-v1 table.care-summary-table th:nth-child(3) {
+  width: 100px;
+}
+#section-care-menu-v1 #reg31-type {
+  width: 190px;
+  text-overflow: ellipsis;
+}
+#section-warning-list,
+#section-warning-district,
+#section-warning-school {
+  color: #09244b;
+  scrollbar-width: none;
+}
+#section-warning-list *,
+#section-warning-district *,
+#section-warning-school *,
+#modal-detail * {
+  scrollbar-width: none;
+}
+#section-warning-list *::-webkit-scrollbar,
+#section-warning-district *::-webkit-scrollbar,
+#section-warning-school *::-webkit-scrollbar,
+#modal-detail *::-webkit-scrollbar {
+  display: none;
+}
+#section-warning-list [data-dom-id="filter-section"],
+#section-warning-list > .bg-white,
+#section-warning-district > .bg-white,
+#section-warning-school > .bg-white {
+  border: 1px solid #dce4ee !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+#section-warning-list [data-dom-id="filter-section"] > .grid,
+#section-warning-list [data-dom-id="filter-panel"] {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  column-gap: 40px !important;
+  row-gap: 16px !important;
+  align-items: center !important;
+}
+#section-warning-list [data-dom-id="filter-section"] > .grid > div,
+#section-warning-list [data-dom-id="filter-panel"] > div {
+  width: auto !important;
+  min-width: 205px;
+  max-width: 100%;
+  flex: 0 1 auto;
+}
+#section-warning-list [data-dom-id="filter-panel"] > .col-span-4 {
+  min-width: 285px;
+}
+#section-warning-list [data-dom-id="filter-section"] label,
+#section-warning-list [data-dom-id="filter-panel"] label {
+  width: auto !important;
+  min-width: max-content;
+  white-space: nowrap;
+  color: #617898 !important;
+}
+#section-warning-list [data-dom-id="filter-section"] input,
+#section-warning-list [data-dom-id="filter-section"] select,
+#section-warning-list [data-dom-id="filter-panel"] input,
+#section-warning-list [data-dom-id="filter-panel"] select {
+  min-width: 96px;
+  border-color: #d7e1ef !important;
+  border-radius: 4px !important;
+}
+#section-warning-list [data-dom-id="btn-search"],
+#section-warning-list [data-dom-id="btn-query"] {
+  background: #00a23c !important;
+  border-color: #00a23c !important;
+  color: #fff !important;
+}
+#section-warning-list [data-dom-id="btn-reset"] {
+  background: #fff !important;
+  border: 1px solid #d7e1ef !important;
+  color: #09244b !important;
+}
+#section-warning-list table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #09244b;
+}
+#section-warning-list table tr[hidden] {
+  display: none !important;
+}
+#section-warning-list table th {
+  background: #f1f5fa !important;
+  color: #617898 !important;
+  font-weight: 400 !important;
+}
+#section-warning-list table th,
+#section-warning-list table td {
+  border-color: #dce4ee !important;
+}
+#section-warning-list table tbody tr[data-warning-school] td:last-child button {
+  color: #009d3b;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+#section-warning-list table button:not([disabled]),
+#section-warning-list table a {
+  color: #009d3b;
+}
+#modal-detail [data-dom-id="modal-detail-container"] {
+  border-radius: 10px !important;
+  border: 1px solid #dce4ee;
+}
+#modal-detail button {
+  max-width: fit-content;
+}
+#section-warning-list .care-warning-web-link {
+  border: 0;
+  background: none;
+  color: #009d3b;
+  cursor: pointer;
+  font: inherit;
+  white-space: nowrap;
+}
+#section-warning-list .care-warning-operation {
+  text-align: center;
+}
+#section-warning-list .care-warning-school-actions {
+  display: grid;
+  grid-template-columns: 48px 76px;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+#section-warning-list .care-warning-school-actions a,
+#section-warning-list .care-warning-school-actions button {
+  margin: 0 !important;
+  text-align: center;
+}
+/* 学校与四级监管使用同一明细列宽及表头／单元格对齐规则。 */
+#section-warning-list .care-warning-ledger-scroll {
+  max-height: min(560px, 52vh);
+  overflow: auto;
+  max-width: 100%;
+  overscroll-behavior-x: contain;
+  isolation: isolate;
+}
+#section-warning-list table.care-warning-ledger {
+  min-width: 1400px;
+  table-layout: fixed;
+  font-size: 12px;
+}
+#section-warning-list table.care-warning-ledger th,
+#section-warning-list table.care-warning-ledger td {
+  box-sizing: border-box;
+  height: 44px;
+  padding: 10px 12px !important;
+  text-align: center !important;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  border-bottom: 1px solid #dce4ee;
+}
+#section-warning-list table.care-warning-ledger th:nth-child(5),
+#section-warning-list table.care-warning-ledger th:nth-child(8),
+#section-warning-list table.care-warning-ledger td.care-warning-long-cell {
+  text-align: left !important;
+}
+#section-warning-list table.care-warning-ledger th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+#section-warning-list table.care-warning-ledger tbody tr:hover {
+  background: #f7faff;
+}
+#section-warning-list .care-warning-cell-text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#section-warning-list .care-warning-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border: 1px solid #b7eb8f;
+  border-radius: 4px;
+  color: #52c41a;
+  background: #f6ffed;
+  font-size: 11px;
+}
+#section-warning-list .care-warning-status.pending {
+  border-color: #ffe58f;
+  color: #d89614;
+  background: #fffbe6;
+}
+#section-warning-list .care-warning-ledger-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-top: 1px solid #dce4ee;
+  color: #617898;
+  font-size: 12px;
+}
+#section-warning-list .care-warning-ledger-pages {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+#section-warning-list .care-warning-ledger-pages button {
+  padding: 4px 10px;
+  border: 1px solid #d7e1ef;
+  border-radius: 4px;
+  background: #fff;
+  color: #09244b;
+  cursor: pointer;
+}
+#section-warning-list .care-warning-ledger-pages button:disabled {
+  color: #a9b2bf;
+  background: #f7f8fa;
+  cursor: not-allowed;
+}
+#care-warning-web-detail {
+  color: #09244b;
+}
+#care-warning-web-detail [hidden] {
+  display: none !important;
+}
+#care-warning-web-detail .care-warning-web-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 14px 0 9px;
+  font-size: 14px;
+}
+#care-warning-web-detail .care-warning-web-heading span {
+  color: #617898;
+  font-size: 12px;
+  font-weight: 400;
+}
+#care-warning-web-detail .care-warning-web-card {
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  border: 1px solid #dce4ee;
+  border-radius: 10px;
+  background: #fff;
+  line-height: 1.5;
+}
+#care-warning-web-detail .care-warning-web-card > b {
+  display: block;
+  margin-bottom: 9px;
+  color: #0b5bba;
+  font-size: 13px;
+}
+#care-warning-web-detail .care-warning-web-row {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 8px;
+  padding: 5px 0;
+  font-size: 12px;
+}
+#care-warning-web-detail .care-warning-web-row span:first-child {
+  color: #7189aa;
+}
+#care-warning-web-detail .care-warning-web-row span:last-child {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+#care-warning-web-detail .care-warning-web-tabs {
+  display: flex;
+  border-bottom: 1px solid #dce4ee;
+  margin: 16px 0 10px;
+}
+#care-warning-web-detail .care-warning-web-tabs button {
+  flex: 1;
+  max-width: none;
+  padding: 10px;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: #7189aa;
+  font-size: 13px;
+}
+#care-warning-web-detail .care-warning-web-tabs button.on {
+  color: #1677ff;
+  border-bottom-color: #1677ff;
+  font-weight: 600;
+}
+/* 同一张表实现固定列，不复制表格或按行同步高度。 */
+#section-care-menu-v1 .scm-v3-panel,
+#section-care-menu-v1 .crv3-panel {
+  min-width: 0;
+}
+#section-care-menu-v1 .scm-v3-table-wrap,
+#section-care-menu-v1 .crv3-table-wrap {
+  max-width: 100%;
+  max-height: min(560px, 65vh);
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior-x: contain;
+  isolation: isolate;
+}
+#section-care-menu-v1 .scm-v3-table-wrap::-webkit-scrollbar,
+#section-care-menu-v1 .crv3-table-wrap::-webkit-scrollbar {
+  display: none;
+}
+#section-care-menu-v1 table.care-record-table {
+  width: 100%;
+  min-width: 1585px;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 12px;
+}
+#section-care-menu-v1 table.care-record-table th,
+#section-care-menu-v1 table.care-record-table td {
+  box-sizing: border-box;
+  height: 44px;
+  padding: 10px;
+  vertical-align: middle;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 1px solid #dce2eb;
+  border-bottom: 1px solid #dce2eb;
+}
+#section-care-menu-v1 table.care-record-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f2f5fa;
+  color: #77849a;
+  font-weight: 500;
+}
+#section-care-menu-v1 table.care-record-table th:nth-child(1) {
+  width: 90px;
+}
+#section-care-menu-v1 table.care-record-table th:nth-child(2) {
+  width: 145px;
+}
+#section-care-menu-v1 table.care-record-table th:nth-child(3) {
+  width: 70px;
+}
+#section-care-menu-v1 table.care-record-table th:nth-child(4) {
+  width: 110px;
+}
+#section-care-menu-v1 table.care-record-table th:nth-child(5) {
+  width: 150px;
+}
+#section-care-menu-v1 table.care-record-table th:nth-child(6) {
+  width: 110px;
+}
+#section-care-menu-v1 table.care-record-table th:nth-child(7) {
+  width: 150px;
+}
+#section-care-menu-v1 table.care-record-table th:nth-child(8) {
+  width: 210px;
+  text-align: left;
+}
+#section-care-menu-v1 table.care-record-table th:nth-child(9) {
+  width: 90px;
+}
+#section-care-menu-v1 table.care-record-table th:nth-child(10) {
+  width: 120px;
+}
+#section-care-menu-v1 table.care-record-table th:nth-child(11) {
+  width: 230px;
+  text-align: left;
+}
+#section-care-menu-v1 table.care-record-table th:nth-child(12) {
+  width: 110px;
+}
+#section-care-menu-v1 table.care-record-table td:nth-child(8),
+#section-care-menu-v1 table.care-record-table td:nth-child(11) {
+  text-align: left;
+}
+#section-care-menu-v1 table.care-record-table td > span[title] {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#section-warning-list table.care-warning-ledger {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+#section-care-menu-v1 table.care-record-table tr > :last-child:not([colspan]),
+#section-warning-list
+  table.care-warning-ledger
+  tr
+  > :last-child:not([colspan]) {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  background: #fff;
+  box-shadow:
+    -1px 0 0 #dce2eb,
+    -5px 0 8px rgba(54, 76, 110, 0.08);
+  text-align: center;
+  border-right: 0;
+}
+#section-care-menu-v1 table.care-record-table thead tr > :last-child,
+#section-warning-list table.care-warning-ledger thead tr > :last-child {
+  top: 0;
+  z-index: 3;
+  background: #f2f5fa;
+}
+#section-care-menu-v1 table.care-record-table tbody tr:hover > :last-child,
+#section-warning-list table.care-warning-ledger tbody tr:hover > :last-child {
+  background: #f7faff;
+}
