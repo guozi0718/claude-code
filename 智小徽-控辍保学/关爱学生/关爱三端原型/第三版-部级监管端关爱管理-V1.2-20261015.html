@@ -1,0 +1,2401 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+<script>window.CARE_V3_FORCE_OPEN=location.hash==="#care-v3";</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>部级教育端-控辍保学系统</title>
+    <style id="theme-vars">
+/* ============================================================
+   控辍保学系统 - 品牌设计令牌
+   Brand prefix: edu
+   主色: 专业政务蓝 #1677FF
+   ============================================================ */
+
+:root, .light {
+  /* Brand Primary Scale - 政务蓝 */
+  --edu-primary-50: #e6f4ff;
+  --edu-primary-100: #bae0ff;
+  --edu-primary-200: #91caff;
+  --edu-primary-300: #69b1ff;
+  --edu-primary-400: #4096ff;
+  --edu-primary-500: #1677ff;
+  --edu-primary-600: #0958d9;
+  --edu-primary-700: #003eb3;
+  --edu-primary-800: #002c8c;
+  --edu-primary-900: #001d66;
+
+  /* Neutral Scale */
+  --edu-neutral-0: #ffffff;
+  --edu-neutral-50: #fafafa;
+  --edu-neutral-100: #f5f5f5;
+  --edu-neutral-200: #e8e8e8;
+  --edu-neutral-300: #d9d9d9;
+  --edu-neutral-400: #bfbfbf;
+  --edu-neutral-500: #8c8c8c;
+  --edu-neutral-600: #595959;
+  --edu-neutral-700: #434343;
+  --edu-neutral-800: #262626;
+  --edu-neutral-900: #141414;
+
+  /* Semantic Aliases - required by apply-html-head-contract */
+  --edu-background: #f0f2f5;
+  --edu-foreground: #141414;
+  --edu-card: #ffffff;
+  --edu-card-foreground: #262626;
+  --edu-popover: #ffffff;
+  --edu-popover-foreground: #262626;
+  --edu-primary: #1677ff;
+  --edu-primary-foreground: #ffffff;
+  --edu-secondary: #f5f5f5;
+  --edu-secondary-foreground: #262626;
+  --edu-muted: #f5f5f5;
+  --edu-muted-foreground: #8c8c8c;
+  --edu-accent: #e6f4ff;
+  --edu-accent-foreground: #0958d9;
+  --edu-border: #e8e8e8;
+  --edu-input: #d9d9d9;
+  --edu-ring: #1677ff;
+
+  /* Radius */
+  --edu-radius-small: 4px;
+  --edu-radius-medium: 8px;
+  --edu-radius-large: 12px;
+  --edu-radius-full: 9999px;
+
+  /* State colors - semantic status only */
+  --state-success: #52c41a;
+  --state-success-bg: #f6ffed;
+  --state-success-border: #b7eb8f;
+  --state-warning: #faad14;
+  --state-warning-bg: #fffbe6;
+  --state-warning-border: #ffe58f;
+  --state-error: #ff4d4f;
+  --state-error-bg: #fff2f0;
+  --state-error-border: #ffccc7;
+  --state-info: #1677ff;
+  --state-info-bg: #e6f4ff;
+  --state-info-border: #91caff;
+
+  /* Typography */
+  --font-sans: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", "Fira Code", "Consolas", monospace;
+}
+
+.dark {
+  --edu-background: #141414;
+  --edu-foreground: #f5f5f5;
+  --edu-card: #1f1f1f;
+  --edu-card-foreground: #f5f5f5;
+  --edu-popover: #1f1f1f;
+  --edu-popover-foreground: #f5f5f5;
+  --edu-primary: #1677ff;
+  --edu-primary-foreground: #ffffff;
+  --edu-secondary: #262626;
+  --edu-secondary-foreground: #f5f5f5;
+  --edu-muted: #262626;
+  --edu-muted-foreground: #8c8c8c;
+  --edu-accent: #1f1f1f;
+  --edu-accent-foreground: #69b1ff;
+  --edu-border: #303030;
+  --edu-input: #434343;
+  --edu-ring: #1677ff;
+}
+
+/* Base typography */
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+    </style>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style>
+    /* Base layer */
+    body { background: var(--edu-background); color: var(--edu-foreground); }
+    td, th { word-break: break-all; }
+    th { white-space: nowrap; }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--edu-background); }
+      .text-background { color: var(--edu-background); }
+      .border-background { border-color: var(--edu-background); }
+      .ring-background { --tw-ring-color: var(--edu-background); }
+      .bg-foreground { background-color: var(--edu-foreground); }
+      .text-foreground { color: var(--edu-foreground); }
+      .border-foreground { border-color: var(--edu-foreground); }
+      .ring-foreground { --tw-ring-color: var(--edu-foreground); }
+      .bg-card { background-color: var(--edu-card); }
+      .text-card { color: var(--edu-card); }
+      .border-card { border-color: var(--edu-card); }
+      .ring-card { --tw-ring-color: var(--edu-card); }
+      .bg-card-foreground { background-color: var(--edu-card-foreground); }
+      .text-card-foreground { color: var(--edu-card-foreground); }
+      .border-card-foreground { border-color: var(--edu-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--edu-card-foreground); }
+      .bg-popover { background-color: var(--edu-popover); }
+      .text-popover { color: var(--edu-popover); }
+      .border-popover { border-color: var(--edu-popover); }
+      .ring-popover { --tw-ring-color: var(--edu-popover); }
+      .bg-popover-foreground { background-color: var(--edu-popover-foreground); }
+      .text-popover-foreground { color: var(--edu-popover-foreground); }
+      .border-popover-foreground { border-color: var(--edu-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--edu-popover-foreground); }
+      .bg-primary { background-color: var(--edu-primary); }
+      .text-primary { color: var(--edu-primary); }
+      .border-primary { border-color: var(--edu-primary); }
+      .ring-primary { --tw-ring-color: var(--edu-primary); }
+      .bg-primary-foreground { background-color: var(--edu-primary-foreground); }
+      .text-primary-foreground { color: var(--edu-primary-foreground); }
+      .border-primary-foreground { border-color: var(--edu-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--edu-primary-foreground); }
+      .bg-secondary { background-color: var(--edu-secondary); }
+      .text-secondary { color: var(--edu-secondary); }
+      .border-secondary { border-color: var(--edu-secondary); }
+      .ring-secondary { --tw-ring-color: var(--edu-secondary); }
+      .bg-secondary-foreground { background-color: var(--edu-secondary-foreground); }
+      .text-secondary-foreground { color: var(--edu-secondary-foreground); }
+      .border-secondary-foreground { border-color: var(--edu-secondary-foreground); }
+      .ring-secondary-foreground { --tw-ring-color: var(--edu-secondary-foreground); }
+      .bg-muted { background-color: var(--edu-muted); }
+      .text-muted { color: var(--edu-muted); }
+      .border-muted { border-color: var(--edu-muted); }
+      .ring-muted { --tw-ring-color: var(--edu-muted); }
+      .bg-muted-foreground { background-color: var(--edu-muted-foreground); }
+      .text-muted-foreground { color: var(--edu-muted-foreground); }
+      .border-muted-foreground { border-color: var(--edu-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--edu-muted-foreground); }
+      .bg-accent { background-color: var(--edu-accent); }
+      .text-accent { color: var(--edu-accent); }
+      .border-accent { border-color: var(--edu-accent); }
+      .ring-accent { --tw-ring-color: var(--edu-accent); }
+      .bg-accent-foreground { background-color: var(--edu-accent-foreground); }
+      .text-accent-foreground { color: var(--edu-accent-foreground); }
+      .border-accent-foreground { border-color: var(--edu-accent-foreground); }
+      .ring-accent-foreground { --tw-ring-color: var(--edu-accent-foreground); }
+      .bg-border { background-color: var(--edu-border); }
+      .text-border { color: var(--edu-border); }
+      .border-border { border-color: var(--edu-border); }
+      .ring-border { --tw-ring-color: var(--edu-border); }
+      .bg-input { background-color: var(--edu-input); }
+      .text-input { color: var(--edu-input); }
+      .border-input { border-color: var(--edu-input); }
+      .ring-input { --tw-ring-color: var(--edu-input); }
+      .bg-ring { background-color: var(--edu-ring); }
+      .text-ring { color: var(--edu-ring); }
+      .border-ring { border-color: var(--edu-ring); }
+      .ring-ring { --tw-ring-color: var(--edu-ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+      /* SPA菜单激活态 */
+      .menu-active {
+        background: var(--edu-primary) !important;
+        color: #ffffff !important;
+        font-weight: 500;
+      }
+      .menu-active .menu-indicator { display: block !important; }
+      .menu-indicator { display: none; }
+      /* 数值步进器 input 去除默认箭头 */
+      input[type="number"]::-webkit-outer-spin-button,
+      input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      input[type="number"] { -moz-appearance: textfield; }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+    <main>
+      <!-- 共享Shell: 左侧菜单 + 顶部栏 -->
+      <div class="flex min-h-screen" style="background:var(--edu-background);">
+        <!-- 左侧菜单栏 200px 深色背景 #001d66 -->
+        <aside class="fixed left-0 top-0 h-screen w-[200px] flex flex-col z-40" style="background:var(--edu-primary-900);color:#ffffff;">
+          <!-- Logo区域 -->
+          <div class="flex items-center gap-2 px-4 h-[60px] border-b border-white/10">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:var(--edu-primary);">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+            </div>
+            <div class="flex flex-col leading-tight">
+              <span class="text-[13px] font-semibold text-white">控辍保学系统</span>
+              <span class="text-[10px] text-white/50">部级教育监管端</span>
+            </div>
+          </div>
+          <!-- 菜单列表 -->
+          <nav class="flex-1 py-3 overflow-y-auto no-scrollbar">
+            <!-- 一级菜单: 控辍保学监管 (可展开) -->
+            <div class="mb-1">
+              <button data-dom-id="menu-fangchuo-toggle" onclick="toggleSubMenu()" class="w-full flex items-center justify-between px-4 py-2.5 text-[13px] text-white/70 hover:bg-white/5 transition-colors">
+                <span class="flex items-center gap-2.5">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                  控辍保学监管
+                </span>
+                <svg data-dom-id="menu-fangchuo-arrow" class="w-3.5 h-3.5 rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </button>
+              <!-- 二级菜单 (展开状态：控辍预警、控辍劝返台账、预警配置) -->
+              <div data-dom-id="submenu-fangchuo" class="overflow-hidden">
+                <a href="javascript:void(0)" data-dom-id="menu-visit-ledger" onclick="switchPage('visit-province')" class="flex items-center pl-11 pr-4 py-2 text-[13px] text-white/60 hover:bg-white/5 hover:text-white transition-colors relative">
+                  <span class="w-1 h-1 rounded-full bg-white/30 mr-2.5"></span>控辍劝返台账
+                  <span class="menu-indicator absolute left-0 top-0 bottom-0 w-1" style="background:#ffffff;"></span>
+                </a>
+                <a href="javascript:void(0)" data-dom-id="menu-warning-list" onclick="switchPage('warning-province')" class="flex items-center pl-11 pr-4 py-2 text-[13px] text-white/60 hover:bg-white/5 hover:text-white transition-colors relative">
+                  <span class="w-1 h-1 rounded-full bg-white/30 mr-2.5"></span>控辍预警
+                  <span class="menu-indicator absolute left-0 top-0 bottom-0 w-1" style="background:#ffffff;"></span>
+                </a>
+
+              </div>
+            </div>
+            <!-- 一级菜单: 数据看板 (默认选中) -->
+            <div class="mb-1">
+              <a href="javascript:void(0)" data-dom-id="menu-dashboard" onclick="switchPage('dashboard')" class="flex items-center gap-2.5 px-4 py-2.5 text-[13px] text-white/70 hover:bg-white/5 transition-colors relative">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM14 13a1 1 0 011-1h4a1 1 0 011 1v6a1 1 0 01-1 1h-4a1 1 0 01-1-1v-6zM4 13a1 1 0 011-1h4a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6z"/></svg>
+                数据看板
+                <span class="menu-indicator absolute left-0 top-0 bottom-0 w-1" style="background:#ffffff;"></span>
+              </a>
+            </div>
+          </nav>
+          <!-- 底部版本信息 -->
+          <div class="px-4 py-3 border-t border-white/10">
+            <p class="text-[10px] text-white/30">v1.0.0 | 2026 版权所有</p>
+          </div>
+        </aside>
+
+        <!-- 右侧内容区 -->
+        <div class="flex-1 ml-[200px]">
+          <!-- 顶部栏 60px -->
+          <header class="fixed top-0 left-[200px] right-0 h-[60px] bg-white border-b flex items-center justify-between px-6 z-30" style="border-color:var(--edu-border);">
+            <div class="flex items-center gap-2">
+              <span data-dom-id="page-title" class="text-[16px] font-semibold" style="color:var(--edu-foreground);">数据看板</span>
+              <span data-dom-id="badge-drilldown" class="text-[12px] px-2 py-0.5 rounded-full" style="background:var(--edu-primary-50);color:var(--edu-primary);">数据仓导航可下转</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <button data-dom-id="btn-notification" class="relative w-9 h-9 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors">
+                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                <span class="absolute top-1.5 right-2 w-2 h-2 rounded-full" style="background:var(--state-error);"></span>
+              </button>
+              <div class="flex items-center gap-2.5 pl-3 border-l" style="border-color:var(--edu-border);">
+                <div data-dom-id="user-avatar" class="w-8 h-8 rounded-full flex items-center justify-center text-white text-[13px] font-medium" style="background:var(--edu-primary);">张</div>
+                <div class="flex flex-col leading-tight">
+                  <span data-dom-id="user-name" class="text-[13px] font-medium" style="color:var(--edu-foreground);">张明远</span>
+                  <span data-dom-id="user-role" class="text-[11px]" style="color:var(--edu-muted-foreground);">教育部</span>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <!-- 主内容区 -->
+          <div class="pt-[60px]">
+
+            <!-- ================================================================ -->
+            <!-- 页面1: 数据看板 (section-dashboard) — 默认显示                     -->
+            <!-- ================================================================ -->
+            <section id="section-dashboard" class="hidden">
+            <style id="cockpit-dashboard-city">
+              /* ====== 驾驶舱大屏 - 省端 ====== */
+              #section-dashboard {
+                --ck-bg: #0A1929;
+                --ck-panel: rgba(10, 25, 47, 0.85);
+                --ck-border: rgba(0, 212, 255, 0.25);
+                --ck-border-bright: rgba(0, 212, 255, 0.5);
+                --ck-cyan: #00D4FF;
+                --ck-blue: #0066FF;
+                --ck-text: #FFFFFF;
+                --ck-text-sub: #B0D4F1;
+                --ck-text-muted: #6B8CAE;
+                --ck-danger: #FF6B6B;
+                --ck-warning: #FFD93D;
+                --ck-success: #6BCB77;
+                --ck-purple: #A855F7;
+                background: var(--ck-bg) !important;
+                color: var(--ck-text-sub);
+                padding: 0 !important;
+                min-height: calc(100vh - 60px);
+                font-family: 'Microsoft YaHei', sans-serif;
+                overflow: hidden;
+              }
+              #section-dashboard * { box-sizing: border-box; }
+              #section-dashboard .ck-wrap {
+                display: flex; flex-direction: column;
+                height: calc(100vh - 60px); min-height: 600px;
+                background: 
+                  radial-gradient(ellipse at 50% 50%, rgba(0,102,255,0.06) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(0,212,255,0.04) 0%, transparent 50%),
+                  #0A1929;
+              }
+              /* ====== 顶部标题栏 ====== */
+              #section-dashboard .ck-header {
+                height: 56px; flex-shrink: 0;
+                display: flex; align-items: center; justify-content: space-between;
+                padding: 0 24px;
+                background: linear-gradient(180deg, rgba(0,102,255,0.12) 0%, transparent 100%);
+                border-bottom: 1px solid var(--ck-border);
+                position: relative;
+              }
+              #section-dashboard .ck-header::after {
+                content: ''; position: absolute; bottom: -1px; left: 10%; right: 10%; height: 1px;
+                background: linear-gradient(90deg, transparent, var(--ck-cyan), transparent);
+                box-shadow: 0 0 8px var(--ck-cyan);
+              }
+              #section-dashboard .ck-header-left { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--ck-text-muted); }
+              #section-dashboard .ck-header-left .ck-time { color: var(--ck-cyan); font-family: 'Courier New', monospace; }
+              #section-dashboard .ck-header-title {
+                font-size: 22px; font-weight: 700; color: var(--ck-text);
+                text-shadow: 0 0 12px rgba(0,212,255,0.5), 0 0 24px rgba(0,102,255,0.3);
+                letter-spacing: 2px;
+                background: linear-gradient(180deg, #FFFFFF 30%, var(--ck-cyan) 100%);
+                -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                background-clip: text;
+              }
+              #section-dashboard .ck-header-right { display: flex; align-items: center; gap: 8px; }
+              #section-dashboard .ck-header-right .ck-btn {
+                width: 28px; height: 28px; border: 1px solid var(--ck-border);
+                display: flex; align-items: center; justify-content: center;
+                color: var(--ck-cyan); cursor: pointer; transition: all 0.2s;
+                clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+              }
+              #section-dashboard .ck-header-right .ck-btn:hover { background: rgba(0,212,255,0.1); border-color: var(--ck-cyan); }
+              /* ====== 三栏主体 ====== */
+              #section-dashboard .ck-body {
+                flex: 1; display: flex; gap: 12px; padding: 12px; overflow: hidden; min-height: 0;
+              }
+              #section-dashboard .ck-col-left, #section-dashboard .ck-col-right {
+                flex: 3; display: flex; flex-direction: column; gap: 12px; overflow: hidden; min-width: 0;
+              }
+              #section-dashboard .ck-col-center {
+                flex: 4; display: flex; flex-direction: column; gap: 12px; overflow: hidden; min-width: 0;
+              }
+              /* ====== 机甲风面板 ====== */
+              #section-dashboard .ck-panel {
+                padding: 8px 10px; position: relative; overflow: hidden;
+              }
+              #section-dashboard .ck-panel::before { display: none; }
+              #section-dashboard .ck-panel-flex { flex: 1; min-height: 0; }
+              #section-dashboard .ck-panel-title {
+                font-size: 14px; font-weight: 600; color: var(--ck-text);
+                margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+                padding: 6px 12px 6px 10px;
+                background: linear-gradient(90deg, rgba(0,212,255,0.2) 0%, rgba(0,102,255,0.08) 60%, transparent 100%);
+                border-left: 3px solid var(--ck-cyan);
+                text-shadow: 0 0 6px rgba(0,212,255,0.4);
+                letter-spacing: 1px;
+              }
+              #section-dashboard .ck-panel-title::before { display: none; }
+              /* ====== 指标卡片 ====== */
+              #section-dashboard .ck-cards {
+                display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; flex-shrink: 0;
+              }
+              #section-dashboard .ck-card {
+                background: var(--ck-panel); border: 1px solid var(--ck-border);
+                clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+                padding: 14px 16px; position: relative; transition: all 0.3s;
+              }
+              #section-dashboard .ck-card::before {
+                content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+                background: linear-gradient(90deg, var(--ck-cyan), var(--ck-blue));
+                box-shadow: 0 0 8px var(--ck-cyan);
+              }
+              #section-dashboard .ck-card:hover { border-color: var(--ck-border-bright); box-shadow: 0 0 16px rgba(0,212,255,0.15); }
+              #section-dashboard .ck-card-label { font-size: 12px; color: var(--ck-text-muted); margin-bottom: 6px; }
+              #section-dashboard .ck-card-value {
+                font-size: 28px; font-weight: 700; color: var(--ck-text);
+                font-family: 'DIN Alternate', 'Impact', sans-serif;
+                text-shadow: 0 0 10px rgba(0,212,255,0.4);
+                line-height: 1.2;
+              }
+              #section-dashboard .ck-card-value.ck-danger { color: var(--ck-danger); text-shadow: 0 0 10px rgba(255,107,107,0.4); }
+              #section-dashboard .ck-card-value.ck-warning { color: var(--ck-warning); text-shadow: 0 0 10px rgba(255,217,61,0.4); }
+              #section-dashboard .ck-card-value.ck-success { color: var(--ck-success); text-shadow: 0 0 10px rgba(107,203,119,0.4); }
+              #section-dashboard .ck-card-unit { font-size: 12px; color: var(--ck-text-muted); margin-left: 4px; }
+              #section-dashboard .ck-card-sub { font-size: 11px; color: var(--ck-text-muted); margin-top: 4px; }
+              /* ====== 中央地图 ====== */
+              #section-dashboard .ck-map-wrap {
+                flex: 1; display: flex; align-items: center; justify-content: center;
+                position: relative; min-height: 0; padding: 10px;
+              }
+              #section-dashboard .ck-map {
+                width: 100%; height: 100%; max-width: 440px; max-height: 440px; position: relative;
+                display: flex; align-items: center; justify-content: center;
+                transform: perspective(800px) rotateX(12deg);
+              }
+              #section-dashboard .ck-map-ring {
+                position: absolute; border-radius: 50%;
+                border: 1px dashed rgba(0,212,255,0.2);
+              }
+              #section-dashboard .ck-map-ring.r1 { width: 100%; height: 100%; animation: ck-rotate 20s linear infinite; }
+              #section-dashboard .ck-map-ring.r2 { width: 80%; height: 80%; border-style: solid; border-color: rgba(0,212,255,0.1); animation: ck-rotate-rev 15s linear infinite; }
+              #section-dashboard .ck-map-ring.r3 { width: 60%; height: 60%; border-style: dashed; border-color: rgba(0,102,255,0.2); animation: ck-rotate 10s linear infinite; }
+              @keyframes ck-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+              @keyframes ck-rotate-rev { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+              #section-dashboard .ck-map-core {
+                width: 170px; height: 170px; border-radius: 50%;
+                background: radial-gradient(circle, rgba(0,212,255,0.2) 0%, rgba(0,102,255,0.08) 50%, transparent 70%);
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+                border: 1px solid rgba(0,212,255,0.3);
+                box-shadow: 0 0 40px rgba(0,212,255,0.2), inset 0 0 30px rgba(0,212,255,0.08);
+              }
+              #section-dashboard .ck-map-core .ck-map-icon { font-size: 28px; margin-bottom: 4px; }
+              #section-dashboard .ck-map-core .ck-map-name { font-size: 15px; color: var(--ck-cyan); font-weight: 600; text-shadow: 0 0 8px rgba(0,212,255,0.5); text-align: center; line-height: 1.4; }
+              #section-dashboard .ck-map-core .ck-map-sub { font-size: 10px; color: var(--ck-text-muted); margin-top: 2px; }
+              #section-dashboard .ck-map-dot {
+                position: absolute; width: 6px; height: 6px; border-radius: 50%;
+                background: var(--ck-cyan); box-shadow: 0 0 8px var(--ck-cyan);
+                animation: ck-pulse 2s ease-in-out infinite;
+              }
+              @keyframes ck-pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.5); } }
+              /* ====== 环形图 ====== */
+              #section-dashboard .ck-donut-wrap { display: flex; align-items: center; gap: 16px; }
+              #section-dashboard .ck-donut {
+                width: 110px; height: 110px; border-radius: 50%; flex-shrink: 0; position: relative;
+              }
+              #section-dashboard .ck-donut-center {
+                position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+                width: 70px; height: 70px; border-radius: 50%; background: var(--ck-panel);
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+              }
+              #section-dashboard .ck-legend { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+              #section-dashboard .ck-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ck-text-sub); text-align: right; justify-content: flex-end; }
+              #section-dashboard .ck-legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+              /* ====== 表格 ====== */
+              #section-dashboard .ck-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+              #section-dashboard .ck-table thead th {
+                color: var(--ck-text-muted); font-weight: 500; text-align: left;
+                padding: 6px 8px; border-bottom: 1px solid var(--ck-border);
+                white-space: nowrap; font-size: 11px;
+              }
+              #section-dashboard .ck-table tbody td {
+                color: var(--ck-text-sub); padding: 6px 8px; border-bottom: 1px solid rgba(0,212,255,0.06);
+                white-space: nowrap;
+              }
+              #section-dashboard .ck-table tbody tr:hover { background: rgba(0,212,255,0.05); }
+              #section-dashboard .ck-table .ck-num { color: var(--ck-cyan); font-weight: 600; font-family: 'DIN Alternate', sans-serif; }
+              #section-dashboard .ck-table .ck-tag { display: inline-block; padding: 1px 6px; border-radius: 2px; font-size: 10px; }
+              #section-dashboard .ck-tag-danger { background: rgba(255,107,107,0.15); color: var(--ck-danger); border: 1px solid rgba(255,107,107,0.3); }
+              #section-dashboard .ck-tag-warning { background: rgba(255,217,61,0.15); color: var(--ck-warning); border: 1px solid rgba(255,217,61,0.3); }
+              #section-dashboard .ck-tag-success { background: rgba(107,203,119,0.15); color: var(--ck-success); border: 1px solid rgba(107,203,119,0.3); }
+              /* ====== 滚动条 ====== */
+              #section-dashboard .ck-scroll { overflow-y: auto; }
+              #section-dashboard .ck-scroll::-webkit-scrollbar { width: 4px; }
+              #section-dashboard .ck-scroll::-webkit-scrollbar-track { background: transparent; }
+              #section-dashboard .ck-scroll::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.2); border-radius: 2px; }
+  /* 横向柱状图 */
+  #section-dashboard .ck-hbar-scroll { overflow-y: auto; }
+  #section-dashboard .ck-hbar-scroll::-webkit-scrollbar { width: 4px; }
+  #section-dashboard .ck-hbar-scroll::-webkit-scrollbar-track { background: transparent; }
+  #section-dashboard .ck-hbar-scroll::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.2); border-radius: 2px; }
+  #section-dashboard .ck-hbar-item { margin-bottom: 8px; }
+  #section-dashboard .ck-hbar-label { font-size: 11px; color: var(--ck-text-sub); margin-bottom: 3px; }
+  #section-dashboard .ck-hbar-row { display: flex; align-items: center; gap: 4px; margin-bottom: 2px; }
+  #section-dashboard .ck-hbar-tag { font-size: 10px; width: 42px; flex-shrink: 0; text-align: right; font-weight: 600; }
+  #section-dashboard .ck-hbar-track { flex: 1; height: 12px; background: rgba(0,212,255,0.05); border-radius: 2px; position: relative; }
+  #section-dashboard .ck-hbar-fill { height: 100%; border-radius: 2px; display: flex; align-items: center; justify-content: flex-end; padding-right: 4px; font-size: 10px; font-weight: 600; color: #0A1929; white-space: nowrap; min-width: 20px; }
+  #section-dashboard .ck-hbar-fill-total { background: linear-gradient(90deg, rgba(0,212,255,0.4), rgba(0,212,255,0.7)); }
+  #section-dashboard .ck-hbar-fill-pending { background: linear-gradient(90deg, rgba(255,217,61,0.4), rgba(255,217,61,0.7)); }
+  #section-dashboard .ck-hbar-fill-single { background: linear-gradient(90deg, rgba(0,212,255,0.3), rgba(0,212,255,0.6)); color: var(--ck-cyan); }
+  /* SVG饼图（外部标签样式，参照图1） */
+  #section-dashboard .ck-pie-wrap { display:flex; align-items:center; justify-content:center; padding:6px 4px; }
+  #section-dashboard .ck-pie-svg { width:100%; max-width:260px; height:auto; }
+  #section-dashboard .ck-pie-svg text { font-size:9px; font-family:inherit; }
+  #section-dashboard .ck-pie-svg .pie-line { stroke-width:0.8; opacity:0.4; }
+  /* 3D地图（参照图2） */
+  #section-dashboard .ck-map3d-wrap { flex:1; min-height:0; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; padding:4px; }
+  #section-dashboard .ck-map3d-svg { width:85%; max-width:280px; height:auto; }
+  #section-dashboard .ck-map3d-top {
+    filter: drop-shadow(0 1px 0 #082c4a) drop-shadow(0 2px 0 #082c4a) drop-shadow(0 3px 0 #072540)
+            drop-shadow(0 4px 0 #072540) drop-shadow(0 5px 0 #061f36) drop-shadow(0 6px 0 #061f36)
+            drop-shadow(0 7px 0 #051929) drop-shadow(0 8px 0 #051929) drop-shadow(0 10px 6px rgba(0,212,255,0.2));
+  }
+  /* 柱状图/折线图 */
+  #section-dashboard .ck-chart-wrap { flex:1; min-height:0; padding:6px 4px; display:flex; align-items:stretch; }
+  #section-dashboard .ck-chart-svg { width:100%; height:100%; }
+  #section-dashboard .ck-chart-svg text { font-size:7px; font-family:inherit; }
+  #section-dashboard .ck-chart-legend { display:flex; gap:10px; padding:0 4px 4px; font-size:9px; }
+  #section-dashboard .ck-chart-legend-item { display:flex; align-items:center; gap:3px; color:var(--ck-text-sub); }
+  #section-dashboard .ck-chart-legend-dot { width:7px; height:7px; border-radius:1px; flex-shrink:0; }
+            </style>
+
+            <div class="ck-wrap">
+              <!-- 顶部标题栏 -->
+              <div class="ck-header">
+                <div class="ck-header-left">
+                  <span class="ck-time" id="ck-time-city">2026-08-05 星期三 14:30:00</span>
+                </div>
+                <div class="ck-header-title">陕西省教育厅 · 控辍保学智慧监管平台</div>
+                <div class="ck-header-right">
+                  <div class="ck-btn" title="全屏">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 三栏主体 -->
+              <div class="ck-body">
+                <!-- ====== 左栏 ====== -->
+                <div class="ck-col-left">
+                  <!-- 预警类型分布 -->
+                  <div class="ck-panel">
+                    <div class="ck-panel-title">预警类型分布</div>
+                    <div class="ck-pie-wrap">
+                      <svg viewBox="0 0 300 200" class="ck-pie-svg">
+                        <path d="M150,100 L150,35 A65,65 0 0,1 153.27,164.91 Z" fill="#4ECDC4"/>
+                        <path d="M150,100 L153.27,164.91 A65,65 0 0,1 88.18,79.91 Z" fill="#A4D233"/>
+                        <path d="M150,100 L88.18,79.91 A65,65 0 0,1 150,35 Z" fill="#F48FB1"/>
+                        <line x1="214.98" y1="98.40" x2="239.97" y2="97.79" stroke="#4ECDC4" class="pie-line"/>
+                        <line x1="98.38" y1="139.49" x2="78.52" y2="154.68" stroke="#A4D233" class="pie-line"/>
+                        <line x1="111.79" y1="47.41" x2="97.10" y2="27.19" stroke="#F48FB1" class="pie-line"/>
+                        <text x="243" y="101" text-anchor="start" fill="#4ECDC4">连续缺勤 49.2%</text>
+                        <text x="75" y="158" text-anchor="end" fill="#A4D233">周期缺勤 30.8%</text>
+                        <text x="94" y="24" text-anchor="end" fill="#F48FB1">连续请假 20.0%</text>
+                      </svg>
+                    </div>
+                  </div>
+                  <!-- 本学年各地市预警排名 -->
+                  <div class="ck-panel ck-panel-flex">
+                    <div class="ck-panel-title">本学年各地市预警排名</div>
+                    <div class="ck-hbar-scroll" style="flex:1;min-height:0;padding:6px 8px;">
+                      <div class="ck-hbar-item">
+                        <div class="ck-hbar-row"><span class="ck-hbar-label" style="width:50px;flex-shrink:0;text-align:right;">西安市</span><div class="ck-hbar-track"><div class="ck-hbar-fill ck-hbar-fill-single" style="width:100%;">612</div></div></div>
+                      </div>
+                      <div class="ck-hbar-item">
+                        <div class="ck-hbar-row"><span class="ck-hbar-label" style="width:50px;flex-shrink:0;text-align:right;">宝鸡市</span><div class="ck-hbar-track"><div class="ck-hbar-fill ck-hbar-fill-single" style="width:79%;">484</div></div></div>
+                      </div>
+                      <div class="ck-hbar-item">
+                        <div class="ck-hbar-row"><span class="ck-hbar-label" style="width:50px;flex-shrink:0;text-align:right;">咸阳市</span><div class="ck-hbar-track"><div class="ck-hbar-fill ck-hbar-fill-single" style="width:65%;">398</div></div></div>
+                      </div>
+                      <div class="ck-hbar-item">
+                        <div class="ck-hbar-row"><span class="ck-hbar-label" style="width:50px;flex-shrink:0;text-align:right;">渭南市</span><div class="ck-hbar-track"><div class="ck-hbar-fill ck-hbar-fill-single" style="width:58%;">355</div></div></div>
+                      </div>
+                      <div class="ck-hbar-item">
+                        <div class="ck-hbar-row"><span class="ck-hbar-label" style="width:50px;flex-shrink:0;text-align:right;">汉中市</span><div class="ck-hbar-track"><div class="ck-hbar-fill ck-hbar-fill-single" style="width:47%;">287</div></div></div>
+                      </div>
+                      <div class="ck-hbar-item">
+                        <div class="ck-hbar-row"><span class="ck-hbar-label" style="width:50px;flex-shrink:0;text-align:right;">榆林市</span><div class="ck-hbar-track"><div class="ck-hbar-fill ck-hbar-fill-single" style="width:40%;">243</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 本学年预警分布（柱状图） -->
+                  <div class="ck-panel ck-panel-flex">
+                    <div class="ck-panel-title">本学年预警分布</div>
+                    <div class="ck-chart-legend">
+                      <div class="ck-chart-legend-item"><span class="ck-chart-legend-dot" style="background:rgba(0,212,255,0.7);"></span>预警总数</div>
+                      <div class="ck-chart-legend-item"><span class="ck-chart-legend-dot" style="background:rgba(255,217,61,0.7);"></span>待处理数</div>
+                    </div>
+                    <div class="ck-chart-wrap">
+                      <svg viewBox="0 0 360 140" class="ck-chart-svg" preserveAspectRatio="none">
+                        <g stroke="rgba(0,212,255,0.06)" stroke-width="0.5">
+                          <line x1="30" y1="20" x2="350" y2="20"/>
+                          <line x1="30" y1="50" x2="350" y2="50"/>
+                          <line x1="30" y1="80" x2="350" y2="80"/>
+                          <line x1="30" y1="110" x2="350" y2="110"/>
+                        </g>
+                        <text x="26" y="23" text-anchor="end" fill="rgba(255,255,255,0.3)">100</text>
+                        <text x="26" y="53" text-anchor="end" fill="rgba(255,255,255,0.3)">75</text>
+                        <text x="26" y="83" text-anchor="end" fill="rgba(255,255,255,0.3)">50</text>
+                        <text x="26" y="113" text-anchor="end" fill="rgba(255,255,255,0.3)">25</text>
+                        <g fill="rgba(0,212,255,0.7)">
+                          <rect x="34" y="44" width="10" height="66"/><rect x="61" y="38" width="10" height="72"/>
+                          <rect x="88" y="50" width="10" height="60"/><rect x="115" y="56" width="10" height="54"/>
+                          <rect x="142" y="48" width="10" height="62"/><rect x="169" y="42" width="10" height="68"/>
+                          <rect x="196" y="36" width="10" height="74"/><rect x="223" y="32" width="10" height="78"/>
+                          <rect x="250" y="46" width="10" height="64"/><rect x="277" y="52" width="10" height="58"/>
+                          <rect x="304" y="40" width="10" height="70"/><rect x="331" y="34" width="10" height="76"/>
+                        </g>
+                        <g fill="rgba(255,217,61,0.7)">
+                          <rect x="45" y="85" width="10" height="25"/><rect x="72" y="80" width="10" height="30"/>
+                          <rect x="99" y="88" width="10" height="22"/><rect x="126" y="92" width="10" height="18"/>
+                          <rect x="153" y="84" width="10" height="26"/><rect x="180" y="78" width="10" height="32"/>
+                          <rect x="207" y="74" width="10" height="36"/><rect x="234" y="70" width="10" height="40"/>
+                          <rect x="261" y="86" width="10" height="24"/><rect x="288" y="90" width="10" height="20"/>
+                          <rect x="315" y="82" width="10" height="28"/><rect x="342" y="76" width="10" height="34"/>
+                        </g>
+                        <g fill="rgba(255,255,255,0.35)">
+                          <text x="42" y="126" text-anchor="middle">25-08</text><text x="69" y="126" text-anchor="middle">09</text>
+                          <text x="96" y="126" text-anchor="middle">10</text><text x="123" y="126" text-anchor="middle">11</text>
+                          <text x="150" y="126" text-anchor="middle">12</text><text x="177" y="126" text-anchor="middle">26-01</text>
+                          <text x="204" y="126" text-anchor="middle">02</text><text x="231" y="126" text-anchor="middle">03</text>
+                          <text x="258" y="126" text-anchor="middle">04</text><text x="285" y="126" text-anchor="middle">05</text>
+                          <text x="312" y="126" text-anchor="middle">06</text><text x="339" y="126" text-anchor="middle">07</text>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+</div><!-- ====== 中栏 ====== -->
+                <div class="ck-col-center">
+                  <!-- 指标卡片 -->
+                  <div class="ck-cards">
+                    <div class="ck-card">
+                      <div class="ck-card-label">辖区学校总数</div>
+                      <div class="ck-card-value">1,248<span class="ck-card-unit">所</span></div>
+                    </div>
+                    <div class="ck-card">
+                      <div class="ck-card-label">在读学生数</div>
+                      <div class="ck-card-value">856,320<span class="ck-card-unit">人</span></div>
+                    </div>
+                    <div class="ck-card">
+                      <div class="ck-card-label">本学年预警总数</div>
+                      <div class="ck-card-value ck-danger">2,379<span class="ck-card-unit">条</span></div>
+                      <div class="ck-card-sub">今日新增 35 条</div>
+                    </div>
+                    <div class="ck-card">
+                      <div class="ck-card-label">本学年待处理数</div>
+                      <div class="ck-card-value ck-warning">773<span class="ck-card-unit">条</span></div>
+                      <div class="ck-card-sub">今日待处理 12 条</div>
+                    </div>
+                  </div>
+                  <!-- 中央3D地图 -->
+                  <div class="ck-panel" style="flex:0.9;">
+                    <div class="ck-map3d-wrap">
+                      <svg viewBox="0 0 300 200" class="ck-map3d-svg">
+                        <defs>
+                          <linearGradient id="m3d-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#0a3d62"/>
+                            <stop offset="50%" stop-color="#0c5e7c"/>
+                            <stop offset="100%" stop-color="#0a4a6e"/>
+                          </linearGradient>
+                        </defs>
+                        <g stroke="rgba(0,212,255,0.12)" fill="none" stroke-width="0.5">
+                          <path d="M80,70 Q120,60 160,65 T240,75"/>
+                          <path d="M70,90 Q110,80 150,85 T230,95"/>
+                          <path d="M75,110 Q115,100 155,105 T235,115"/>
+                          <path d="M85,130 Q125,120 165,125 T245,135"/>
+                        </g>
+                        <path class="ck-map3d-top" d="M60,45 L95,30 L135,35 L175,25 L215,35 L245,55 L255,85 L250,115 L235,140 L200,155 L160,160 L120,155 L85,160 L55,140 L45,110 L50,75 Z"
+                          fill="url(#m3d-grad)" stroke="#00d4ff" stroke-width="1.5"/>
+                        <circle cx="120" cy="80" r="2.5" fill="#00d4ff" opacity="0.8"/>
+                        <circle cx="180" cy="100" r="2.5" fill="#00d4ff" opacity="0.6"/>
+                        <circle cx="150" cy="130" r="2.5" fill="#00d4ff" opacity="0.7"/>
+                        <circle cx="200" cy="70" r="2.5" fill="#00d4ff" opacity="0.5"/>
+                        <circle cx="95" cy="115" r="2.5" fill="#00d4ff" opacity="0.6"/>
+                        <text x="150" y="105" text-anchor="middle" fill="#00d4ff" font-size="13" font-weight="600">陕西省</text>
+                        <text x="150" y="122" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="8">1,248所学校 · 856,320人</text>
+                      </svg>
+                    </div>
+                  </div>
+                  <!-- 本学年劝返方式占比 -->
+                  <div class="ck-panel">
+                    <div class="ck-panel-title">本学年劝返方式占比</div>
+                    <div class="ck-pie-wrap">
+                      <svg viewBox="0 0 300 200" class="ck-pie-svg">
+                        <path d="M150,100 L150,35 A65,65 0 0,1 188.21,152.59 Z" fill="#4ECDC4"/>
+                        <path d="M150,100 L188.21,152.59 A65,65 0 0,1 85,100 Z" fill="#36A2EB"/>
+                        <path d="M150,100 L85,100 A65,65 0 0,1 111.79,47.41 Z" fill="#FF9F40"/>
+                        <path d="M150,100 L111.79,47.41 A65,65 0 0,1 150,35 Z" fill="#F48FB1"/>
+                        <line x1="211.82" y1="79.91" x2="235.60" y2="72.19" stroke="#4ECDC4" class="pie-line"/>
+                        <line x1="120.49" y1="157.92" x2="109.14" y2="180.19" stroke="#36A2EB" class="pie-line"/>
+                        <line x1="92.08" y1="70.49" x2="69.81" y2="59.14" stroke="#FF9F40" class="pie-line"/>
+                        <line x1="129.91" y1="38.18" x2="122.19" y2="14.40" stroke="#F48FB1" class="pie-line"/>
+                        <text x="239" y="75" text-anchor="start" fill="#4ECDC4">家访 40%</text>
+                        <text x="106" y="184" text-anchor="end" fill="#36A2EB">电话沟通 35%</text>
+                        <text x="66" y="62" text-anchor="end" fill="#FF9F40">到校约谈 15%</text>
+                        <text x="119" y="12" text-anchor="end" fill="#F48FB1">其他 10%</text>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ====== 右栏 ====== -->
+                <div class="ck-col-right">
+                  <!-- 处理状态分布 -->
+                  <div class="ck-panel">
+                    <div class="ck-panel-title">预警处理状态分布</div>
+                    <div class="ck-pie-wrap">
+                      <svg viewBox="0 0 300 200" class="ck-pie-svg">
+                        <path d="M150,100 L150,35 A65,65 0 0,1 210.18,124.56 Z" fill="#FFD93D"/>
+                        <path d="M150,100 L210.18,124.56 A65,65 0 1,1 150,35 Z" fill="#6BCB77"/>
+                        <line x1="203.95" y1="63.75" x2="228.85" y2="47.02" stroke="#FFD93D" class="pie-line"/>
+                        <line x1="96.05" y1="136.25" x2="71.15" y2="152.98" stroke="#6BCB77" class="pie-line"/>
+                        <text x="232" y="50" text-anchor="start" fill="#FFD93D">待处理 31.2%</text>
+                        <text x="68" y="156" text-anchor="end" fill="#6BCB77">已处理 68.8%</text>
+                      </svg>
+                    </div>
+                  </div>
+                  <!-- 本学年各地市劝返排名 -->
+                  <div class="ck-panel ck-panel-flex">
+                    <div class="ck-panel-title">本学年各地市劝返排名</div>
+                    <div class="ck-hbar-scroll" style="flex:1;min-height:0;padding:6px 8px;">
+                      <div class="ck-hbar-item">
+                        <div class="ck-hbar-row"><span class="ck-hbar-label" style="width:50px;flex-shrink:0;text-align:right;">西安市</span><div class="ck-hbar-track"><div class="ck-hbar-fill ck-hbar-fill-single" style="width:100%;">892</div></div></div>
+                      </div>
+                      <div class="ck-hbar-item">
+                        <div class="ck-hbar-row"><span class="ck-hbar-label" style="width:50px;flex-shrink:0;text-align:right;">宝鸡市</span><div class="ck-hbar-track"><div class="ck-hbar-fill ck-hbar-fill-single" style="width:80%;">711</div></div></div>
+                      </div>
+                      <div class="ck-hbar-item">
+                        <div class="ck-hbar-row"><span class="ck-hbar-label" style="width:50px;flex-shrink:0;text-align:right;">咸阳市</span><div class="ck-hbar-track"><div class="ck-hbar-fill ck-hbar-fill-single" style="width:65%;">583</div></div></div>
+                      </div>
+                      <div class="ck-hbar-item">
+                        <div class="ck-hbar-row"><span class="ck-hbar-label" style="width:50px;flex-shrink:0;text-align:right;">渭南市</span><div class="ck-hbar-track"><div class="ck-hbar-fill ck-hbar-fill-single" style="width:58%;">521</div></div></div>
+                      </div>
+                      <div class="ck-hbar-item">
+                        <div class="ck-hbar-row"><span class="ck-hbar-label" style="width:50px;flex-shrink:0;text-align:right;">汉中市</span><div class="ck-hbar-track"><div class="ck-hbar-fill ck-hbar-fill-single" style="width:48%;">427</div></div></div>
+                      </div>
+                      <div class="ck-hbar-item">
+                        <div class="ck-hbar-row"><span class="ck-hbar-label" style="width:50px;flex-shrink:0;text-align:right;">榆林市</span><div class="ck-hbar-track"><div class="ck-hbar-fill ck-hbar-fill-single" style="width:41%;">362</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 本学年劝返分布（折线图） -->
+                  <div class="ck-panel ck-panel-flex">
+                    <div class="ck-panel-title">本学年劝返分布</div>
+                    <div class="ck-chart-wrap">
+                      <svg viewBox="0 0 360 140" class="ck-chart-svg" preserveAspectRatio="none">
+                        <g stroke="rgba(0,212,255,0.06)" stroke-width="0.5">
+                          <line x1="30" y1="20" x2="350" y2="20"/>
+                          <line x1="30" y1="50" x2="350" y2="50"/>
+                          <line x1="30" y1="80" x2="350" y2="80"/>
+                          <line x1="30" y1="110" x2="350" y2="110"/>
+                        </g>
+                        <text x="26" y="23" text-anchor="end" fill="rgba(255,255,255,0.3)">50</text>
+                        <text x="26" y="53" text-anchor="end" fill="rgba(255,255,255,0.3)">38</text>
+                        <text x="26" y="83" text-anchor="end" fill="rgba(255,255,255,0.3)">25</text>
+                        <text x="26" y="113" text-anchor="end" fill="rgba(255,255,255,0.3)">13</text>
+                        <polyline points="42,74 69,68 96,80 123,84 150,72 177,62 204,56 231,50 258,66 285,76 312,64 339,58"
+                          fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+                        <polygon points="42,74 69,68 96,80 123,84 150,72 177,62 204,56 231,50 258,66 285,76 312,64 339,58 339,110 42,110"
+                          fill="rgba(0,212,255,0.08)"/>
+                        <g fill="#00d4ff">
+                          <circle cx="42" cy="74" r="2"/><circle cx="69" cy="68" r="2"/><circle cx="96" cy="80" r="2"/>
+                          <circle cx="123" cy="84" r="2"/><circle cx="150" cy="72" r="2"/><circle cx="177" cy="62" r="2"/>
+                          <circle cx="204" cy="56" r="2"/><circle cx="231" cy="50" r="2"/><circle cx="258" cy="66" r="2"/>
+                          <circle cx="285" cy="76" r="2"/><circle cx="312" cy="64" r="2"/><circle cx="339" cy="58" r="2"/>
+                        </g>
+                        <g fill="rgba(255,255,255,0.35)">
+                          <text x="42" y="126" text-anchor="middle">25-08</text><text x="69" y="126" text-anchor="middle">09</text>
+                          <text x="96" y="126" text-anchor="middle">10</text><text x="123" y="126" text-anchor="middle">11</text>
+                          <text x="150" y="126" text-anchor="middle">12</text><text x="177" y="126" text-anchor="middle">26-01</text>
+                          <text x="204" y="126" text-anchor="middle">02</text><text x="231" y="126" text-anchor="middle">03</text>
+                          <text x="258" y="126" text-anchor="middle">04</text><text x="285" y="126" text-anchor="middle">05</text>
+                          <text x="312" y="126" text-anchor="middle">06</text><text x="339" y="126" text-anchor="middle">07</text>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+</div>
+
+                
+              </div>
+            </div>
+          </section>
+
+<!-- 页面2a: 控辍预警-地市汇总 (section-warning-city) — 默认隐藏 -->
+<!-- 页面2-: 控辍预警-省份汇总 (section-warning-province) — 部级套层 -->
+<section id="section-warning-province" class="p-6 hidden">
+  <!-- 筛选条 -->
+  <div class="bg-white rounded-lg p-4 border mb-4" style="border-color:var(--edu-border);">
+    <div class="flex items-center gap-3 flex-wrap">
+      <label class="text-[12px] whitespace-nowrap" style="color:var(--edu-muted-foreground);">预警时间</label>
+      <input type="date" id="wp-date-start" value="2026-04-01" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <span class="text-[13px]" style="color:var(--edu-muted-foreground);">至</span>
+      <input type="date" id="wp-date-end" value="2026-05-31" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <button onclick="renderWarningProvince()" class="flex items-center gap-1.5 px-4 h-9 text-[13px] font-medium rounded-md text-white transition-colors hover:opacity-90" style="background:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>查询
+      </button>
+      <button onclick="resetWPFilter()" class="flex items-center gap-1.5 px-4 h-9 text-[13px] rounded-md border bg-white transition-colors hover:bg-gray-50" style="border-color:var(--edu-primary);color:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>重置
+      </button>
+    </div>
+  </div>
+  <div class="bg-white rounded-lg border" style="border-color:var(--edu-border);">
+    <div class="overflow-x-auto">
+      <table class="w-full text-[13px]">
+        <thead><tr style="background:var(--edu-primary-900);color:#ffffff;">
+          <th class="text-left px-4 py-3 font-medium whitespace-nowrap">省份</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">预警记录数</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">待处理数</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">已处理数</th>
+        </tr></thead>
+        <tbody id="warning-province-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="section-warning-city" class="p-6 hidden">
+  <div class="flex items-center mb-4">
+    <button onclick="backToWarningProvince()" class="flex items-center gap-1 px-3 h-8 text-[13px] rounded-md border bg-white hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>返回
+    </button>
+    <span class="ml-4 text-[15px] font-semibold" style="color:var(--edu-foreground);">控辍预警</span>
+    <span class="ml-2 text-[13px]" style="color:var(--edu-muted-foreground);" id="warning-city-province-name"></span>
+  </div>
+  <!-- 筛选条 -->
+  <div class="bg-white rounded-lg p-4 border mb-4" style="border-color:var(--edu-border);">
+    <div class="flex items-center gap-3 flex-wrap">
+      <label class="text-[12px] whitespace-nowrap" style="color:var(--edu-muted-foreground);">预警时间</label>
+      <input type="date" id="wc-date-start" value="2026-04-01" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <span class="text-[13px]" style="color:var(--edu-muted-foreground);">至</span>
+      <input type="date" id="wc-date-end" value="2026-05-31" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <button onclick="renderWarningCity()" class="flex items-center gap-1.5 px-4 h-9 text-[13px] font-medium rounded-md text-white transition-colors hover:opacity-90" style="background:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>查询
+      </button>
+      <button onclick="resetWCFilter()" class="flex items-center gap-1.5 px-4 h-9 text-[13px] rounded-md border bg-white transition-colors hover:bg-gray-50" style="border-color:var(--edu-primary);color:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>重置
+      </button>
+    </div>
+  </div>
+  <div class="bg-white rounded-lg border" style="border-color:var(--edu-border);">
+    <div class="overflow-x-auto">
+      <table class="w-full text-[13px]">
+        <thead><tr style="background:var(--edu-primary-900);color:#ffffff;">
+          <th class="text-left px-4 py-3 font-medium whitespace-nowrap">地市</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">预警记录数</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">待处理数</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">已处理数</th>
+        </tr></thead>
+        <tbody id="warning-city-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 页面2b: 控辍预警-区县汇总 (section-warning-district) — 默认隐藏 -->
+<section id="section-warning-district" class="p-6 hidden">
+  <div class="flex items-center mb-4">
+    <button onclick="backToWarningCity()" class="flex items-center gap-1 px-3 h-8 text-[13px] rounded-md border bg-white hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>返回
+    </button>
+    <span class="ml-4 text-[15px] font-semibold" style="color:var(--edu-foreground);">控辍预警</span>
+    <span class="ml-2 text-[13px]" style="color:var(--edu-muted-foreground);" id="warning-district-city-name"></span>
+  </div>
+  <!-- 筛选条 -->
+  <div class="bg-white rounded-lg p-4 border mb-4" style="border-color:var(--edu-border);">
+    <div class="flex items-center gap-3 flex-wrap">
+      <label class="text-[12px] whitespace-nowrap" style="color:var(--edu-muted-foreground);">预警时间</label>
+      <input type="date" id="wd-date-start" value="2026-04-01" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <span class="text-[13px]" style="color:var(--edu-muted-foreground);">至</span>
+      <input type="date" id="wd-date-end" value="2026-05-31" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <button onclick="renderWarningDistrict()" class="flex items-center gap-1.5 px-4 h-9 text-[13px] font-medium rounded-md text-white transition-colors hover:opacity-90" style="background:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>查询
+      </button>
+      <button onclick="resetWDFilter()" class="flex items-center gap-1.5 px-4 h-9 text-[13px] rounded-md border bg-white transition-colors hover:bg-gray-50" style="border-color:var(--edu-primary);color:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>重置
+      </button>
+    </div>
+  </div>
+  <div class="bg-white rounded-lg border" style="border-color:var(--edu-border);">
+    <div class="overflow-x-auto">
+      <table class="w-full text-[13px]">
+        <thead><tr style="background:var(--edu-primary-900);color:#ffffff;">
+          <th class="text-left px-4 py-3 font-medium whitespace-nowrap">区县</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">预警记录数</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">待处理数</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">已处理数</th>
+        </tr></thead>
+        <tbody id="warning-district-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 页面2b: 控辍预警-学校汇总 (section-warning-school) — 默认隐藏 -->
+<section id="section-warning-school" class="p-6 hidden">
+  <div class="flex items-center mb-4">
+    <button onclick="backToWarningDistrict()" class="flex items-center gap-1 px-3 h-8 text-[13px] rounded-md border bg-white hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>返回
+    </button>
+    <span class="ml-4 text-[15px] font-semibold" style="color:var(--edu-foreground);">控辍预警</span>
+    <span class="ml-2 text-[13px]" style="color:var(--edu-muted-foreground);" id="warning-school-district-name"></span>
+  </div>
+  <!-- 筛选条 -->
+  <div class="bg-white rounded-lg p-4 border mb-4" style="border-color:var(--edu-border);">
+    <div class="flex items-center gap-3 flex-wrap">
+      <label class="text-[12px] whitespace-nowrap" style="color:var(--edu-muted-foreground);">预警时间</label>
+      <input type="date" id="ws-date-start" value="2026-04-01" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <span class="text-[13px]" style="color:var(--edu-muted-foreground);">至</span>
+      <input type="date" id="ws-date-end" value="2026-05-31" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <button onclick="drillToWarningSchool(currentWarningDistrict)" class="flex items-center gap-1.5 px-4 h-9 text-[13px] font-medium rounded-md text-white transition-colors hover:opacity-90" style="background:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>查询
+      </button>
+      <button onclick="resetWSFilter()" class="flex items-center gap-1.5 px-4 h-9 text-[13px] rounded-md border bg-white transition-colors hover:bg-gray-50" style="border-color:var(--edu-primary);color:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>重置
+      </button>
+    </div>
+  </div>
+  <div class="bg-white rounded-lg border" style="border-color:var(--edu-border);">
+    <div class="overflow-x-auto">
+      <table class="w-full text-[13px]">
+        <thead><tr style="background:var(--edu-primary-900);color:#ffffff;">
+          <th class="text-left px-4 py-3 font-medium whitespace-nowrap">学校</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">预警记录数</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">待处理数</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">已处理数</th>
+        </tr></thead>
+        <tbody id="warning-school-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+            <!-- ================================================================ -->
+            <!-- 页面2: 控辍预警 (section-warning-list) — 默认隐藏                  -->
+            <!-- ================================================================ -->
+            <section id="section-warning-list" class="p-6 hidden">
+              <div class="flex items-center mb-4" id="warning-list-breadcrumb" style="display:none;">
+                <button onclick="backToWarningSchool()" class="flex items-center gap-1 px-3 h-8 text-[13px] rounded-md border bg-white hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>返回
+                </button>
+                <span class="ml-4 text-[15px] font-semibold" style="color:var(--edu-foreground);">控辍预警</span>
+                <span class="ml-2 text-[13px]" style="color:var(--edu-muted-foreground);" id="warning-list-school-name"></span>
+              </div>
+              <!-- 筛选区域 -->
+              <div class="bg-white rounded-lg p-5 border mb-4" style="border-color:var(--edu-border);">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-[14px] font-semibold" style="color:var(--edu-foreground);">筛选条件</h3>
+                  <button data-dom-id="btn-toggle-filter" onclick="toggleFilter()" class="flex items-center gap-1 text-[12px] hover:text-primary transition-colors" style="color:var(--edu-primary);">
+                    <span>收起</span>
+                    <svg class="w-3.5 h-3.5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                  </button>
+                </div>
+                <div data-dom-id="filter-panel" class="grid grid-cols-4 gap-4">
+                  <!-- 学生姓名 -->
+                  <div class="flex items-center gap-2">
+                    <label class="text-[12px] whitespace-nowrap w-14 text-left" style="color:var(--edu-muted-foreground);">学生姓名</label>
+                    <input type="text" data-dom-id="filter-student" placeholder="请输入学生姓名" class="flex-1 h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);">
+                  </div>
+                  <!-- 班级 -->
+                  <div class="flex items-center gap-2">
+                    <label class="text-[12px] whitespace-nowrap w-14 text-left" style="color:var(--edu-muted-foreground);">班级</label>
+                    <select data-dom-id="filter-class" class="flex-1 h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);">
+                      <option value="">全部</option>
+                      <option value="c1">1班</option>
+                      <option value="c2">2班</option>
+                      <option value="c3">3班</option>
+                      <option value="c4">4班</option>
+                    </select>
+                  </div>
+                  <!-- 处理状态 -->
+                  <div class="flex items-center gap-2">
+                    <label class="text-[12px] whitespace-nowrap w-14 text-left" style="color:var(--edu-muted-foreground);">处理状态</label>
+                    <select data-dom-id="filter-status" class="flex-1 h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);">
+                      <option value="">全部</option>
+                      <option value="pending">待处理</option>
+                      <option value="verified">已处理</option>
+                    </select>
+                  </div>
+                  <!-- 预警类型 -->
+                  <div class="flex items-center gap-2">
+                    <label class="text-[12px] whitespace-nowrap w-14 text-left" style="color:var(--edu-muted-foreground);">预警类型</label>
+                    <select data-dom-id="filter-type" class="flex-1 h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);">
+                      <option value="">全部</option>
+                      <option value="absence">连续缺勤</option>
+                      <option value="period">周期缺勤</option>
+                      <option value="leave">连续请假</option>
+                    </select>
+                  </div>
+                  <!-- 预警时间 -->
+                  <div class="col-span-4 flex items-center gap-2">
+                    <label class="text-[12px] whitespace-nowrap w-14 text-left" style="color:var(--edu-muted-foreground);">预警时间</label>
+                    <div class="flex-1 flex items-center gap-2">
+                      <input type="date" data-dom-id="filter-date-start" value="2026-04-01" class="flex-1 h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);">
+                      <span class="text-[13px]" style="color:var(--edu-muted-foreground);">至</span>
+                      <input type="date" data-dom-id="filter-date-end" value="2026-05-31" class="flex-1 h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);">
+                    </div>
+                  </div>
+                </div>
+                <!-- 操作按钮 -->
+                <div class="flex items-center justify-end gap-3 mt-4">
+                  <button data-dom-id="btn-search" class="flex items-center gap-1.5 px-4 h-9 text-[13px] font-medium rounded-md text-white transition-colors hover:opacity-90" style="background:var(--edu-primary);">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    查询
+                  </button>
+                  <button data-dom-id="btn-reset" class="flex items-center gap-1.5 px-4 h-9 text-[13px] rounded-md border bg-white transition-colors hover:bg-gray-50" style="border-color:var(--edu-primary);color:var(--edu-primary);">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    重置
+                  </button>
+                </div>
+              </div>
+
+              <!-- 表格区域 -->
+              <div class="bg-white rounded-lg border" style="border-color:var(--edu-border);">
+                <!-- 表格头部工具栏 -->
+                <div class="flex items-center justify-end p-4 border-b" style="border-color:var(--edu-border);">
+
+                </div>
+                <!-- 表格 -->
+                <div class="overflow-x-auto">
+                  <table class="w-full text-[13px]">
+                    <thead>
+                      <tr style="background:var(--edu-primary-900);color:#ffffff;">
+                        <th class="text-left px-4 py-3 font-medium whitespace-nowrap">学生姓名</th>
+                        <th class="text-left px-4 py-3 font-medium whitespace-nowrap">年级</th>
+                        <th class="text-left px-4 py-3 font-medium whitespace-nowrap">班级</th>
+                        <th class="text-left px-4 py-3 font-medium whitespace-nowrap">预警类型</th>
+                        <th class="text-left px-4 py-3 font-medium whitespace-nowrap">预警原因</th>
+                        <th class="text-center px-4 py-3 font-medium whitespace-nowrap">预警时间</th>
+                        <th class="text-center px-4 py-3 font-medium whitespace-nowrap">处理状态</th>
+                        <th class="text-left px-4 py-3 font-medium whitespace-nowrap">处理结果</th>
+                        <th class="text-center px-4 py-3 font-medium whitespace-nowrap">最后处理时间</th>
+                        <th class="text-center px-4 py-3 font-medium whitespace-nowrap">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- 行1: 刘子轩 - 朝阳区 - 待处理 -->
+                      <tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);" data-dom-id="row-warning-1">
+                        <td class="px-4 py-3 font-medium" style="color:var(--edu-foreground);">刘子轩</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">（2028级）五年级</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">2班</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">连续缺勤</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">连续缺勤3个工作日</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-05-08 17:30</td>
+                        <td class="text-center px-4 py-3">
+                          <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium" style="background:var(--state-warning-bg);color:var(--state-warning);border:1px solid var(--state-warning-border);">待处理</span>
+                        </td>
+                        <td class="px-4 py-3" style="color:var(--edu-muted-foreground);">-</td>
+                        <td class="text-center px-4 py-3" style="color:var(--edu-muted-foreground);">-</td>
+                        <td class="text-center px-4 py-3">
+                          <button data-dom-id="btn-view-detail-1" onclick="showDetailModal('pending')" class="text-[12px] font-medium hover:underline" style="color:var(--edu-primary);">详情</button>
+                        </td>
+                      </tr>
+                      <!-- 行2: 陈思雨 - 海淀区 - 已处理 -->
+                      <tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);background:var(--edu-neutral-50);" data-dom-id="row-warning-2">
+                        <td class="px-4 py-3 font-medium" style="color:var(--edu-foreground);">陈思雨</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">七年级（2025级）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">3班</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">周期缺勤</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">周期缺勤(10个工作日内缺勤5天)</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-05-07 10:15</td>
+                        <td class="text-center px-4 py-3">
+                          <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium" style="background:var(--state-success-bg);color:var(--state-success);border:1px solid var(--state-success-border);">已处理</span>
+                        </td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);" title="已电话联系家长，家长表示孩子因家庭事务请假，预计下周返校复课">已电话联系家长...</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-05-08</td>
+                        <td class="text-center px-4 py-3">
+                          <button data-dom-id="btn-view-detail-2" onclick="showDetailModal('done')" class="text-[12px] font-medium hover:underline" style="color:var(--edu-primary);">详情</button>
+                        </td>
+                      </tr>
+                      <!-- 行3: 王浩然 - 西城区 - 已处理 -->
+                      <tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);" data-dom-id="row-warning-3">
+                        <td class="px-4 py-3 font-medium" style="color:var(--edu-foreground);">王浩然</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">（2029级）四年级</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">1班</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">连续请假</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">连续请假3个工作日</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-05-06 14:20</td>
+                        <td class="text-center px-4 py-3">
+                          <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium" style="background:var(--state-success-bg);color:var(--state-success);border:1px solid var(--state-success-border);">已处理</span>
+                        </td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);" title="实地劝返完成，确认学生在家休养，家长配合度高">实地劝返完成...</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-05-07</td>
+                        <td class="text-center px-4 py-3">
+                          <button data-dom-id="btn-view-detail-3" onclick="showDetailModal('done')" class="text-[12px] font-medium hover:underline" style="color:var(--edu-primary);">详情</button>
+                        </td>
+                      </tr>
+                      <!-- 行4: 李梦琪 - 东城区 - 待处理 -->
+                      <tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);background:var(--edu-neutral-50);" data-dom-id="row-warning-4">
+                        <td class="px-4 py-3 font-medium" style="color:var(--edu-foreground);">李梦琪</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">八年级（2024级）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">2班</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">连续缺勤</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">连续缺勤3个工作日</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-05-05 09:00</td>
+                        <td class="text-center px-4 py-3">
+                          <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium" style="background:var(--state-warning-bg);color:var(--state-warning);border:1px solid var(--state-warning-border);">待处理</span>
+                        </td>
+                        <td class="px-4 py-3" style="color:var(--edu-muted-foreground);">-</td>
+                        <td class="text-center px-4 py-3" style="color:var(--edu-muted-foreground);">-</td>
+                        <td class="text-center px-4 py-3">
+                          <button data-dom-id="btn-view-detail-4" onclick="showDetailModal('pending')" class="text-[12px] font-medium hover:underline" style="color:var(--edu-primary);">详情</button>
+                        </td>
+                      </tr>
+                      <!-- 行5: 张宇轩 - 丰台区 - 已处理 -->
+                      <tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);" data-dom-id="row-warning-5">
+                        <td class="px-4 py-3 font-medium" style="color:var(--edu-foreground);">张宇轩</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">（2030级）三年级</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">4班</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">周期缺勤</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">周期缺勤(10个工作日内缺勤5天)</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-05-03 16:30</td>
+                        <td class="text-center px-4 py-3">
+                          <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium" style="background:var(--state-success-bg);color:var(--state-success);border:1px solid var(--state-success-border);">已处理</span>
+                        </td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);" title="电话沟通确认，家长说明孩子因家庭事务请假，已返校">电话沟通确认...</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-05-04</td>
+                        <td class="text-center px-4 py-3">
+                          <button data-dom-id="btn-view-detail-5" onclick="showDetailModal('done')" class="text-[12px] font-medium hover:underline" style="color:var(--edu-primary);">详情</button>
+                        </td>
+                      </tr>
+                      <!-- 行7: 孙嘉豪 - 朝阳区 - 已处理 -->
+                      <tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);" data-dom-id="row-warning-7">
+                        <td class="px-4 py-3 font-medium" style="color:var(--edu-foreground);">孙嘉豪</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">（2027级）六年级</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">2班</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">连续请假</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">连续请假3个工作日</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-04-28 08:20</td>
+                        <td class="text-center px-4 py-3">
+                          <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium" style="background:var(--state-success-bg);color:var(--state-success);border:1px solid var(--state-success-border);">已处理</span>
+                        </td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);" title="微信问询已回复，家长提供医院诊断证明，休养一周">微信问询已回复...</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-04-29</td>
+                        <td class="text-center px-4 py-3">
+                          <button data-dom-id="btn-view-detail-7" onclick="showDetailModal('done')" class="text-[12px] font-medium hover:underline" style="color:var(--edu-primary);">详情</button>
+                        </td>
+                      </tr>
+                      <!-- 行8: 周雅琪 - 海淀区 - 待处理 -->
+                      <tr class="hover:bg-blue-50/30 transition-colors" style="background:var(--edu-neutral-50);" data-dom-id="row-warning-8">
+                        <td class="px-4 py-3 font-medium" style="color:var(--edu-foreground);">周雅琪</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">七年级（2025级）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">1班</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">连续缺勤</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">连续缺勤3个工作日</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-04-25 15:10</td>
+                        <td class="text-center px-4 py-3">
+                          <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium" style="background:var(--state-warning-bg);color:var(--state-warning);border:1px solid var(--state-warning-border);">待处理</span>
+                        </td>
+                        <td class="px-4 py-3" style="color:var(--edu-muted-foreground);">-</td>
+                        <td class="text-center px-4 py-3" style="color:var(--edu-muted-foreground);">-</td>
+                        <td class="text-center px-4 py-3">
+                          <button data-dom-id="btn-view-detail-8" onclick="showDetailModal('pending')" class="text-[12px] font-medium hover:underline" style="color:var(--edu-primary);">详情</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- 分页 -->
+                <div class="flex items-center justify-between p-4 border-t" style="border-color:var(--edu-border);">
+                  <div class="flex items-center gap-4 text-[12px]" style="color:var(--edu-muted-foreground);">
+                    <span>共 <span style="color:var(--edu-foreground);font-weight:600;">520</span> 条</span>
+                    <div class="flex items-center gap-2">
+                      <span>每页</span>
+                      <select data-dom-id="select-page-size" class="h-7 px-2 text-[12px] rounded border bg-white outline-none" style="border-color:var(--edu-border);">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                      </select>
+                      <span>条</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <button data-dom-id="btn-page-prev" class="w-8 h-8 flex items-center justify-center rounded text-[13px] border hover:bg-gray-50 transition-colors disabled:opacity-40" style="border-color:var(--edu-border);color:var(--edu-muted-foreground);" disabled>
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button data-dom-id="btn-page-1" class="w-8 h-8 flex items-center justify-center rounded text-[13px] font-medium text-white" style="background:var(--edu-primary);">1</button>
+                    <button data-dom-id="btn-page-2" class="w-8 h-8 flex items-center justify-center rounded text-[13px] border hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">2</button>
+                    <button data-dom-id="btn-page-3" class="w-8 h-8 flex items-center justify-center rounded text-[13px] border hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">3</button>
+                    <button data-dom-id="btn-page-4" class="w-8 h-8 flex items-center justify-center rounded text-[13px] border hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">4</button>
+                    <span class="px-1 text-[13px]" style="color:var(--edu-muted-foreground);">...</span>
+                    <button data-dom-id="btn-page-52" class="w-8 h-8 flex items-center justify-center rounded text-[13px] border hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">52</button>
+                    <button data-dom-id="btn-page-next" class="w-8 h-8 flex items-center justify-center rounded text-[13px] border hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+<!-- 页面3a: 控辍劝返台账-地市汇总 (section-visit-city) — 默认隐藏 -->
+<!-- 页面3-: 控辍劝返台账-省份汇总 (section-visit-province) — 部级套层 -->
+<section id="section-visit-province" class="p-6 hidden">
+  <!-- 筛选条 -->
+  <div class="bg-white rounded-lg p-4 border mb-4" style="border-color:var(--edu-border);">
+    <div class="flex items-center gap-3 flex-wrap">
+      <label class="text-[12px] whitespace-nowrap" style="color:var(--edu-muted-foreground);">日期范围</label>
+      <input type="date" id="vp-date-start" value="2026-05-01" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <span class="text-[13px]" style="color:var(--edu-muted-foreground);">至</span>
+      <input type="date" id="vp-date-end" value="2026-05-31" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <button onclick="renderVisitProvince()" class="flex items-center gap-1.5 px-4 h-9 text-[13px] font-medium rounded-md text-white transition-colors hover:opacity-90" style="background:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>查询
+      </button>
+      <button onclick="resetVPFilter()" class="flex items-center gap-1.5 px-4 h-9 text-[13px] rounded-md border bg-white transition-colors hover:bg-gray-50" style="border-color:var(--edu-primary);color:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>重置
+      </button>
+    </div>
+  </div>
+  <div class="bg-white rounded-lg border" style="border-color:var(--edu-border);">
+    <div class="overflow-x-auto">
+      <table class="w-full text-[13px]">
+        <thead><tr style="background:var(--edu-primary-900);color:#ffffff;">
+          <th class="text-left px-4 py-3 font-medium whitespace-nowrap">省份</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">劝返学生数</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">劝返次数</th>
+        </tr></thead>
+        <tbody id="visit-province-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="section-visit-city" class="p-6 hidden">
+  <div class="flex items-center mb-4">
+    <button onclick="backToVisitProvince()" class="flex items-center gap-1 px-3 h-8 text-[13px] rounded-md border bg-white hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>返回
+    </button>
+    <span class="ml-4 text-[15px] font-semibold" style="color:var(--edu-foreground);">控辍劝返台账</span>
+    <span class="ml-2 text-[13px]" style="color:var(--edu-muted-foreground);" id="visit-city-province-name"></span>
+  </div>
+  <!-- 筛选条 -->
+  <div class="bg-white rounded-lg p-4 border mb-4" style="border-color:var(--edu-border);">
+    <div class="flex items-center gap-3 flex-wrap">
+      <label class="text-[12px] whitespace-nowrap" style="color:var(--edu-muted-foreground);">日期范围</label>
+      <input type="date" id="vc-date-start" value="2026-05-01" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <span class="text-[13px]" style="color:var(--edu-muted-foreground);">至</span>
+      <input type="date" id="vc-date-end" value="2026-05-31" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <button onclick="renderVisitCity()" class="flex items-center gap-1.5 px-4 h-9 text-[13px] font-medium rounded-md text-white transition-colors hover:opacity-90" style="background:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>查询
+      </button>
+      <button onclick="resetVCFilter()" class="flex items-center gap-1.5 px-4 h-9 text-[13px] rounded-md border bg-white transition-colors hover:bg-gray-50" style="border-color:var(--edu-primary);color:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>重置
+      </button>
+    </div>
+  </div>
+  <div class="bg-white rounded-lg border" style="border-color:var(--edu-border);">
+    <div class="overflow-x-auto">
+      <table class="w-full text-[13px]">
+        <thead><tr style="background:var(--edu-primary-900);color:#ffffff;">
+          <th class="text-left px-4 py-3 font-medium whitespace-nowrap">地市</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">劝返学生数</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">劝返次数</th>
+        </tr></thead>
+        <tbody id="visit-city-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 页面3b: 控辍劝返台账-区县汇总 (section-visit-district) — 默认隐藏 -->
+<section id="section-visit-district" class="p-6 hidden">
+  <div class="flex items-center mb-4">
+    <button onclick="backToVisitCity()" class="flex items-center gap-1 px-3 h-8 text-[13px] rounded-md border bg-white hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>返回
+    </button>
+    <span class="ml-4 text-[15px] font-semibold" style="color:var(--edu-foreground);">控辍劝返台账</span>
+    <span class="ml-2 text-[13px]" style="color:var(--edu-muted-foreground);" id="visit-district-city-name"></span>
+  </div>
+  <!-- 筛选条 -->
+  <div class="bg-white rounded-lg p-4 border mb-4" style="border-color:var(--edu-border);">
+    <div class="flex items-center gap-3 flex-wrap">
+      <label class="text-[12px] whitespace-nowrap" style="color:var(--edu-muted-foreground);">日期范围</label>
+      <input type="date" id="vd-date-start" value="2026-05-01" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <span class="text-[13px]" style="color:var(--edu-muted-foreground);">至</span>
+      <input type="date" id="vd-date-end" value="2026-05-31" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <button onclick="renderVisitDistrict()" class="flex items-center gap-1.5 px-4 h-9 text-[13px] font-medium rounded-md text-white transition-colors hover:opacity-90" style="background:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>查询
+      </button>
+      <button onclick="resetVDFilter()" class="flex items-center gap-1.5 px-4 h-9 text-[13px] rounded-md border bg-white transition-colors hover:bg-gray-50" style="border-color:var(--edu-primary);color:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>重置
+      </button>
+    </div>
+  </div>
+  <div class="bg-white rounded-lg border" style="border-color:var(--edu-border);">
+    <div class="overflow-x-auto">
+      <table class="w-full text-[13px]">
+        <thead><tr style="background:var(--edu-primary-900);color:#ffffff;">
+          <th class="text-left px-4 py-3 font-medium whitespace-nowrap">区县</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">劝返学生数</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">劝返次数</th>
+        </tr></thead>
+        <tbody id="visit-district-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 页面3b: 控辍劝返台账-学校汇总 (section-visit-school) — 默认隐藏 -->
+<section id="section-visit-school" class="p-6 hidden">
+  <div class="flex items-center mb-4">
+    <button onclick="backToVisitDistrict()" class="flex items-center gap-1 px-3 h-8 text-[13px] rounded-md border bg-white hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>返回
+    </button>
+    <span class="ml-4 text-[15px] font-semibold" style="color:var(--edu-foreground);">控辍劝返台账</span>
+    <span class="ml-2 text-[13px]" style="color:var(--edu-muted-foreground);" id="visit-school-district-name"></span>
+  </div>
+  <!-- 筛选条 -->
+  <div class="bg-white rounded-lg p-4 border mb-4" style="border-color:var(--edu-border);">
+    <div class="flex items-center gap-3 flex-wrap">
+      <label class="text-[12px] whitespace-nowrap" style="color:var(--edu-muted-foreground);">日期范围</label>
+      <input type="date" id="vs-date-start" value="2026-05-01" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <span class="text-[13px]" style="color:var(--edu-muted-foreground);">至</span>
+      <input type="date" id="vs-date-end" value="2026-05-31" class="h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);max-width:160px;">
+      <button onclick="drillToVisitSchool(currentVisitDistrict)" class="flex items-center gap-1.5 px-4 h-9 text-[13px] font-medium rounded-md text-white transition-colors hover:opacity-90" style="background:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>查询
+      </button>
+      <button onclick="resetVSFilter()" class="flex items-center gap-1.5 px-4 h-9 text-[13px] rounded-md border bg-white transition-colors hover:bg-gray-50" style="border-color:var(--edu-primary);color:var(--edu-primary);">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>重置
+      </button>
+    </div>
+  </div>
+  <div class="bg-white rounded-lg border" style="border-color:var(--edu-border);">
+    <div class="overflow-x-auto">
+      <table class="w-full text-[13px]">
+        <thead><tr style="background:var(--edu-primary-900);color:#ffffff;">
+          <th class="text-left px-4 py-3 font-medium whitespace-nowrap">学校</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">劝返学生数</th>
+          <th class="text-center px-4 py-3 font-medium whitespace-nowrap">劝返次数</th>
+        </tr></thead>
+        <tbody id="visit-school-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+            <!-- ================================================================ -->
+            <!-- 页面3: 控辍劝返台账 (section-visit-ledger) — 默认隐藏                  -->
+            <!-- ================================================================ -->
+            <section id="section-visit-ledger" class="p-6 hidden">
+              <div class="flex items-center mb-4" id="visit-ledger-breadcrumb" style="display:none;">
+                <button onclick="backToVisitSchool()" class="flex items-center gap-1 px-3 h-8 text-[13px] rounded-md border bg-white hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>返回
+                </button>
+                <span class="ml-4 text-[15px] font-semibold" style="color:var(--edu-foreground);">控辍劝返台账</span>
+                <span class="ml-2 text-[13px]" style="color:var(--edu-muted-foreground);" id="visit-ledger-school-name"></span>
+              </div>
+              <!-- 筛选区域 -->
+              <div class="bg-white rounded-lg p-5 border mb-4" style="border-color:var(--edu-border);">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-[14px] font-semibold" style="color:var(--edu-foreground);">筛选条件</h3>
+                  <button data-dom-id="btn-toggle-visit-filter" onclick="toggleVisitFilter()" class="flex items-center gap-1 text-[12px] hover:text-primary transition-colors" style="color:var(--edu-primary);">
+                    <span>收起</span>
+                    <svg class="w-3.5 h-3.5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                  </button>
+                </div>
+                <div data-dom-id="visit-filter-panel" class="grid grid-cols-4 gap-4">
+                  <!-- 学生姓名 -->
+                  <div class="flex items-center gap-2">
+                    <label class="text-[12px] whitespace-nowrap w-14 text-left" style="color:var(--edu-muted-foreground);">学生姓名</label>
+                    <input type="text" data-dom-id="visit-filter-student" placeholder="请输入学生姓名" class="flex-1 h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);">
+                  </div>
+                  <!-- 劝返方式 -->
+                  <div class="flex items-center gap-2">
+                    <label class="text-[12px] whitespace-nowrap w-14 text-left" style="color:var(--edu-muted-foreground);">劝返方式</label>
+                    <select data-dom-id="visit-filter-method" class="flex-1 h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);">
+                      <option value="">全部</option>
+                      <option value="phone">电话沟通</option>
+                      <option value="home">实地劝返</option>
+                      <option value="wechat">微信问询</option>
+                      <option value="school">到校劝返</option>
+                      <option value="group">集中座谈</option>
+                    </select>
+                  </div>
+                  <!-- 日期范围 -->
+                  <div class="col-span-2 flex items-center gap-2">
+                    <label class="text-[12px] whitespace-nowrap w-14 text-left" style="color:var(--edu-muted-foreground);">日期范围</label>
+                    <div class="flex-1 flex items-center gap-2">
+                      <input type="date" data-dom-id="visit-filter-date-start" value="2026-05-01" class="flex-1 h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);">
+                      <span class="text-[13px]" style="color:var(--edu-muted-foreground);">至</span>
+                      <input type="date" data-dom-id="visit-filter-date-end" value="2026-05-31" class="flex-1 h-9 px-3 text-[13px] rounded-md border bg-white outline-none focus:border-primary transition-colors" style="border-color:var(--edu-border);">
+                    </div>
+                  </div>
+                </div>
+                <!-- 操作按钮 -->
+                <div class="flex items-center justify-end gap-3 mt-4">
+                  <button data-dom-id="btn-visit-search" class="flex items-center gap-1.5 px-4 h-9 text-[13px] font-medium rounded-md text-white transition-colors hover:opacity-90" style="background:var(--edu-primary);">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    查询
+                  </button>
+                  <button data-dom-id="btn-visit-reset" onclick="resetVisitFilter()" class="flex items-center gap-1.5 px-4 h-9 text-[13px] rounded-md border bg-white transition-colors hover:bg-gray-50" style="border-color:var(--edu-primary);color:var(--edu-primary);">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    重置
+                  </button>
+                </div>
+              </div>
+
+              <!-- 表格区域 -->
+              <div class="bg-white rounded-lg border" style="border-color:var(--edu-border);">
+                <!-- 表格头部工具栏 -->
+                <div class="flex items-center justify-end p-4 border-b" style="border-color:var(--edu-border);">
+
+                </div>
+                <!-- 表格 -->
+                <div class="overflow-x-auto">
+                  <table class="w-full text-[13px]">
+                    <thead>
+                      <tr style="background:var(--edu-primary-900);color:#ffffff;">
+                        <th class="text-left px-4 py-3 font-medium whitespace-nowrap">劝返老师</th>
+                        <th class="text-center px-4 py-3 font-medium whitespace-nowrap">日期</th>
+                        <th class="text-left px-4 py-3 font-medium whitespace-nowrap">劝返方式</th>
+                        <th class="text-left px-4 py-3 font-medium whitespace-nowrap">劝返学生</th>
+                        <th class="text-left px-4 py-3 font-medium whitespace-nowrap">年级</th>
+                        <th class="text-left px-4 py-3 font-medium whitespace-nowrap">班级</th>
+                        <th class="text-left px-4 py-3 font-medium whitespace-nowrap">家长姓名（关系）</th>
+                        <th class="text-left px-4 py-3 font-medium whitespace-nowrap">劝返原因</th>
+                        <th class="text-left px-4 py-3 font-medium whitespace-nowrap">劝返结果</th>
+                        <th class="text-center px-4 py-3 font-medium whitespace-nowrap">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- 行1: 王老师 - 电话沟通 -->
+                      <tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);" data-dom-id="row-visit-1">
+                        <td class="px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">王老师</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-05-06 09:30</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">电话沟通</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">张小明</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">七年级（2025级）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">2班</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">张大明（父亲）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">连续缺勤3个工作日</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);" title="已电话联系家长确认情况，家长表示孩子因感冒请假，预计下周返校复课">已电话联系家长确认情况...</td>
+                        <td class="text-center px-4 py-3">
+                          <button data-dom-id="btn-visit-detail-1" onclick="showVisitDetailModal(1)" class="text-[12px] font-medium hover:underline" style="color:var(--edu-primary);">详情</button>
+                        </td>
+                      </tr>
+                      <!-- 行2: 王老师 - 实地劝返 -->
+                      <tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);background:var(--edu-neutral-50);" data-dom-id="row-visit-2">
+                        <td class="px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">王老师</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-05-05 14:20</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">实地劝返</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">李小红</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">七年级（2025级）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">1班</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">李芳（母亲）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">周期缺勤（10个工作日内5天）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);" title="实地劝返已完成，家庭情况正常，学生因病休养中">实地劝返已完成，家庭情况正常</td>
+                        <td class="text-center px-4 py-3">
+                          <button data-dom-id="btn-visit-detail-2" onclick="showVisitDetailModal(2)" class="text-[12px] font-medium hover:underline" style="color:var(--edu-primary);">详情</button>
+                        </td>
+                      </tr>
+                      <!-- 行3: 李老师 - 微信问询 -->
+                      <tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);" data-dom-id="row-visit-3">
+                        <td class="px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">李老师</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-05-08 10:15</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">微信问询</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">陈小强</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">七年级（2025级）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">2班</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">陈伟（父亲）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">学生近期情绪低落</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);" title="微信沟通了解情况，学生状态有所好转，家长表示会持续关注">微信沟通了解情况，学生状态有所好转</td>
+                        <td class="text-center px-4 py-3">
+                          <button data-dom-id="btn-visit-detail-3" onclick="showVisitDetailModal(3)" class="text-[12px] font-medium hover:underline" style="color:var(--edu-primary);">详情</button>
+                        </td>
+                      </tr>
+                      <!-- 行4: 李老师 - 到校劝返 -->
+                      <tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);background:var(--edu-neutral-50);" data-dom-id="row-visit-4">
+                        <td class="px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">李老师</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-05-07 15:30</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">到校劝返</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">赵小敏</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">八年级（2024级）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">2班</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">赵刚（父亲）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">家长主动要求面谈</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);" title="到校面谈完成，家长反馈良好，对学生学习情况满意">到校面谈完成，家长反馈良好</td>
+                        <td class="text-center px-4 py-3">
+                          <button data-dom-id="btn-visit-detail-4" onclick="showVisitDetailModal(4)" class="text-[12px] font-medium hover:underline" style="color:var(--edu-primary);">详情</button>
+                        </td>
+                      </tr>
+                      <!-- 行5: 王老师 - 集中座谈 -->
+                      <tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);" data-dom-id="row-visit-5">
+                        <td class="px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">王老师</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-05-04 11:00</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">集中座谈</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">刘小芳</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">九年级（2023级）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">1班</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">刘红（母亲）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">连续请假3个工作日</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);" title="集中座谈完成，已了解请假原因，学生因备考压力请假休整">集中座谈完成，已了解请假原因</td>
+                        <td class="text-center px-4 py-3">
+                          <button data-dom-id="btn-visit-detail-5" onclick="showVisitDetailModal(5)" class="text-[12px] font-medium hover:underline" style="color:var(--edu-primary);">详情</button>
+                        </td>
+                      </tr>
+                      <!-- 行6: 张老师 - 电话沟通 -->
+                      <tr class="hover:bg-blue-50/30 transition-colors" style="background:var(--edu-neutral-50);" data-dom-id="row-visit-6">
+                        <td class="px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">张老师</td>
+                        <td class="text-center px-4 py-3 whitespace-nowrap" style="color:var(--edu-foreground);">2026-05-03 09:00</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">电话沟通</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">王小华</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">八年级（2024级）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">3班</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">王明（父亲）</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);">学生近期成绩下滑</td>
+                        <td class="px-4 py-3" style="color:var(--edu-foreground);" title="电话沟通了解情况，家长表示会关注学生学习状态">电话沟通了解情况，家长表示会关注</td>
+                        <td class="text-center px-4 py-3">
+                          <button data-dom-id="btn-visit-detail-6" onclick="showVisitDetailModal(6)" class="text-[12px] font-medium hover:underline" style="color:var(--edu-primary);">详情</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- 分页 -->
+                <div class="flex items-center justify-between p-4 border-t" style="border-color:var(--edu-border);">
+                  <div class="flex items-center gap-4 text-[12px]" style="color:var(--edu-muted-foreground);">
+                    <span>共 <span style="color:var(--edu-foreground);font-weight:600;">6</span> 条</span>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <button data-dom-id="btn-visit-page-prev" class="w-8 h-8 flex items-center justify-center rounded text-[13px] border hover:bg-gray-50 transition-colors disabled:opacity-40" style="border-color:var(--edu-border);color:var(--edu-muted-foreground);" disabled>
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button data-dom-id="btn-visit-page-1" class="w-8 h-8 flex items-center justify-center rounded text-[13px] font-medium text-white" style="background:var(--edu-primary);">1</button>
+                    <button data-dom-id="btn-visit-page-next" class="w-8 h-8 flex items-center justify-center rounded text-[13px] border hover:bg-gray-50 transition-colors disabled:opacity-40" style="border-color:var(--edu-border);color:var(--edu-muted-foreground);" disabled>
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ================================================================ -->
+            <!-- 页面4: 预警配置 (section-config) — 默认隐藏                         -->
+            <!-- ================================================================ -->
+            <section id="section-config" class="p-6 hidden">
+              <div class="bg-white rounded-lg p-5 border" style="border-color:var(--edu-border);">
+                <!-- 配置标题 -->
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="w-1 h-4 rounded-full" style="background:var(--edu-primary);"></span>
+                  <h3 class="text-[15px] font-semibold" style="color:var(--edu-foreground);">预警阈值配置</h3>
+                </div>
+
+                <!-- 配置项1: 连续缺勤阈值 N -->
+                <div class="py-4 border-b" style="border-color:var(--edu-border);">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-[14px] font-medium" style="color:var(--edu-foreground);">连续缺勤阈值</span>
+                    <span class="text-[11px] px-2 py-0.5 rounded-full" style="background:var(--edu-primary-50);color:var(--edu-primary);">参数 N</span>
+                  </div>
+                  <div class="flex items-center">
+                    <span class="text-[13px] mr-2 whitespace-nowrap" style="color:var(--edu-muted-foreground);">学生连续缺勤达到</span>
+                    <button onclick="stepDown('config-n', 1)" class="w-9 h-9 flex items-center justify-center rounded-l-md border text-[16px] hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">−</button>
+                    <input type="number" id="config-n" data-dom-id="config-n" value="3" min="1" max="50" class="w-14 h-9 text-center text-[14px] font-medium border-y outline-none" style="border-color:var(--edu-border);color:var(--edu-foreground);">
+                    <button onclick="stepUp('config-n', 50)" class="w-9 h-9 flex items-center justify-center rounded-r-md border text-[16px] hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">+</button>
+                    <span class="text-[13px] ml-2 whitespace-nowrap" style="color:var(--edu-muted-foreground);">个工作日</span>
+                  </div>
+                </div>
+
+                <!-- 配置项2: 周期缺勤（X个工作日内累计缺勤Y个工作日） -->
+                <div class="py-4 border-b" style="border-color:var(--edu-border);">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-[14px] font-medium" style="color:var(--edu-foreground);">周期缺勤</span>
+                    <span class="text-[11px] px-2 py-0.5 rounded-full" style="background:var(--state-warning-bg);color:var(--state-warning);">参数 X / Y</span>
+                  </div>
+                  <div class="flex items-center gap-4">
+                    <div class="flex items-center">
+                      <span class="text-[13px] mr-2 whitespace-nowrap" style="color:var(--edu-muted-foreground);">在</span>
+                      <button onclick="stepDown('config-x', 1)" class="w-9 h-9 flex items-center justify-center rounded-l-md border text-[16px] hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">−</button>
+                      <input type="number" id="config-x" data-dom-id="config-x" value="10" min="1" max="30" class="w-14 h-9 text-center text-[14px] font-medium border-y outline-none" style="border-color:var(--edu-border);color:var(--edu-foreground);">
+                      <button onclick="stepUp('config-x', 30)" class="w-9 h-9 flex items-center justify-center rounded-r-md border text-[16px] hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">+</button>
+                      <span class="text-[13px] ml-2 whitespace-nowrap" style="color:var(--edu-muted-foreground);">个工作日内，累计缺勤</span>
+                    </div>
+                    <div class="flex items-center">
+                      <button onclick="stepDown('config-y', 1)" class="w-9 h-9 flex items-center justify-center rounded-l-md border text-[16px] hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">−</button>
+                      <input type="number" id="config-y" data-dom-id="config-y" value="5" min="1" max="30" class="w-14 h-9 text-center text-[14px] font-medium border-y outline-none" style="border-color:var(--edu-border);color:var(--edu-foreground);">
+                      <button onclick="stepUp('config-y', 30)" class="w-9 h-9 flex items-center justify-center rounded-r-md border text-[16px] hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">+</button>
+                      <span class="text-[13px] ml-2 whitespace-nowrap" style="color:var(--edu-muted-foreground);">个工作日</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 配置项3: 连续请假阈值 M -->
+                <div class="py-4 border-b" style="border-color:var(--edu-border);">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-[14px] font-medium" style="color:var(--edu-foreground);">连续请假阈值</span>
+                    <span class="text-[11px] px-2 py-0.5 rounded-full" style="background:var(--state-success-bg);color:var(--state-success);">参数 M</span>
+                  </div>
+                  <div class="flex items-center">
+                    <span class="text-[13px] mr-2 whitespace-nowrap" style="color:var(--edu-muted-foreground);">学生连续请假达到</span>
+                    <button onclick="stepDown('config-m', 1)" class="w-9 h-9 flex items-center justify-center rounded-l-md border text-[16px] hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">−</button>
+                    <input type="number" id="config-m" data-dom-id="config-m" value="3" min="1" max="50" class="w-14 h-9 text-center text-[14px] font-medium border-y outline-none" style="border-color:var(--edu-border);color:var(--edu-foreground);">
+                    <button onclick="stepUp('config-m', 50)" class="w-9 h-9 flex items-center justify-center rounded-r-md border text-[16px] hover:bg-gray-50 transition-colors" style="border-color:var(--edu-border);color:var(--edu-foreground);">+</button>
+                    <span class="text-[13px] ml-2 whitespace-nowrap" style="color:var(--edu-muted-foreground);">个工作日</span>
+                  </div>
+                </div>
+
+                <!-- 配置项5: 统一全局预警配置开关 -->
+                <div class="flex items-center justify-between py-4 border-b" style="border-color:var(--edu-border);">
+                  <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="text-[14px] font-medium" style="color:var(--edu-foreground);">统一全局预警配置</span>
+                      <span class="text-[11px] px-2 py-0.5 rounded-full" style="background:var(--edu-primary-50);color:var(--edu-primary);">全局控制</span>
+                    </div>
+                    <p class="text-[12px]" style="color:var(--edu-muted-foreground);">开启时，辖区所有学校预警配置走教育局统一下发，学校端不可自行修改；关闭时，学校可自行配置。</p>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="global-unified-config" data-dom-id="global-unified-config" class="sr-only peer" checked onchange="toggleGlobalUnifiedConfig()">
+                    <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-blue-500 transition-colors"></div>
+                    <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-5 shadow"></div>
+                  </label>
+                </div>
+
+                <!-- 操作按钮 -->
+                <div class="flex items-center gap-3 mt-6">
+                  <button data-dom-id="btn-save-config" onclick="saveConfig()" class="flex items-center gap-1.5 px-5 h-9 text-[13px] font-medium rounded-md text-white transition-colors hover:opacity-90" style="background:var(--edu-primary);">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    保存
+                  </button>
+                  <button data-dom-id="btn-reset-config" onclick="resetConfig()" class="flex items-center gap-1.5 px-5 h-9 text-[13px] rounded-md border bg-white transition-colors hover:bg-gray-50" style="border-color:var(--edu-primary);color:var(--edu-primary);">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    重置
+                  </button>
+                </div>
+
+                <!-- 底部说明 -->
+                <div class="mt-4 p-3 rounded-lg flex items-start gap-2" style="background:var(--state-warning-bg);">
+                  <svg class="w-4 h-4 mt-0.5 flex-shrink-0" style="color:var(--state-warning);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <p class="text-[12px] leading-relaxed" style="color:var(--edu-foreground);">配置修改实时生效，历史存量记录不回溯变更，仅对新增（修改生效那一刻之后的）记录生效。开启"统一全局预警配置"后，辖区所有学校将自动继承本页配置，学校端不可自行修改。</p>
+                </div>
+              </div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================================ -->
+      <!-- 预警详情弹窗 (modal-detail) — 默认隐藏                              -->
+      <!-- ================================================================ -->
+      <div id="modal-detail" class="hidden fixed inset-0 z-50 flex items-center justify-center" data-dom-id="modal-backdrop-close" onclick="closeDetailModal()" style="background:rgba(0,0,0,0.45);">
+        <div class="bg-white rounded-lg shadow-2xl w-[600px] max-h-[85vh] flex flex-col" onclick="event.stopPropagation()">
+          <div class="flex items-center justify-between px-6 py-4 border-b" style="border-color:#e8e8e8;">
+            <div class="flex items-center gap-2"><h2 class="text-base font-semibold text-gray-800">预警记录详情</h2></div>
+            <button data-dom-id="btn-close-detail" onclick="closeDetailModal()" class="text-gray-400 hover:text-gray-600 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+          </div>
+          <div class="flex-1 overflow-y-auto px-6 py-5">
+            <!-- 基本信息 -->
+            <div class="mb-6">
+              <div class="flex items-center gap-1.5 mb-3"><span class="inline-block w-1 h-4 rounded-sm" style="background:#52c41a;"></span><span class="text-sm font-semibold text-gray-800">基本信息</span></div>
+              <div class="space-y-3 rounded-lg p-4" style="background:#fafafa;">
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">学生姓名：</span><span class="text-sm text-gray-800">陈思雨</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">年级：</span><span class="text-sm text-gray-800">七年级（2025级）</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">班级：</span><span class="text-sm text-gray-800">3班</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">预警类型：</span><span class="text-sm text-gray-800">周期缺勤</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">预警原因：</span><span class="text-sm text-gray-800">周期缺勤(10个工作日内缺勤5天)</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">预警时间：</span><span class="text-sm text-gray-800">2026-05-07 10:15</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">处理状态：</span><span><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium" style="background:#fffbe6;color:#faad14;border:1px solid #ffe58f;">待处理</span></span></div>
+              </div>
+            </div>
+            <!-- 认领家长信息 -->
+            <div class="mb-6">
+              <div class="flex items-center gap-1.5 mb-3"><span class="inline-block w-1 h-4 rounded-sm" style="background:#52c41a;"></span><span class="text-sm font-semibold text-gray-800">认领家长信息</span></div>
+              <div class="space-y-3 rounded-lg p-4" style="background:#fafafa;">
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">姓名：</span><span class="text-sm text-gray-800">陈志强</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">关系：</span><span class="text-sm text-gray-800">父亲</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">手机号码：</span><span class="text-sm text-gray-800 flex items-center gap-1.5"><span data-phone-text="">135****8821</span><svg class="w-3.5 h-3.5 cursor-pointer text-gray-400 hover:text-gray-600 transition-colors" onclick="togglePhone(this)" data-full="13567898821" data-masked="135****8821" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><line x1="2" y1="2" x2="22" y2="22" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></line></svg></span></div>
+              </div>
+            </div>
+            <!-- 处理记录 -->
+            <div data-dom-id="section-verify-timeline">
+              <div class="flex items-center gap-1.5 mb-3"><span class="inline-block w-1 h-4 rounded-sm" style="background:#52c41a;"></span><span class="text-sm font-semibold text-gray-800">处理记录</span></div>
+              <div class="space-y-3 rounded-lg p-4" style="background:#fafafa;">
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">劝返老师：</span><span class="text-sm text-gray-800">王老师(班主任)、赵主任</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">联系家长（关系）：</span><span class="text-sm text-gray-800">陈志强（父亲）</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">联系电话：</span><span class="text-sm text-gray-800 flex items-center gap-1.5"><span data-phone-text="">135****8821</span><svg class="w-3.5 h-3.5 cursor-pointer text-gray-400 hover:text-gray-600 transition-colors" onclick="togglePhone(this)" data-full="13567898821" data-masked="135****8821" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><line x1="2" y1="2" x2="22" y2="22" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></line></svg></span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">处理日期：</span><span class="text-sm text-gray-800">2026-05-09</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">劝返方式：</span><span class="text-sm text-gray-800">实地劝返</span></div>
+                <div class="flex gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">处理结果：</span><span class="text-sm text-gray-800 leading-relaxed">到学生家中劝返，确认学生因家庭事务请假，家长承诺本周内送孩子返校复课</span></div>
+                <div>
+                  <div class="flex gap-2 mb-2"><span class="text-sm text-gray-500 whitespace-nowrap">佐证材料：</span><span class="text-sm text-gray-400">（6张）</span></div>
+                  <div class="grid grid-cols-6 gap-1.5 ml-16">
+                    <img src="assets/evidence-1.jpg" class="w-full aspect-square object-cover rounded cursor-pointer hover:opacity-80 transition-opacity border" style="border-color:#e8e8e8;" onclick="openPhotoViewer(this)" alt="佐证材料1">
+                    <img src="assets/evidence-2.jpg" class="w-full aspect-square object-cover rounded cursor-pointer hover:opacity-80 transition-opacity border" style="border-color:#e8e8e8;" onclick="openPhotoViewer(this)" alt="佐证材料2">
+                    <img src="assets/evidence-3.jpg" class="w-full aspect-square object-cover rounded cursor-pointer hover:opacity-80 transition-opacity border" style="border-color:#e8e8e8;" onclick="openPhotoViewer(this)" alt="佐证材料3">
+                    <img src="assets/evidence-4.jpg" class="w-full aspect-square object-cover rounded cursor-pointer hover:opacity-80 transition-opacity border" style="border-color:#e8e8e8;" onclick="openPhotoViewer(this)" alt="佐证材料4">
+                    <img src="assets/evidence-5.jpg" class="w-full aspect-square object-cover rounded cursor-pointer hover:opacity-80 transition-opacity border" style="border-color:#e8e8e8;" onclick="openPhotoViewer(this)" alt="佐证材料5">
+                    <img src="assets/evidence-6.jpg" class="w-full aspect-square object-cover rounded cursor-pointer hover:opacity-80 transition-opacity border" style="border-color:#e8e8e8;" onclick="openPhotoViewer(this)" alt="佐证材料6">
+                  </div>
+                </div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">填写人员：</span><span class="text-sm text-gray-800">王老师</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">填写时间：</span><span class="text-sm text-gray-800">2026-05-09 15:22:08</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center justify-end gap-3 px-6 py-4 border-t" style="border-color:#e8e8e8;">
+            <button data-dom-id="btn-close-detail-footer" onclick="closeDetailModal()" class="px-4 py-2 text-sm border rounded text-gray-600 hover:bg-gray-50 transition-colors" style="border-color:#d9d9d9;">关闭</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================================ -->
+      <!-- 控辍劝返台账详情弹窗 (modal-visit-detail) — 默认隐藏                    -->
+      <!-- ================================================================ -->
+      <div id="modal-visit-detail" class="hidden fixed inset-0 z-50 flex items-center justify-center" data-dom-id="modal-visit-detail" onclick="closeVisitDetailModal()" style="background:rgba(0,0,0,0.45);">
+        <div class="bg-white rounded-lg shadow-2xl w-[600px] max-h-[85vh] flex flex-col" onclick="event.stopPropagation()">
+          <div class="flex items-center justify-between px-6 py-4 border-b" style="border-color:#e8e8e8;">
+            <div class="flex items-center gap-2"><h2 class="text-base font-semibold text-gray-800">劝返记录详情</h2></div>
+            <button data-dom-id="btn-close-visit-detail" onclick="closeVisitDetailModal()" class="text-gray-400 hover:text-gray-600 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+          </div>
+          <div class="flex-1 overflow-y-auto px-6 py-5">
+            <!-- 学生信息 -->
+            <div class="mb-6">
+              <div class="flex items-center gap-1.5 mb-3"><span class="inline-block w-1 h-4 rounded-sm" style="background:#52c41a;"></span><span class="text-sm font-semibold text-gray-800">学生信息</span></div>
+              <div class="space-y-3 rounded-lg p-4" style="background:#fafafa;">
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">学生姓名：</span><span class="text-sm text-gray-800" id="visit-detail-student">-</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">年级：</span><span class="text-sm text-gray-800" id="visit-detail-grade">-</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">班级：</span><span class="text-sm text-gray-800" id="visit-detail-class">-</span></div>
+              </div>
+            </div>
+            <!-- 劝返信息 -->
+            <div class="mb-6">
+              <div class="flex items-center gap-1.5 mb-3"><span class="inline-block w-1 h-4 rounded-sm" style="background:#52c41a;"></span><span class="text-sm font-semibold text-gray-800">劝返信息</span></div>
+              <div class="space-y-3 rounded-lg p-4" style="background:#fafafa;">
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">劝返老师：</span><span class="text-sm text-gray-800" id="visit-detail-teacher">-</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">联系家长（关系）：</span><span class="text-sm text-gray-800" id="visit-detail-parent">-</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">联系电话：</span><span class="text-sm text-gray-800 flex items-center gap-1.5"><span data-phone-text="">138****8888</span><svg class="w-3.5 h-3.5 cursor-pointer text-gray-400 hover:text-gray-600 transition-colors" onclick="togglePhone(this)" data-full="13812348888" data-masked="138****8888" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><line x1="2" y1="2" x2="22" y2="22" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></line></svg></span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">劝返日期：</span><span class="text-sm text-gray-800" id="visit-detail-date">-</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">劝返方式：</span><span class="text-sm text-gray-800" id="visit-detail-method">-</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">劝返原因：</span><span class="text-sm text-gray-800" id="visit-detail-reason">-</span></div>
+                <div class="flex gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">劝返结果：</span><span class="text-sm text-gray-800 leading-relaxed" id="visit-detail-result">-</span></div>
+                <div>
+                  <div class="flex gap-2 mb-2"><span class="text-sm text-gray-500 whitespace-nowrap">佐证材料：</span><span class="text-sm text-gray-400">（6张）</span></div>
+                  <div class="grid grid-cols-6 gap-1.5 ml-16">
+                    <img src="assets/evidence-1.jpg" class="w-full aspect-square object-cover rounded cursor-pointer hover:opacity-80 transition-opacity border" style="border-color:#e8e8e8;" onclick="openPhotoViewer(this)" alt="佐证材料1">
+                    <img src="assets/evidence-2.jpg" class="w-full aspect-square object-cover rounded cursor-pointer hover:opacity-80 transition-opacity border" style="border-color:#e8e8e8;" onclick="openPhotoViewer(this)" alt="佐证材料2">
+                    <img src="assets/evidence-3.jpg" class="w-full aspect-square object-cover rounded cursor-pointer hover:opacity-80 transition-opacity border" style="border-color:#e8e8e8;" onclick="openPhotoViewer(this)" alt="佐证材料3">
+                    <img src="assets/evidence-4.jpg" class="w-full aspect-square object-cover rounded cursor-pointer hover:opacity-80 transition-opacity border" style="border-color:#e8e8e8;" onclick="openPhotoViewer(this)" alt="佐证材料4">
+                    <img src="assets/evidence-5.jpg" class="w-full aspect-square object-cover rounded cursor-pointer hover:opacity-80 transition-opacity border" style="border-color:#e8e8e8;" onclick="openPhotoViewer(this)" alt="佐证材料5">
+                    <img src="assets/evidence-6.jpg" class="w-full aspect-square object-cover rounded cursor-pointer hover:opacity-80 transition-opacity border" style="border-color:#e8e8e8;" onclick="openPhotoViewer(this)" alt="佐证材料6">
+                  </div>
+                </div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">填写人员：</span><span class="text-sm text-gray-800">王老师</span></div>
+                <div class="flex items-baseline gap-2"><span class="text-sm text-gray-500 whitespace-nowrap">填写时间：</span><span class="text-sm text-gray-800">2026-05-06 09:30:00</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center justify-end gap-3 px-6 py-4 border-t" style="border-color:#e8e8e8;">
+            <button data-dom-id="btn-close-visit-detail-footer" onclick="closeVisitDetailModal()" class="px-4 py-2 text-sm border rounded text-gray-600 hover:bg-gray-50 transition-colors" style="border-color:#d9d9d9;">关闭</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+    <script>
+      /* ============================================================
+         SPA 核心逻辑 - 部级教育端（基于省教育端源文件叠加省份套层）
+         ============================================================ */
+
+      // 页面标题映射
+      var pageTitles = {
+        'dashboard': '数据看板',
+        'warning-province': '控辍预警',
+        'warning-city': '控辍预警',
+        'warning-district': '控辍预警',
+        'warning-school': '控辍预警',
+        'warning-list': '控辍预警',
+        'visit-province': '控辍劝返台账',
+        'visit-city': '控辍劝返台账',
+        'visit-district': '控辍劝返台账',
+        'visit-school': '控辍劝返台账',
+        'visit-ledger': '控辍劝返台账'
+      };
+
+      // 页面切换 (SPA核心)
+      function switchPage(pageId) {
+        // 隐藏所有section
+        var sections = document.querySelectorAll('[id^="section-"]');
+        sections.forEach(function(s) { s.classList.add('hidden'); });
+        if (!pageId) return; // 无指定页面时，所有 section 保持隐藏
+        // 显示目标section
+        var target = document.getElementById('section-' + pageId);
+        if (target) target.classList.remove('hidden');
+
+        // 更新顶部标题
+        var titleEl = document.querySelector('[data-dom-id="page-title"]');
+        if (titleEl) titleEl.textContent = pageTitles[pageId] || '';
+
+        // 数据看板页显示"数据仓导航可下转"徽标，其他页隐藏(含预警配置页)
+        var badgeEl = document.querySelector('[data-dom-id="badge-drilldown"]');
+        if (badgeEl) {
+          if (pageId === 'dashboard') badgeEl.classList.remove('hidden');
+          else badgeEl.classList.add('hidden');
+        }
+
+        // 更新菜单激活态
+        var menuDashboard = document.querySelector('[data-dom-id="menu-dashboard"]');
+        var menuWarningList = document.querySelector('[data-dom-id="menu-warning-list"]');
+        var menuVisitLedger = document.querySelector('[data-dom-id="menu-visit-ledger"]');
+        if (menuDashboard) menuDashboard.classList.remove('menu-active');
+        if (menuWarningList) menuWarningList.classList.remove('menu-active');
+        if (menuVisitLedger) menuVisitLedger.classList.remove('menu-active');
+        if (pageId === 'dashboard' && menuDashboard) menuDashboard.classList.add('menu-active');
+        if ((pageId === 'warning-province' || pageId === 'warning-city' || pageId === 'warning-district' || pageId === 'warning-school' || pageId === 'warning-list') && menuWarningList) menuWarningList.classList.add('menu-active');
+        if ((pageId === 'visit-province' || pageId === 'visit-city' || pageId === 'visit-district' || pageId === 'visit-school' || pageId === 'visit-ledger') && menuVisitLedger) menuVisitLedger.classList.add('menu-active');
+
+        // 套层页面渲染
+        if (pageId === 'warning-province') renderWarningProvince();
+        if (pageId === 'warning-city') renderWarningCity();
+        if (pageId === 'warning-district') renderWarningDistrict();
+        if (pageId === 'visit-province') renderVisitProvince();
+        if (pageId === 'visit-city') renderVisitCity();
+        if (pageId === 'visit-district') renderVisitDistrict();
+        // 面包屑显隐
+        var wBc = document.getElementById('warning-list-breadcrumb');
+        if (wBc) wBc.style.display = (pageId === 'warning-list') ? 'flex' : 'none';
+        var vBc = document.getElementById('visit-ledger-breadcrumb');
+        if (vBc) vBc.style.display = (pageId === 'visit-ledger') ? 'flex' : 'none';
+
+        // 滚动到顶部
+        document.body.style.background = (pageId === 'dashboard') ? '#0A1929' : '#f0f2f5';
+        window.scrollTo(0, 0);
+      }
+
+      // 一级菜单展开/收起
+      function toggleSubMenu() {
+        var submenu = document.querySelector('[data-dom-id="submenu-fangchuo"]');
+        var arrow = document.querySelector('[data-dom-id="menu-fangchuo-arrow"]');
+        if (submenu) submenu.classList.toggle('hidden');
+        if (arrow) arrow.classList.toggle('rotate-180');
+      }
+
+      // 筛选面板展开/收起
+      function toggleFilter() {
+        var panel = document.querySelector('[data-dom-id="filter-panel"]');
+        var btn = document.querySelector('[data-dom-id="btn-toggle-filter"]');
+        var text = btn ? btn.querySelector('span') : null;
+        var arrow = btn ? btn.querySelector('svg') : null;
+        if (panel) panel.classList.toggle('hidden');
+        if (text) text.textContent = (panel && panel.classList.contains('hidden')) ? '展开' : '收起';
+        if (arrow) arrow.classList.toggle('rotate-180');
+      }
+
+      // 手机号脱敏切换（商密要求）
+      function togglePhone(el){
+        var span=el.parentElement.querySelector('[data-phone-text]');
+        var isMasked=span.textContent===el.getAttribute('data-masked');
+        if(isMasked){
+          span.textContent=el.getAttribute('data-full');
+          el.innerHTML='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>';
+        }else{
+          span.textContent=el.getAttribute('data-masked');
+          el.innerHTML='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>';
+        }
+      }
+
+      // 显示详情弹窗
+      function showDetailModal(type) {
+        var m = document.getElementById('modal-detail');
+        if (m) { m.style.display = 'flex'; }
+        // 根据预警状态控制处理记录区域显示
+        var timelineSection = document.querySelector('[data-dom-id="section-verify-timeline"]');
+        if (timelineSection) {
+          if (type === 'pending') {
+            timelineSection.style.display = 'none';
+          } else {
+            timelineSection.style.display = '';
+          }
+        }
+      }
+
+      // 关闭详情弹窗
+      function closeDetailModal() {
+        var modal = document.getElementById('modal-detail');
+        if (modal) modal.style.display = 'none';
+      }
+
+      // ====== 控辍劝返台账：详情弹窗 + 筛选面板 ======
+      var VISIT_DATA = [
+        { teacher:'王老师', date:'2026-05-06 09:30', method:'电话沟通', student:'张小明', grade:'七年级（2025级）', cls:'2班', parent:'张大明（父亲）', reason:'连续缺勤3个工作日', result:'已电话联系家长确认情况，家长表示孩子因感冒请假，预计下周返校复课。已提醒家长关注学生出勤情况，如有异常及时沟通。' },
+        { teacher:'王老师', date:'2026-05-05 14:20', method:'实地劝返', student:'李小红', grade:'七年级（2025级）', cls:'1班', parent:'李芳（母亲）', reason:'周期缺勤（10个工作日内5天）', result:'实地劝返已完成，家庭情况正常，学生因病休养中。家长配合度高，表示会督促学生按时返校。' },
+        { teacher:'李老师', date:'2026-05-08 10:15', method:'微信问询', student:'陈小强', grade:'七年级（2025级）', cls:'2班', parent:'陈伟（父亲）', reason:'学生近期情绪低落', result:'微信沟通了解情况，学生状态有所好转，家长表示会持续关注学生心理状态，必要时寻求专业辅导。' },
+        { teacher:'李老师', date:'2026-05-07 15:30', method:'到校劝返', student:'赵小敏', grade:'八年级（2024级）', cls:'2班', parent:'赵刚（父亲）', reason:'家长主动要求面谈', result:'到校面谈完成，家长反馈良好，对学生学习情况满意。双方就学生学习规划达成一致意见。' },
+        { teacher:'王老师', date:'2026-05-04 11:00', method:'集中座谈', student:'刘小芳', grade:'九年级（2023级）', cls:'1班', parent:'刘红（母亲）', reason:'连续请假3个工作日', result:'集中座谈完成，已了解请假原因，学生因备考压力请假休整。已与家长沟通协调，安排心理疏导。' },
+        { teacher:'张老师', date:'2026-05-03 09:00', method:'电话沟通', student:'王小华', grade:'八年级（2024级）', cls:'3班', parent:'王明（父亲）', reason:'学生近期成绩下滑', result:'电话沟通了解情况，家长表示会关注学生学习状态，配合学校加强课后辅导，共同帮助学生提升成绩。' }
+      ];
+      function showVisitDetailModal(idx) {
+        var data = VISIT_DATA[idx - 1];
+        if (!data) return;
+        document.getElementById('visit-detail-teacher').textContent = data.teacher;
+        document.getElementById('visit-detail-date').textContent = data.date;
+        document.getElementById('visit-detail-method').textContent = data.method;
+        document.getElementById('visit-detail-student').textContent = data.student;
+        document.getElementById('visit-detail-grade').textContent = data.grade;
+        document.getElementById('visit-detail-class').textContent = data.cls;
+        document.getElementById('visit-detail-parent').textContent = data.parent;
+        document.getElementById('visit-detail-reason').textContent = data.reason;
+        document.getElementById('visit-detail-result').textContent = data.result;
+        var m = document.getElementById('modal-visit-detail');
+        if (m) { m.style.display = 'flex'; }
+      }
+      function closeVisitDetailModal() {
+        var m = document.getElementById('modal-visit-detail');
+        if (m) m.style.display = 'none';
+      }
+      function toggleVisitFilter() {
+        var panel = document.querySelector('[data-dom-id="visit-filter-panel"]');
+        var btn = document.querySelector('[data-dom-id="btn-toggle-visit-filter"]');
+        var text = btn ? btn.querySelector('span') : null;
+        var arrow = btn ? btn.querySelector('svg') : null;
+        if (panel) panel.classList.toggle('hidden');
+        if (text) text.textContent = (panel && panel.classList.contains('hidden')) ? '展开' : '收起';
+        if (arrow) arrow.classList.toggle('rotate-180');
+      }
+      function resetVisitFilter() {
+        var ids = ['visit-filter-student','visit-filter-method'];
+        ids.forEach(function(id){ var el = document.querySelector('[data-dom-id="'+id+'"]'); if (el) el.value = ''; });
+        var ds = document.querySelector('[data-dom-id="visit-filter-date-start"]'); if (ds) ds.value = '2026-05-01';
+        var de = document.querySelector('[data-dom-id="visit-filter-date-end"]'); if (de) de.value = '2026-05-31';
+      }
+
+      // ====== 预警配置：保存/重置/步进器 ======
+      // 统一全局预警配置开关：控制辖区学校端是否可自行配置
+      function toggleGlobalUnifiedConfig() {
+        var el = document.getElementById('global-unified-config');
+        var globalOn = el ? el.checked : true;
+        try { localStorage.setItem('globalUnifiedConfig', globalOn ? 'true' : 'false'); } catch(e) {}
+        if (globalOn) {
+          alert('已开启"统一全局预警配置"，辖区所有学校预警配置将走教育局统一下发，学校端不可自行修改。');
+        } else {
+          alert('已关闭"统一全局预警配置"，学校端可自行配置预警参数。');
+        }
+      }
+      // 页面加载时恢复开关状态
+      (function(){
+        try {
+          var saved = localStorage.getItem('globalUnifiedConfig');
+          if (saved === 'false') {
+            var el = document.getElementById('global-unified-config');
+            if (el) el.checked = false;
+          }
+        } catch(e) {}
+      })();
+      function saveConfig() {
+        var n = parseInt(document.getElementById('config-n').value);
+        var x = parseInt(document.getElementById('config-x').value);
+        var y = parseInt(document.getElementById('config-y').value);
+        var m = parseInt(document.getElementById('config-m').value);
+        // 校验 X 必须大于 Y
+        if (x <= y) {
+          alert('保存失败：周期缺勤周期（X=' + x + '）必须大于周期缺勤天数（Y=' + y + '），请重新配置');
+          return;
+        }
+        alert('保存成功');
+      }
+      function resetConfig() {
+        var defaults = { 'config-n': 3, 'config-x': 10, 'config-y': 5, 'config-m': 3 };
+        Object.keys(defaults).forEach(function(id) {
+          var el = document.getElementById(id);
+          if (el) el.value = defaults[id];
+        });
+      }
+      function stepUp(id, max) {
+        var el = document.getElementById(id);
+        if (el) {
+          var v = parseInt(el.value) || 0;
+          if (v < max) el.value = v + 1;
+        }
+      }
+      function stepDown(id, min) {
+        var el = document.getElementById(id);
+        if (el) {
+          var v = parseInt(el.value) || 0;
+          if (v > min) el.value = v - 1;
+        }
+      }
+
+      // ESC键关闭弹窗
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') { closeDetailModal(); closeVisitDetailModal(); }
+      });
+
+      // 初始化图标
+      lucide.createIcons();
+
+// ====== 套层数据 - 控辍预警（地市汇总） ======
+var WARNING_CITY_DATA = [
+  {name:'宝鸡市', total:484, pending:162, processed:322},
+  {name:'西安市', total:612, pending:185, processed:427},
+  {name:'咸阳市', total:398, pending:128, processed:270},
+  {name:'渭南市', total:355, pending:115, processed:240},
+  {name:'汉中市', total:287, pending:98, processed:189},
+  {name:'榆林市', total:243, pending:85, processed:158}
+];
+// ====== 套层数据 - 控辍预警（区县汇总） ======
+var WARNING_DISTRICT_DATA = [
+  {name:'朝阳区', total:85, pending:25, processed:60},
+  {name:'海淀区', total:92, pending:28, processed:64},
+  {name:'西城区', total:78, pending:22, processed:56},
+  {name:'东城区', total:70, pending:20, processed:50},
+  {name:'丰台区', total:98, pending:35, processed:63},
+  {name:'石景山区', total:61, pending:32, processed:29}
+];
+var WARNING_SCHOOL_DATA = {
+  '朝阳区': [
+    {name:'育才第一小学', total:28, pending:8, processed:20},
+    {name:'阳光路中学', total:22, pending:6, processed:16},
+    {name:'文昌第二小学', total:18, pending:5, processed:13},
+    {name:'启明实验中学', total:17, pending:6, processed:11}
+  ],
+  '海淀区': [
+    {name:'知行中学', total:30, pending:9, processed:21},
+    {name:'育才第一小学', total:25, pending:8, processed:17},
+    {name:'阳光路中学', total:20, pending:5, processed:15},
+    {name:'春晖路小学', total:17, pending:6, processed:11}
+  ],
+  '西城区': [
+    {name:'文昌第二小学', total:25, pending:7, processed:18},
+    {name:'启明实验中学', total:22, pending:6, processed:16},
+    {name:'育才第一小学', total:18, pending:5, processed:13},
+    {name:'知行中学', total:13, pending:4, processed:9}
+  ],
+  '东城区': [
+    {name:'春晖路小学', total:24, pending:7, processed:17},
+    {name:'阳光路中学', total:20, pending:6, processed:14},
+    {name:'文昌第二小学', total:15, pending:4, processed:11},
+    {name:'知行中学', total:11, pending:3, processed:8}
+  ],
+  '丰台区': [
+    {name:'启明实验中学', total:28, pending:10, processed:18},
+    {name:'育才第一小学', total:25, pending:9, processed:16},
+    {name:'知行中学', total:23, pending:8, processed:15},
+    {name:'春晖路小学', total:22, pending:8, processed:14}
+  ],
+  '石景山区': [
+    {name:'知行中学', total:20, pending:11, processed:9},
+    {name:'文昌第二小学', total:18, pending:9, processed:9},
+    {name:'阳光路中学', total:13, pending:7, processed:6},
+    {name:'启明实验中学', total:10, pending:5, processed:5}
+  ]
+};
+// ====== 套层数据 - 控辍劝返台账（地市汇总） ======
+var VISIT_CITY_DATA = [
+  {name:'宝鸡市', students:213, visits:711},
+  {name:'西安市', students:268, visits:892},
+  {name:'咸阳市', students:175, visits:583},
+  {name:'渭南市', students:156, visits:521},
+  {name:'汉中市', students:128, visits:427},
+  {name:'榆林市', students:108, visits:362}
+];
+// ====== 套层数据 - 控辍劝返台账（区县汇总） ======
+var VISIT_DISTRICT_DATA = [
+  {name:'朝阳区', teachers:45, students:38, visits:128},
+  {name:'海淀区', teachers:52, students:42, visits:145},
+  {name:'西城区', teachers:38, students:30, visits:102},
+  {name:'东城区', teachers:42, students:35, visits:115},
+  {name:'丰台区', teachers:48, students:40, visits:132},
+  {name:'石景山区', teachers:35, students:28, visits:89}
+];
+var VISIT_SCHOOL_DATA = {
+  '朝阳区': [
+    {name:'育才第一小学', teachers:12, students:15, visits:38},
+    {name:'阳光路中学', teachers:11, students:12, visits:32},
+    {name:'文昌第二小学', teachers:10, students:10, visits:28},
+    {name:'启明实验中学', teachers:12, students:9, visits:30}
+  ],
+  '海淀区': [
+    {name:'知行中学', teachers:14, students:16, visits:42},
+    {name:'育才第一小学', teachers:13, students:13, visits:36},
+    {name:'阳光路中学', teachers:12, students:10, visits:33},
+    {name:'春晖路小学', teachers:13, students:8, visits:34}
+  ],
+  '西城区': [
+    {name:'文昌第二小学', teachers:10, students:12, visits:28},
+    {name:'启明实验中学', teachers:10, students:10, visits:27},
+    {name:'育才第一小学', teachers:9, students:8, visits:25},
+    {name:'知行中学', teachers:9, students:7, visits:22}
+  ],
+  '东城区': [
+    {name:'春晖路小学', teachers:11, students:11, visits:30},
+    {name:'阳光路中学', teachers:11, students:10, visits:29},
+    {name:'文昌第二小学', teachers:10, students:8, visits:28},
+    {name:'知行中学', teachers:10, students:6, visits:28}
+  ],
+  '丰台区': [
+    {name:'启明实验中学', teachers:13, students:13, visits:36},
+    {name:'育才第一小学', teachers:12, students:12, visits:33},
+    {name:'知行中学', teachers:12, students:10, visits:32},
+    {name:'春晖路小学', teachers:11, students:9, visits:31}
+  ],
+  '石景山区': [
+    {name:'知行中学', teachers:9, students:8, visits:24},
+    {name:'文昌第二小学', teachers:9, students:7, visits:23},
+    {name:'阳光路中学', teachers:9, students:6, visits:22},
+    {name:'启明实验中学', teachers:8, students:5, visits:20}
+  ]
+};
+// ====== 套层数据 - 控辍预警（省份汇总，部级新增） ======
+var WARNING_PROVINCE_DATA = [
+  {name:'陕西省', total:2379, pending:773, processed:1606},
+  {name:'北京市', total:1856, pending:542, processed:1314},
+  {name:'河北省', total:2102, pending:688, processed:1414},
+  {name:'河南省', total:2645, pending:861, processed:1784},
+  {name:'四川省', total:2210, pending:702, processed:1508},
+  {name:'甘肃省', total:1468, pending:497, processed:971}
+];
+// ====== 套层数据 - 控辍劝返台账（省份汇总，部级新增） ======
+var VISIT_PROVINCE_DATA = [
+  {name:'陕西省', students:1048, visits:3496},
+  {name:'北京市', students:812, visits:2705},
+  {name:'河北省', students:936, visits:3118},
+  {name:'河南省', students:1182, visits:3940},
+  {name:'四川省', students:978, visits:3262},
+  {name:'甘肃省', students:655, visits:2183}
+];
+// ====== 套层渲染+导航 - 控辍预警（省份汇总） ======
+function renderWarningProvince() {
+  var tbody = document.getElementById('warning-province-tbody');
+  if (!tbody) return;
+  var html = '';
+  var tAll=0,pAll=0,prAll=0;
+  WARNING_PROVINCE_DATA.forEach(function(d) {
+    tAll+=d.total; pAll+=d.pending; prAll+=d.processed;
+    html += '<tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);">' +
+      '<td class="px-4 py-3 font-medium" style="color:var(--edu-primary);cursor:pointer;" onclick="drillToWarningCity(\''+d.name+'\')">'+d.name+'</td>' +
+      '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+d.total+'</td>' +
+      '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+d.pending+'</td>' +
+      '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+d.processed+'</td></tr>';
+  });
+  html += '<tr style="background:var(--edu-primary-50);font-weight:600;"><td class="px-4 py-3" style="color:var(--edu-foreground);">合计</td><td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+tAll+'</td><td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+pAll+'</td><td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+prAll+'</td></tr>';
+  tbody.innerHTML = html;
+}
+function drillToWarningCity(provinceName) {
+  var n = document.getElementById('warning-city-province-name');
+  if (n) n.textContent = '— ' + provinceName;
+  switchPage('warning-city');
+}
+function backToWarningProvince() { switchPage('warning-province'); }
+// ====== 套层渲染+导航 - 控辍劝返台账（省份汇总） ======
+function renderVisitProvince() {
+  var tbody = document.getElementById('visit-province-tbody');
+  if (!tbody) return;
+  var html = '';
+  var sAll=0, vAll=0;
+  VISIT_PROVINCE_DATA.forEach(function(d) {
+    sAll+=d.students; vAll+=d.visits;
+    html += '<tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);">' +
+      '<td class="px-4 py-3 font-medium" style="color:var(--edu-primary);cursor:pointer;" onclick="drillToVisitCity(\''+d.name+'\')">'+d.name+'</td>' +
+      '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+d.students+'</td>' +
+      '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+d.visits+'</td></tr>';
+  });
+  html += '<tr style="background:var(--edu-primary-50);font-weight:600;"><td class="px-4 py-3" style="color:var(--edu-foreground);">合计</td><td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+sAll+'</td><td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+vAll+'</td></tr>';
+  tbody.innerHTML = html;
+}
+function drillToVisitCity(provinceName) {
+  var n = document.getElementById('visit-city-province-name');
+  if (n) n.textContent = '— ' + provinceName;
+  switchPage('visit-city');
+}
+function backToVisitProvince() { switchPage('visit-province'); }
+function resetWPFilter() {
+  var ds = document.getElementById('wp-date-start'); if (ds) ds.value = '2026-04-01';
+  var de = document.getElementById('wp-date-end'); if (de) de.value = '2026-05-31';
+  renderWarningProvince();
+}
+function resetVPFilter() {
+  var ds = document.getElementById('vp-date-start'); if (ds) ds.value = '2026-05-01';
+  var de = document.getElementById('vp-date-end'); if (de) de.value = '2026-05-31';
+  renderVisitProvince();
+}
+// ====== 套层渲染+导航 - 控辍预警（地市汇总） ======
+function renderWarningCity() {
+  var tbody = document.getElementById('warning-city-tbody');
+  if (!tbody) return;
+  var html = '';
+  var tAll=0,pAll=0,prAll=0;
+  WARNING_CITY_DATA.forEach(function(d) {
+    tAll+=d.total; pAll+=d.pending; prAll+=d.processed;
+    html += '<tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);">' +
+      '<td class="px-4 py-3 font-medium" style="color:var(--edu-primary);cursor:pointer;" onclick="drillToWarningDistrict(\''+d.name+'\')">'+d.name+'</td>' +
+      '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+d.total+'</td>' +
+      '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+d.pending+'</td>' +
+      '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+d.processed+'</td></tr>';
+  });
+  html += '<tr style="background:var(--edu-primary-50);font-weight:600;"><td class="px-4 py-3" style="color:var(--edu-foreground);">合计</td><td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+tAll+'</td><td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+pAll+'</td><td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+prAll+'</td></tr>';
+  tbody.innerHTML = html;
+}
+function drillToWarningDistrict(cityName) {
+  var n = document.getElementById('warning-district-city-name');
+  if (n) n.textContent = '— ' + cityName;
+  switchPage('warning-district');
+}
+function backToWarningCity() { switchPage('warning-city'); }
+// ====== 套层渲染+导航 - 控辍预警（区县汇总） ======
+var currentWarningDistrict = '';
+function renderWarningDistrict() {
+  var tbody = document.getElementById('warning-district-tbody');
+  if (!tbody) return;
+  var html = '';
+  var tAll=0,pAll=0,prAll=0;
+  WARNING_DISTRICT_DATA.forEach(function(d) {
+    tAll+=d.total; pAll+=d.pending; prAll+=d.processed;
+    html += '<tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);">' +
+      '<td class="px-4 py-3 font-medium" style="color:var(--edu-primary);cursor:pointer;" onclick="drillToWarningSchool(\''+d.name+'\')">'+d.name+'</td>' +
+      '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+d.total+'</td>' +
+      '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+d.pending+'</td>' +
+      '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+d.processed+'</td></tr>';
+  });
+  html += '<tr style="background:var(--edu-primary-50);font-weight:600;"><td class="px-4 py-3" style="color:var(--edu-foreground);">合计</td><td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+tAll+'</td><td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+pAll+'</td><td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+prAll+'</td></tr>';
+  tbody.innerHTML = html;
+}
+function drillToWarningSchool(districtName) {
+  currentWarningDistrict = districtName;
+  var schools = WARNING_SCHOOL_DATA[districtName] || [];
+  var tbody = document.getElementById('warning-school-tbody');
+  if (tbody) {
+    var html = '';
+    schools.forEach(function(s) {
+      html += '<tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);">' +
+        '<td class="px-4 py-3 font-medium" style="color:var(--edu-primary);cursor:pointer;" onclick="drillToWarningData(\''+s.name+'\')">'+s.name+'</td>' +
+        '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+s.total+'</td>' +
+        '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+s.pending+'</td>' +
+        '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+s.processed+'</td></tr>';
+    });
+    tbody.innerHTML = html;
+  }
+  var n = document.getElementById('warning-school-district-name');
+  if (n) n.textContent = '— ' + districtName;
+  switchPage('warning-school');
+}
+function drillToWarningData(schoolName) {
+  var n = document.getElementById('warning-list-school-name');
+  if (n) n.textContent = '— ' + schoolName;
+  var bc = document.getElementById('warning-list-breadcrumb');
+  if (bc) bc.style.display = 'flex';
+  switchPage('warning-list');
+}
+function backToWarningDistrict() { switchPage('warning-district'); }
+function backToWarningSchool() { switchPage('warning-school'); }
+// ====== 套层渲染+导航 - 控辍劝返台账（地市汇总） ======
+function renderVisitCity() {
+  var tbody = document.getElementById('visit-city-tbody');
+  if (!tbody) return;
+  var html = '';
+  var sAll=0, vAll=0;
+  VISIT_CITY_DATA.forEach(function(d) {
+    sAll+=d.students; vAll+=d.visits;
+    html += '<tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);">' +
+      '<td class="px-4 py-3 font-medium" style="color:var(--edu-primary);cursor:pointer;" onclick="drillToVisitDistrict(\''+d.name+'\')">'+d.name+'</td>' +
+      '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+d.students+'</td>' +
+      '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+d.visits+'</td></tr>';
+  });
+  html += '<tr style="background:var(--edu-primary-50);font-weight:600;"><td class="px-4 py-3" style="color:var(--edu-foreground);">合计</td><td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+sAll+'</td><td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+vAll+'</td></tr>';
+  tbody.innerHTML = html;
+}
+function drillToVisitDistrict(cityName) {
+  var n = document.getElementById('visit-district-city-name');
+  if (n) n.textContent = '— ' + cityName;
+  switchPage('visit-district');
+}
+function backToVisitCity() { switchPage('visit-city'); }
+// ====== 套层渲染+导航 - 控辍劝返台账（区县汇总） ======
+var currentVisitDistrict = '';
+function renderVisitDistrict() {
+  var tbody = document.getElementById('visit-district-tbody');
+  if (!tbody) return;
+  var html = '';
+  var sAll=0, vAll=0;
+  VISIT_DISTRICT_DATA.forEach(function(d) {
+    sAll+=d.students; vAll+=d.visits;
+    html += '<tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);">' +
+      '<td class="px-4 py-3 font-medium" style="color:var(--edu-primary);cursor:pointer;" onclick="drillToVisitSchool(\''+d.name+'\')">'+d.name+'</td>' +
+      '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+d.students+'</td>' +
+      '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+d.visits+'</td></tr>';
+  });
+  html += '<tr style="background:var(--edu-primary-50);font-weight:600;"><td class="px-4 py-3" style="color:var(--edu-foreground);">合计</td><td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+sAll+'</td><td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+vAll+'</td></tr>';
+  tbody.innerHTML = html;
+}
+function drillToVisitSchool(districtName) {
+  currentVisitDistrict = districtName;
+  var schools = VISIT_SCHOOL_DATA[districtName] || [];
+  var tbody = document.getElementById('visit-school-tbody');
+  if (tbody) {
+    var html = '';
+    schools.forEach(function(s) {
+      html += '<tr class="border-b hover:bg-blue-50/30 transition-colors" style="border-color:var(--edu-border);">' +
+        '<td class="px-4 py-3 font-medium" style="color:var(--edu-primary);cursor:pointer;" onclick="drillToVisitData(\''+s.name+'\')">'+s.name+'</td>' +
+        '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+s.students+'</td>' +
+        '<td class="text-center px-4 py-3" style="color:var(--edu-foreground);">'+s.visits+'</td></tr>';
+    });
+    tbody.innerHTML = html;
+  }
+  var n = document.getElementById('visit-school-district-name');
+  if (n) n.textContent = '— ' + districtName;
+  switchPage('visit-school');
+}
+function drillToVisitData(schoolName) {
+  var n = document.getElementById('visit-ledger-school-name');
+  if (n) n.textContent = '— ' + schoolName;
+  var bc = document.getElementById('visit-ledger-breadcrumb');
+  if (bc) bc.style.display = 'flex';
+  switchPage('visit-ledger');
+}
+function backToVisitDistrict() { switchPage('visit-district'); }
+function backToVisitSchool() { switchPage('visit-school'); }
+// ====== 套层筛选重置 ======
+function resetWCFilter() {
+  var ds = document.getElementById('wc-date-start'); if (ds) ds.value = '2026-04-01';
+  var de = document.getElementById('wc-date-end'); if (de) de.value = '2026-05-31';
+  renderWarningCity();
+}
+function resetWDFilter() {
+  var ds = document.getElementById('wd-date-start'); if (ds) ds.value = '2026-04-01';
+  var de = document.getElementById('wd-date-end'); if (de) de.value = '2026-05-31';
+  renderWarningDistrict();
+}
+function resetWSFilter() {
+  var ds = document.getElementById('ws-date-start'); if (ds) ds.value = '2026-04-01';
+  var de = document.getElementById('ws-date-end'); if (de) de.value = '2026-05-31';
+  if (currentWarningDistrict) drillToWarningSchool(currentWarningDistrict);
+}
+function resetVDFilter() {
+  var ds = document.getElementById('vd-date-start'); if (ds) ds.value = '2026-05-01';
+  var de = document.getElementById('vd-date-end'); if (de) de.value = '2026-05-31';
+  renderVisitDistrict();
+}
+function resetVCFilter() {
+  var ds = document.getElementById('vc-date-start'); if (ds) ds.value = '2026-05-01';
+  var de = document.getElementById('vc-date-end'); if (de) de.value = '2026-05-31';
+  renderVisitCity();
+}
+function resetVSFilter() {
+  var ds = document.getElementById('vs-date-start'); if (ds) ds.value = '2026-05-01';
+  var de = document.getElementById('vs-date-end'); if (de) de.value = '2026-05-31';
+  if (currentVisitDistrict) drillToVisitSchool(currentVisitDistrict);
+}
+
+// 佐证材料原图查看器（叠加画板，支持多图切换）
+function openPhotoViewer(el){
+  var src=typeof el==='string'?el:el.src;
+  var srcs;
+  if(typeof el==='string'){ srcs=[src]; }
+  else{ srcs=Array.from(el.parentElement.querySelectorAll('img')).map(function(im){return im.src;}); }
+  var idx=Math.max(0,srcs.indexOf(src));
+  var overlay=document.createElement('div');
+  overlay.className='fixed inset-0 z-[100] flex items-center justify-center';
+  overlay.style.background='rgba(0,0,0,0.85)';
+  function closeViewer(){
+    if(overlay._kh) document.removeEventListener('keydown',overlay._kh);
+    document.body.removeChild(overlay);
+  }
+  var img=document.createElement('img');
+  img.src=srcs[idx];
+  img.className='max-w-[80%] max-h-[80vh] rounded-lg shadow-2xl object-contain';
+  img.onclick=function(e){ e.stopPropagation(); };
+  var closeBtn=document.createElement('button');
+  closeBtn.className='absolute top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center text-white text-2xl hover:bg-white hover:bg-opacity-20 transition-colors';
+  closeBtn.innerHTML='&times;';
+  closeBtn.onclick=function(e){ e.stopPropagation(); closeViewer(); };
+  overlay.appendChild(img);
+  overlay.appendChild(closeBtn);
+  if(srcs.length>1){
+    var counter=document.createElement('div');
+    counter.className='absolute bottom-6 left-1/2 -translate-x-1/2 text-white text-sm px-4 py-1.5 rounded-full';
+    counter.style.background='rgba(0,0,0,0.5)';
+    counter.textContent=(idx+1)+' / '+srcs.length;
+    function showImg(){ img.src=srcs[idx]; counter.textContent=(idx+1)+' / '+srcs.length; }
+    var prevBtn=document.createElement('button');
+    prevBtn.className='absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center text-white text-3xl hover:bg-white hover:bg-opacity-20 transition-colors';
+    prevBtn.innerHTML='&#8249;';
+    prevBtn.onclick=function(e){ e.stopPropagation(); idx=(idx-1+srcs.length)%srcs.length; showImg(); };
+    var nextBtn=document.createElement('button');
+    nextBtn.className='absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center text-white text-3xl hover:bg-white hover:bg-opacity-20 transition-colors';
+    nextBtn.innerHTML='&#8250;';
+    nextBtn.onclick=function(e){ e.stopPropagation(); idx=(idx+1)%srcs.length; showImg(); };
+    overlay.appendChild(prevBtn);
+    overlay.appendChild(nextBtn);
+    overlay.appendChild(counter);
+    overlay._kh=function(e){
+      if(e.key==='ArrowLeft'){ idx=(idx-1+srcs.length)%srcs.length; showImg(); }
+      else if(e.key==='ArrowRight'){ idx=(idx+1)%srcs.length; showImg(); }
+      else if(e.key==='Escape'){ closeViewer(); }
+    };
+    document.addEventListener('keydown',overlay._kh);
+  }
+  overlay.onclick=function(){ closeViewer(); };
+  document.body.appendChild(overlay);
+}
+    </script>
+
+<!-- 第三版 V1.2：关爱管理（独立菜单/Tab，不嵌入控辍预警）。以上为控辍保学源文件原样内容。 -->
+<link rel="stylesheet" href="./第三版-关爱记录嵌入-V1.2-20261015.css?v=20261015-7">
+<script>window.CARE_V3_EMBED_ROLE="ministry";</script><script src="./第三版-关爱记录嵌入-V1.2-20261015.js?v=20261015-7"></script>
+</body>
+</html>
