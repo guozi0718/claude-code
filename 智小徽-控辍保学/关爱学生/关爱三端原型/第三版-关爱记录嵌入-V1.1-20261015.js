@@ -121,7 +121,7 @@
     if(window.CARE_V3_FORCE_OPEN||location.hash==='#care-v3'){window.go('sc-list');window.fcTab('care')}
   }
   function buildTeacherList(panel){
-    panel.innerHTML='<div class="c3m-shell"><div class="c3m-scroll"><div class="c3m-search-wrap"><input class="c3m-search" type="search" placeholder="搜索学生姓名" aria-label="搜索学生姓名" autocomplete="off"><div class="c3m-suggest" hidden></div></div><div class="c3m-count"></div><div class="c3m-list"></div></div><div class="c3m-bottom"><button type="button" data-new>新增关爱记录</button></div></div>';
+    panel.innerHTML='<div class="c3m-shell"><div class="c3m-fixed"><div class="c3m-search-wrap"><input class="c3m-search" type="search" placeholder="搜索学生姓名" aria-label="搜索学生姓名" autocomplete="off"><div class="c3m-suggest" hidden></div></div><div class="c3m-count"></div></div><div class="c3m-scroll"><div class="c3m-list"></div></div><div class="c3m-bottom"><button type="button" data-new>新增关爱记录</button></div></div>';
     var input=panel.querySelector('.c3m-search'),sug=panel.querySelector('.c3m-suggest'),scroller=panel.querySelector('.c3m-scroll');
     function suggest(){
       var q=input.value.trim();if(!q||document.activeElement!==input){sug.hidden=true;return}
