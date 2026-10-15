@@ -106,7 +106,7 @@
     tab.style.cssText='flex:1;padding:13px 0;text-align:center;font-size:14px;font-weight:500;color:var(--ink-3);border:0;border-bottom:2px solid transparent;background:none;cursor:pointer';tabs.appendChild(tab);
     var panel=document.createElement('div');panel.id='fc-panel-care';panel.className='c3m';panel.style.display='none';screen.appendChild(panel);buildTeacherList(panel);
     var head=screen.querySelector('.sub-hd');head.style.position='relative';
-    var listHelp=helpDot(function(){return {cats:[{name:'场景',items:identityItems().concat([rulesItem(),{group:'列表交互',label:'首批加载20条，下滑每次再加载20条'},{label:'搜索学生姓名：输入即模糊匹配并回显候选'}])},{name:'异常',items:msgItems(['暂无符合条件的关爱记录','当前账号已无新增关爱记录权限，请联系管理员。','暂无权限','记录已变化，请刷新后重试'])}]}});
+    var listHelp=helpDot(function(){return {cats:[{name:'场景',items:identityItems().concat([rulesItem(),{group:'列表交互',label:'首批加载20条，下滑每次再加载20条'},{label:'搜索学生姓名：输入即模糊匹配并回显候选'},{group:'操作入口',label:'仅本人创建且有写入、操作权限时，记录卡学生信息右侧显示“...”，点击弹出编辑/删除/取消'}])},{name:'异常',items:msgItems(['暂无符合条件的关爱记录','当前账号已无新增关爱记录权限，请联系管理员。','暂无权限','记录已变化，请刷新后重试'])}]}});
     listHelp.style.display='none';head.appendChild(listHelp);
     createTeacherScreens();
     var originalTab=window.fcTab;
@@ -136,7 +136,7 @@
     panel.querySelector('[data-new]').onclick=function(){if(!account.write){toast('当前账号已无新增关爱记录权限，请联系管理员。');return}openTeacherForm()};
     scroller.onscroll=function(){T.scroll=scroller.scrollTop;var total=teacherQuery().length;if(scroller.scrollTop+scroller.clientHeight>=scroller.scrollHeight-24&&T.loaded<total){T.loaded+=20;renderTeacherList(true)}};
   }
-  function caseCard(r){return '<article class="c3m-case">'+studentHeadM(r.student)+kvm('关爱来源',ordered(r.sources,SOURCES).join('、'))+kvm('关爱类型',ordered(r.types,TYPES).join('、'))+kvm('关爱原因',r.reason)+kvm('关爱时间',r.careDate)+kvm('关爱结果',r.result)+'<div class="c3m-actions"><button type="button" data-detail="'+esc(r.id)+'">详情</button></div></article>'}
+  function caseCard(r){return '<article class="c3m-case">'+studentHeadM(r.student,false,canEdit(r)?'<button type="button" class="c3m-more" data-more="'+esc(r.id)+'" aria-label="关爱记录操作">...</button>':'')+kvm('关爱来源',ordered(r.sources,SOURCES).join('、'))+kvm('关爱类型',ordered(r.types,TYPES).join('、'))+kvm('关爱原因',r.reason)+kvm('关爱时间',r.careDate)+kvm('关爱结果',r.result)+'<div class="c3m-actions"><button type="button" data-detail="'+esc(r.id)+'">详情</button></div></article>'}
   function renderTeacherList(keepScroll){
     var panel=document.getElementById('fc-panel-care');if(!panel)return;
     var list=teacherQuery(),shown=list.slice(0,T.loaded),scroller=panel.querySelector('.c3m-scroll'),input=panel.querySelector('.c3m-search');
@@ -144,6 +144,7 @@
     panel.querySelector('.c3m-count').textContent='本学年共 '+list.length+' 条关爱记录';
     panel.querySelector('.c3m-list').innerHTML=(shown.length?shown.map(caseCard).join(''):'<div class="c3m-empty">暂无符合条件的关爱记录</div>')+(shown.length<list.length?'<div class="c3m-lazy">向下滑动加载更多，每次20条</div>':(list.length>20?'<div class="c3m-lazy">已全部加载</div>':''));
     panel.querySelectorAll('[data-detail]').forEach(function(b){b.onclick=function(){openTeacherDetail(b.dataset.detail)}});
+    panel.querySelectorAll('.c3m-list [data-more]').forEach(function(b){b.onclick=function(){var x=records.find(function(y){return y.id===b.dataset.more});if(!x){toast('记录已变化，请刷新后重试');renderTeacherList(true);return}recordActions(x)}});
     var add=panel.querySelector('[data-new]');add.disabled=!account.write;
     if(!keepScroll)scroller.scrollTop=T.scroll;
   }
@@ -160,7 +161,7 @@
     detailScreen.querySelector('.back').onclick=function(){closeSheets();backToCare()};
     formHelp=helpDot(function(){return {cats:[{name:'场景',items:[rulesItem(),{group:'示例学生（提交时服务端复核）',label:'李小红：提交时年级班级已变化',sub:'首次提交被拦截并刷新为最新年级班级，确认后再次提交'},{label:'陈小强：提交时已非在读',sub:'提交被拦截，需重新选择学生'},{group:'默认规则',label:'选择学生后执行人员默认为其班主任'},{label:'关爱时间默认今天，整月日历可切换上/下月，范围暂不限制'}]},{name:'异常',items:msgItems([{group:'学生复核',label:'该学生当前不是在读状态，不能新增关爱记录，请重新选择学生。'},'该学生的年级或班级已发生变化，已更新为“八年级（2025级）·3班”，请确认后重新提交。','该学生已不在您的数据范围内，请重新选择学生。','学生信息已更新，请重新选择学生。',{group:'权限与版本',label:'当前账号已无新增关爱记录权限，请联系管理员。'},'暂无权限','记录已更新，请重新打开编辑',{group:'字段校验',label:'请选择年级'},'请选择班级','请选择学生姓名','请选择关爱来源','请选择关爱类型','请填写关爱原因','关爱原因最多100字','请选择有效关爱时间','请选择执行人员','请选择关爱方式','请填写关爱结果','关爱结果最多100字',{group:'证明材料',label:'最多上传9张图片'},'仅支持JPEG、JPG、PNG格式图片','每张图片不能超过10M','图片读取失败，请重新选择'])}]}});
     formScreen.querySelector('.sub-hd').appendChild(formHelp);
-    detailHelp=helpDot(function(){return {cats:[{name:'场景',items:identityItems().concat([rulesItem(),{group:'操作入口',label:'仅本人创建且有写入、操作权限时，学生卡右侧显示“...”'}])},{name:'异常',items:msgItems(['记录已变化，请刷新后重试','暂无权限','记录已更新，请重新打开','图片加载失败，请重新打开'])}]}});
+    detailHelp=helpDot(function(){return {cats:[{name:'场景',items:identityItems().concat([rulesItem()])},{name:'异常',items:msgItems(['记录已变化，请刷新后重试','暂无权限','记录已更新，请重新打开','图片加载失败，请重新打开'])}]}});
     detailScreen.querySelector('.sub-hd').appendChild(detailHelp);
     formScreen.querySelector('[data-save]').onclick=saveTeacher;
   }
@@ -207,9 +208,8 @@
   function openTeacherDetail(id){
     var r=records.find(function(x){return x.id===id&&visibleTeacher(x)});if(!r){toast('记录已变化，请刷新后重试');return}
     T.detailId=id;var pad=detailScreen.querySelector('.c3m-pad');
-    pad.innerHTML='<div class="c3m-card">'+studentHeadM(r.student,true,canEdit(r)?'<button type="button" class="c3m-more" data-more aria-label="关爱记录操作">...</button>':'')+'</div><article class="c3m-card"><div class="c3m-record-top"><b>关爱内容</b></div>'+kvm('关爱来源',ordered(r.sources,SOURCES).join('、'))+kvm('关爱类型',ordered(r.types,TYPES).join('、'))+kvm('关爱原因',r.reason)+kvm('关爱时间',r.careDate)+kvm('执行人员',ordered(r.people,TEACHERS).join('、'))+kvm('关爱方式',r.method)+kvm('关爱结果',r.result)+kvm('证明材料',(r.proofs||[]).length?'<span class="c3m-detail-photos">'+r.proofs.map(function(p,i){return '<img data-proof="'+i+'" alt="证明材料'+(i+1)+'" src="'+esc(p.src||'')+'">'}).join('')+'</span>':'--',true)+kvm('创建人',r.createdName)+kvm('创建时间',r.createdAt.slice(0,16))+'</article>';
+    pad.innerHTML='<div class="c3m-card">'+studentHeadM(r.student,true)+'</div><article class="c3m-card"><div class="c3m-record-top"><b>关爱内容</b></div>'+kvm('关爱来源',ordered(r.sources,SOURCES).join('、'))+kvm('关爱类型',ordered(r.types,TYPES).join('、'))+kvm('关爱原因',r.reason)+kvm('关爱时间',r.careDate)+kvm('执行人员',ordered(r.people,TEACHERS).join('、'))+kvm('关爱方式',r.method)+kvm('关爱结果',r.result)+kvm('证明材料',(r.proofs||[]).length?'<span class="c3m-detail-photos">'+r.proofs.map(function(p,i){return '<img data-proof="'+i+'" alt="证明材料'+(i+1)+'" src="'+esc(p.src||'')+'">'}).join('')+'</span>':'--',true)+kvm('创建人',r.createdName)+kvm('创建时间',r.createdAt.slice(0,16))+'</article>';
     bindImgFail(pad);pad.querySelectorAll('img[data-proof]').forEach(function(img){img.onclick=function(){viewImage(img.src,img.alt,phone())}});
-    var more=pad.querySelector('[data-more]');if(more)more.onclick=function(){recordActions(r)};
     showScreen('sc-care3-detail');
   }
   function recordActions(r){
