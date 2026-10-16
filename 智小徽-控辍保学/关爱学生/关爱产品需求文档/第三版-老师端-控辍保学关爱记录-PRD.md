@@ -39,7 +39,7 @@
 
 | 资料 | 链接 / 文件 | 说明 |
 |---|---|---|
-| 本端原型 | [打开在线原型](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-老师端关爱管理-V1.3-20261015.html?page=teacher-care) | 控辍保学页面顶部第三个“关爱记录”Tab；地址参数见6.1.1“原型地址参数”。 |
+| 本端原型 | [打开在线原型](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-老师端关爱管理-V1.4-20261015.html?page=teacher-care) | 控辍保学页面顶部第三个“关爱记录”Tab；地址参数见6.1.1“原型地址参数”。 |
 | 视觉与接口 | 无独立视觉稿；接口待补充 | 原型为前端演示，数据只在当前页面内存中，不落库。 |
 
 ## 5. 当前版本需求范围
@@ -56,7 +56,7 @@
 
 ### 6.1 关爱记录列表
 
-[本页原型](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-老师端关爱管理-V1.3-20261015.html?page=teacher-care)
+[本页原型](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-老师端关爱管理-V1.4-20261015.html?page=teacher-care)
 
 #### 6.1.1 页面说明
 
@@ -106,7 +106,7 @@
 
 ### 6.2 新增 / 编辑关爱记录
 
-[本页原型](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-老师端关爱管理-V1.3-20261015.html?page=teacher-care-new)
+[本页原型](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-老师端关爱管理-V1.4-20261015.html?page=teacher-care-new)
 
 #### 6.2.1 页面说明
 
@@ -183,7 +183,7 @@
 
 ### 6.3 关爱记录详情
 
-[本页原型](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-老师端关爱管理-V1.3-20261015.html?page=teacher-care)
+[本页原型](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-老师端关爱管理-V1.4-20261015.html?page=teacher-care)
 
 #### 6.3.1 页面说明
 
