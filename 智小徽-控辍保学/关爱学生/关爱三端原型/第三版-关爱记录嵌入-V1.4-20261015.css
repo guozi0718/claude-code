@@ -323,3 +323,10 @@ body:has(.c3t-host){background:#f3f6fb!important}
 section.c3t .flex.items-center.gap-3.flex-wrap>button:first-of-type{margin-left:auto}
 section.c3t .justify-end>button[data-dom-id*="reset"],section.c3t .justify-end>button[onclick^="reset"]{order:2}
 section.c3t .justify-end>button[data-dom-id*="search"]{order:1}
+
+/* 老师端列表卡片：关爱原因、关爱结果最多显示三行，超出以“...”截断；详情页显示全文 */
+.c3m-case .c3m-clamp3 .v{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden;text-overflow:ellipsis;word-break:break-all}
+/* 所有滑动容器保持无感滑动：可滑动但不显示滚动条（选择器弹窗、列表、表单、详情、浮窗、表格、弹窗等） */
+.phone,.phone *,.c3w-section,.c3w-section *,.c3w-mask,.c3w-mask *,.c3x-bar,.c3x-bar *,.c3t-host,.c3t-host *,.c3t-modal,.c3t-modal *{scrollbar-width:none;-ms-overflow-style:none}
+.phone ::-webkit-scrollbar,.phone::-webkit-scrollbar,.c3w-section ::-webkit-scrollbar,.c3w-section::-webkit-scrollbar,.c3w-mask ::-webkit-scrollbar,.c3x-bar ::-webkit-scrollbar,.c3t-host ::-webkit-scrollbar,.c3t-host::-webkit-scrollbar,.c3t-modal ::-webkit-scrollbar{display:none;width:0;height:0}
+.c3m-options{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}

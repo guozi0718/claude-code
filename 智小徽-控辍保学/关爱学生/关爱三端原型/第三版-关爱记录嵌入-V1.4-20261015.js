@@ -17,7 +17,7 @@
   var ROOTS={teacher:['陕西省','宝鸡市','凤翔区','凤翔区第一实验小学'],school:['陕西省','宝鸡市','凤翔区','凤翔区第一实验小学'],ministry:[],province:['陕西省'],city:['陕西省','宝鸡市'],county:['陕西省','宝鸡市','凤翔区']};
   var ROOT=ROOTS[role]||ROOTS.school,MAIN_SCHOOL='凤翔区第一实验小学',OTHER_SCHOOL='凤翔区第二中学';
   var audit=[],records=[],students=[],seq=0;
-  var MSG={net:'网络异常，请稍后重试',changed:'记录已变化，请刷新后重试',noAuth:'暂无权限',noWrite:'当前账号已无新增关爱记录权限，请联系管理员。',updatedEdit:'记录已更新，请重新打开编辑',updatedList:'记录已更新，请刷新后重试',empty:'暂无符合条件的关爱记录',img:'图片加载失败',imgTip:'图片加载失败，请重新打开',lazyFail:'加载失败，点击重试',dateFmt:'请输入正确的日期，格式为YYYY-MM-DD',dateRange:'开始日期不能晚于结束日期，请检查日期范围'};
+  var MSG={net:'网络异常，请稍后重试',changed:'记录已变化，请刷新后重试',noAuth:'暂无权限',noWrite:'账号权限变更，请联系管理员',updatedEdit:'记录已更新，请重新打开编辑',updatedList:'记录已更新，请刷新后重试',empty:'暂无符合条件的关爱记录',img:'图片加载失败',imgTip:'图片加载失败，请重新打开',lazyFail:'加载失败，点击重试',dateFmt:'请输入正确的日期，格式为YYYY-MM-DD',dateRange:'开始日期不能晚于结束日期，请检查日期范围'};
   var ACCOUNT_BASE={
     wang:{key:'wang',id:'teacher-wang',name:'王老师',desc:'全校查看｜可新增｜可编辑、删除本人记录',view:'all',write:true,operate:true},
     li:{key:'li',id:'teacher-li',name:'李老师',desc:'仅查看本班学生｜可新增｜可编辑、删除本人记录',view:'class',write:true,operate:true},
@@ -118,7 +118,7 @@
       for(var i=0;i<count;i++){
         var st=local[i%local.length],day=pad2(28-(i%12)),created=(i<4?today():'2026-09-'+pad2(25-(i%5)))+' '+pad2(18-(i%8))+':'+pad2(10+(i%45))+':'+pad2(i%60);
         var by=i%5===4?['teacher-zhao','赵老师']:(i%2?['teacher-li','李老师']:['teacher-wang','王老师']);
-        records.push({id:'r-'+String(++seq).padStart(5,'0'),studentId:st.id,student:{id:st.id,name:st.name,grade:st.grade,className:st.className,org:st.org.slice()},sources:[SOURCES[i%SOURCES.length]],types:[TYPES[i%TYPES.length]],reason:'结合学生近期学习、出勤与家庭情况，记录本次需要关爱的真实情况。',careDate:'2026-10-'+day,people:[st.teacher],methods:i%3===0?[METHODS[i%METHODS.length],METHODS[(i+8)%METHODS.length]]:[METHODS[i%METHODS.length]],result:'已与学生沟通并落实本次关爱措施，记录实际情况供后续了解。',proofs:(school===MAIN_SCHOOL&&i===0)?clone(DEMO_PROOFS):[],createdBy:by[0],createdName:by[1],createdAt:created,updatedAt:null,updatedBy:null,version:1});
+        records.push({id:'r-'+String(++seq).padStart(5,'0'),studentId:st.id,student:{id:st.id,name:st.name,grade:st.grade,className:st.className,org:st.org.slice()},sources:[SOURCES[i%SOURCES.length]],types:[TYPES[i%TYPES.length]],reason:i%2===0?'近一个月该生多次迟到早退，课堂精神状态较差，作业完成率明显下降，与同学交流减少；经了解家庭近期发生变故，父母外出务工，由祖父母照看，生活和学习缺乏督促。':'结合学生近期学习、出勤与家庭情况，记录本次需要关爱的真实情况。',careDate:'2026-10-'+day,people:[st.teacher],methods:i%3===0?[METHODS[i%METHODS.length],METHODS[(i+8)%METHODS.length]]:[METHODS[i%METHODS.length]],result:i%2===0?'班主任每周两次个别谈心，安排学习小组结对帮扶，联系家长每周视频沟通一次；两周后迟到次数明显减少，作业能按时提交，情绪较之前稳定，将继续跟进。':'已与学生沟通并落实本次关爱措施，记录实际情况供后续了解。',proofs:(school===MAIN_SCHOOL&&i===0)?clone(DEMO_PROOFS):[],createdBy:by[0],createdName:by[1],createdAt:created,updatedAt:null,updatedBy:null,version:1});
       }
     })})})})
   }
@@ -179,7 +179,7 @@
     blankTeacher();if(location.search||location.hash)setUrl('');
   }
   function buildTeacherList(panel){
-    panel.innerHTML='<div class="c3m-shell"><div class="c3m-fixed"><div class="c3m-search-wrap"><input class="c3m-search" type="search" placeholder="搜索学生姓名" aria-label="搜索学生姓名" autocomplete="off"><div class="c3m-suggest" hidden></div></div><div class="c3m-count"></div></div><div class="c3m-scroll"><div class="c3m-list"></div></div><div class="c3m-bottom"><button type="button" data-new>新增关爱记录</button></div></div>';
+    panel.innerHTML='<div class="c3m-shell"><div class="c3m-fixed"><div class="c3m-search-wrap"><input class="c3m-search" type="search" placeholder="请搜索学生姓名" aria-label="搜索学生姓名" autocomplete="off"><div class="c3m-suggest" hidden></div></div><div class="c3m-count"></div></div><div class="c3m-scroll"><div class="c3m-list"></div></div><div class="c3m-bottom"><button type="button" data-new>新增关爱记录</button></div></div>';
     var input=panel.querySelector('.c3m-search'),sug=panel.querySelector('.c3m-suggest'),scroller=panel.querySelector('.c3m-scroll');
     function suggest(){
       var q=input.value.trim();if(!q||document.activeElement!==input){sug.hidden=true;return}
@@ -208,7 +208,7 @@
   }
   function caseCard(r){
     var more=canEdit(r)?'<button type="button" class="c3m-more" data-more="'+esc(r.id)+'" data-ver="'+r.version+'" aria-label="关爱记录操作">...</button>':'';
-    return '<article class="c3m-case">'+studentHeadM(r.student,false,more)+kvm('关爱来源',ordered(r.sources,SOURCES).join('、'))+kvm('关爱类型',ordered(r.types,TYPES).join('、'))+kvm('关爱原因',r.reason)+kvm('关爱时间',r.careDate)+kvm('关爱结果',r.result)+'<div class="c3m-actions"><button type="button" data-detail="'+esc(r.id)+'">详情</button></div></article>';
+    return '<article class="c3m-case">'+studentHeadM(r.student,false,more)+kvm('关爱来源',ordered(r.sources,SOURCES).join('、'))+kvm('关爱类型',ordered(r.types,TYPES).join('、'))+kvm('关爱原因',r.reason).replace('c3m-kv','c3m-kv c3m-clamp3')+kvm('关爱时间',r.careDate)+kvm('关爱结果',r.result).replace('c3m-kv','c3m-kv c3m-clamp3')+'<div class="c3m-actions"><button type="button" data-detail="'+esc(r.id)+'">详情</button></div></article>';
   }
   function renderTeacherList(keepScroll){
     var panel=document.getElementById('fc-panel-care');if(!panel)return;
@@ -235,7 +235,8 @@
     detailScreen.querySelector('.back').onclick=function(){closeSheets();backToCare()};
     formScreen.querySelector('[data-save]').onclick=saveTeacher;
   }
-  function leaveForm(){closeSheets();mobileDialog('放弃填写','<p>当前内容尚未保存，确认离开？</p>',function(){backToCare()})}
+  function formDirty(){return !!T.draft&&JSON.stringify(T.draft)!==T.initial}
+  function leaveForm(){closeSheets();if(!formDirty()){backToCare();return}mobileDialog('放弃填写','<p>当前内容尚未保存，确认离开？</p>',function(){backToCare()})}
   function showScreen(id){closeSheets();origGo(id);refreshHelp()}
   function backToCare(){T.editing=null;T.draft=null;T.saving=false;openCareList()}
   function closeSheets(){document.querySelectorAll('.c3m-overlay,.c3m-dialog,.c3-viewer').forEach(function(x){x.remove()});closeHelp()}
@@ -255,7 +256,7 @@
   }
   function openCalendar(value,done){
     var selected=validDate(value)?value:today(),y=Number(selected.slice(0,4)),mth=Number(selected.slice(5,7));
-    var o=sheet('<div class="c3m-sheet-title"><b>选择关爱时间</b><small>范围暂不限制</small></div><div class="c3m-cal-nav"><button type="button" data-month="-1" aria-label="上个月">‹</button><b data-label></b><button type="button" data-month="1" aria-label="下个月">›</button></div><div class="c3m-cal-grid" data-grid></div><div class="c3m-sheet-err"></div><div class="c3m-sheet-actions"><button type="button" class="c3m-cancel" data-cancel>取消</button><button type="button" class="c3m-confirm" data-ok>确定</button></div>');
+    var o=sheet('<div class="c3m-sheet-title"><b>选择关爱时间</b></div><div class="c3m-cal-nav"><button type="button" data-month="-1" aria-label="上个月">‹</button><b data-label></b><button type="button" data-month="1" aria-label="下个月">›</button></div><div class="c3m-cal-grid" data-grid></div><div class="c3m-sheet-err"></div><div class="c3m-sheet-actions"><button type="button" class="c3m-cancel" data-cancel>取消</button><button type="button" class="c3m-confirm" data-ok>确定</button></div>');
     function draw(){
       var first=new Date(Date.UTC(y,mth-1,1)).getUTCDay(),days=new Date(Date.UTC(y,mth,0)).getUTCDate(),html=['日','一','二','三','四','五','六'].map(function(w){return '<span>'+w+'</span>'}).join('');
       for(var i=0;i<first;i++)html+='<span></span>';
@@ -319,6 +320,7 @@
     if(!id&&!account.write){toast(MSG.noWrite);backToCare();return}
     T.editing=r?{id:r.id,version:r.version}:null;T.saving=false;
     T.draft=r?{grade:r.student.grade,className:r.student.className,studentId:r.studentId,sources:r.sources.slice(),types:r.types.slice(),reason:r.reason,careDate:r.careDate,people:r.people.slice(),methods:(r.methods||[]).slice(),result:r.result,proofs:clone(r.proofs||[])}:freshDraft();
+    T.initial=JSON.stringify(T.draft);
     T.reading=false;formScreen.querySelector('.sub-hd b').textContent=r?'编辑关爱记录':'新增关爱记录';
     renderTeacherForm();showScreen('sc-care3-form');setUrl(r?'care-edit':'care-new',r?{id:r.id}:null);
   }
@@ -466,7 +468,7 @@
       ])},
       {name:'异常',items:[
         {group:'空数据',label:MSG.empty,sub:'搜索不存在的学生，总数显示0',run:input('不存在的学生')},
-        {group:'操作中权限变化（后台已变更，页面未刷新）',label:'新增权限已被收回',sub:'点击后自动点“新增关爱记录”，提示无新增权限并置灰按钮',run:function(){if(!account.write){toast('当前身份本就没有新增权限，请先切换为王老师');return}account.write=false;document.querySelector('#fc-panel-care [data-new]').click()}},
+        {group:'操作中权限变化（后台已变更，页面未刷新）',label:'新增权限已被收回',sub:'点击后自动点“新增关爱记录”，提示“账号权限变更，请联系管理员”并置灰按钮',run:function(){if(!account.write){toast('当前身份本就没有新增权限，请先切换为王老师');return}account.write=false;document.querySelector('#fc-panel-care [data-new]').click()}},
         {label:'记录操作权限已被收回',sub:'点击后自动点第一条本人记录的“...”，提示“暂无权限”，“...”消失',run:function(){var r=firstOwnRecord();if(!r){toast('当前身份没有可操作的本人记录');return}account.operate=false;document.querySelector('[data-more="'+r.id+'"]').click()}},
         {label:'学生已调离本人数据范围',sub:'第一条记录的学生调离李老师班级（李老师身份），点“详情”提示记录已变化',run:function(){if(account.view!=='class'){setAccount('li')}var r=teacherQuery()[0];if(!r){toast('暂无可演示记录');return}var s=findStudent(r.studentId);s.teacher='其他老师';document.querySelector('[data-detail="'+r.id+'"]').click()}},
         {group:'数据已被他人/其他端变更',label:'记录已被删除',sub:'第一条记录在其他端删除，点“详情”提示记录已变化并刷新列表',run:function(){var r=teacherQuery()[0];if(!r)return;records.splice(records.indexOf(r),1);document.querySelector('[data-detail="'+r.id+'"]').click()}},
@@ -486,7 +488,7 @@
       studentChange('学生已不在您的数据范围内','学生已转出本校或调离本人班级；不显示转入学校',function(st){st.org=st.org.slice(0,3).concat([OTHER_SCHOOL])}),
       studentChange('学生信息已失效','学籍被合并或删除，需重新选择学生',function(st){students.splice(students.indexOf(st),1)})
     ];
-    items.push({group:'操作中权限变化',label:editing?'记录操作权限已被收回':'新增权限已被收回',sub:editing?'提交时提示“暂无权限”，表单内容保留':'提交时提示无新增权限，表单内容保留',run:function(){if(!fillSample(keepStudent()))return;if(editing)account.operate=false;else account.write=false;submitNow()}});
+    items.push({group:'操作中权限变化',label:editing?'记录操作权限已被收回':'新增权限已被收回',sub:editing?'提交时提示“暂无权限”，表单内容保留':'提交时提示“账号权限变更，请联系管理员”，表单内容保留',run:function(){if(!fillSample(keepStudent()))return;if(editing)account.operate=false;else account.write=false;submitNow()}});
     if(editing){
       items.push({group:'记录已被他人/其他端变更',label:'记录已被修改（版本冲突）',sub:'提示“记录已更新，请重新打开编辑”，不覆盖较新内容',run:function(){var r=findRecord(T.editing.id);if(r){r.version++;r.updatedAt=now()}submitNow()}});
       items.push({label:'记录已被删除',sub:'提示“记录已变化，请刷新后重试”并返回列表',run:function(){var r=findRecord(T.editing.id);if(r)records.splice(records.indexOf(r),1);submitNow()}});
@@ -505,7 +507,7 @@
       {label:'正常添加2张图片',sub:'计数显示N/9，可点缩略图预览、点×移除',run:function(){addFiles(fake(2,'image/png',1000))}}
     ];
     return {title:(editing?'编辑':'新增')+'关爱记录 · 场景与异常',cats:[
-      {name:'场景',items:[{group:'规则说明',label:'查看本页规则说明',run:function(){rulesDialog(RULES)}},{group:'填写示例',label:'一键填写完整示例',sub:'自动选择本人范围内的在读学生并填好全部必填项',run:function(){fillSample()}},{label:'选择学生后默认班主任',sub:'执行人员默认为所选学生的班主任，可改为多人'},{label:'放弃填写确认',sub:'点击左上角返回时弹出“放弃填写”',run:leaveForm}]},
+      {name:'场景',items:[{group:'规则说明',label:'查看本页规则说明',run:function(){rulesDialog(RULES)}},{group:'填写示例',label:'一键填写完整示例',sub:'自动选择本人范围内的在读学生并填好全部必填项',run:function(){fillSample()}},{label:'选择学生后默认班主任',sub:'执行人员默认为所选学生的班主任，可改为多人'},{label:'未修改直接返回',sub:'内容与进入时一致，点左上角返回直接回列表，不弹窗',run:leaveForm},{label:'有修改时放弃填写确认',sub:'先改动内容（自动填写示例），再点返回弹出“放弃填写”',run:function(){if(!formDirty())fillSample();leaveForm()}}]},
       {name:'异常',items:items.concat(fieldItems,proofItems)}
     ]};
   }
