@@ -118,7 +118,7 @@
       for(var i=0;i<count;i++){
         var st=local[i%local.length],day=pad2(28-(i%12)),created=(i<4?today():'2026-09-'+pad2(25-(i%5)))+' '+pad2(18-(i%8))+':'+pad2(10+(i%45))+':'+pad2(i%60);
         var by=i%5===4?['teacher-zhao','赵老师']:(i%2?['teacher-li','李老师']:['teacher-wang','王老师']);
-        records.push({id:'r-'+String(++seq).padStart(5,'0'),studentId:st.id,student:{id:st.id,name:st.name,grade:st.grade,className:st.className,org:st.org.slice()},sources:[SOURCES[i%SOURCES.length]],types:[TYPES[i%TYPES.length]],reason:'结合学生近期学习、出勤与家庭情况，记录本次需要关爱的真实情况。',careDate:'2026-10-'+day,people:[st.teacher],method:METHODS[i%METHODS.length],result:'已与学生沟通并落实本次关爱措施，记录实际情况供后续了解。',proofs:(school===MAIN_SCHOOL&&i===0)?clone(DEMO_PROOFS):[],createdBy:by[0],createdName:by[1],createdAt:created,updatedAt:null,updatedBy:null,version:1});
+        records.push({id:'r-'+String(++seq).padStart(5,'0'),studentId:st.id,student:{id:st.id,name:st.name,grade:st.grade,className:st.className,org:st.org.slice()},sources:[SOURCES[i%SOURCES.length]],types:[TYPES[i%TYPES.length]],reason:'结合学生近期学习、出勤与家庭情况，记录本次需要关爱的真实情况。',careDate:'2026-10-'+day,people:[st.teacher],methods:i%3===0?[METHODS[i%METHODS.length],METHODS[(i+8)%METHODS.length]]:[METHODS[i%METHODS.length]],result:'已与学生沟通并落实本次关爱措施，记录实际情况供后续了解。',proofs:(school===MAIN_SCHOOL&&i===0)?clone(DEMO_PROOFS):[],createdBy:by[0],createdName:by[1],createdAt:created,updatedAt:null,updatedBy:null,version:1});
       }
     })})})})
   }
@@ -283,7 +283,7 @@
     if(!r){toast(MSG.changed);if(inDetail||curId()!=='sc-list')backToCare();else renderTeacherList(true);return}
     T.detailId=id;var pad=detailScreen.querySelector('.c3m-pad');
     var proofs=(r.proofs||[]).length?'<span class="c3m-detail-photos">'+r.proofs.map(function(p,i){return '<img data-proof="'+i+'" alt="证明材料'+(i+1)+'" src="'+esc(brokenImages?BROKEN_IMG:(p.src||''))+'">'}).join('')+'</span>':'--';
-    pad.innerHTML='<div class="c3m-card">'+studentHeadM(r.student,true)+'</div><article class="c3m-card"><div class="c3m-record-top"><b>关爱内容</b></div>'+kvm('关爱来源',ordered(r.sources,SOURCES).join('、'))+kvm('关爱类型',ordered(r.types,TYPES).join('、'))+kvm('关爱原因',r.reason)+kvm('关爱时间',r.careDate)+kvm('执行人员',ordered(r.people,TEACHERS).join('、'))+kvm('关爱方式',r.method)+kvm('关爱结果',r.result)+kvm('证明材料',proofs,true)+kvm('创建人',r.createdName)+kvm('创建时间',r.createdAt.slice(0,16))+'</article>';
+    pad.innerHTML='<div class="c3m-card">'+studentHeadM(r.student,true)+'</div><article class="c3m-card"><div class="c3m-record-top"><b>关爱内容</b></div>'+kvm('关爱来源',ordered(r.sources,SOURCES).join('、'))+kvm('关爱类型',ordered(r.types,TYPES).join('、'))+kvm('关爱原因',r.reason)+kvm('关爱时间',r.careDate)+kvm('执行人员',ordered(r.people,TEACHERS).join('、'))+kvm('关爱方式',ordered(r.methods,METHODS).join('、'))+kvm('关爱结果',r.result)+kvm('证明材料',proofs,true)+kvm('创建人',r.createdName)+kvm('创建时间',r.createdAt.slice(0,16))+'</article>';
     bindImgFail(pad);pad.querySelectorAll('img[data-proof]').forEach(function(img){img.onclick=function(){viewImage(img.src,img.alt,phone())}});
     showScreen('sc-care3-detail');setUrl('care-detail',{id:id});
   }
@@ -310,7 +310,7 @@
     });
   }
   /* ----- 新增 / 编辑 ----- */
-  function freshDraft(){return {grade:'',className:'',studentId:'',sources:[],types:[],reason:'',careDate:today(),people:[],method:'',result:'',proofs:[]}}
+  function freshDraft(){return {grade:'',className:'',studentId:'',sources:[],types:[],reason:'',careDate:today(),people:[],methods:[],result:'',proofs:[]}}
   function openTeacherForm(id){
     if(takeFault('net')){toast(MSG.net);return}
     var r=id?findRecord(id):null;
@@ -318,7 +318,7 @@
     if(id&&!canEdit(r)){toast(MSG.noAuth);backToCare();return}
     if(!id&&!account.write){toast(MSG.noWrite);backToCare();return}
     T.editing=r?{id:r.id,version:r.version}:null;T.saving=false;
-    T.draft=r?{grade:r.student.grade,className:r.student.className,studentId:r.studentId,sources:r.sources.slice(),types:r.types.slice(),reason:r.reason,careDate:r.careDate,people:r.people.slice(),method:r.method,result:r.result,proofs:clone(r.proofs||[])}:freshDraft();
+    T.draft=r?{grade:r.student.grade,className:r.student.className,studentId:r.studentId,sources:r.sources.slice(),types:r.types.slice(),reason:r.reason,careDate:r.careDate,people:r.people.slice(),methods:(r.methods||[]).slice(),result:r.result,proofs:clone(r.proofs||[])}:freshDraft();
     T.reading=false;formScreen.querySelector('.sub-hd b').textContent=r?'编辑关爱记录':'新增关爱记录';
     renderTeacherForm();showScreen('sc-care3-form');setUrl(r?'care-edit':'care-new',r?{id:r.id}:null);
   }
@@ -338,7 +338,7 @@
       area('关爱原因','reason','请填写学生的真实情况',d.reason)+
       row('关爱时间','careDate',trigger('careDate',d.careDate,'请选择关爱时间'))+
       row('执行人员','people',trigger('people',ordered(d.people,TEACHERS).join('、'),'请选择执行人员',!d.studentId))+
-      row('关爱方式','method',trigger('method',d.method,'请选择关爱方式'))+
+      row('关爱方式','methods',trigger('methods',ordered(d.methods,METHODS).join('、'),'请选择关爱方式'))+
       area('关爱结果','result','请填写关爱过程和结果',d.result)+
       '<div class="c3m-field stack" data-field="proofs"><div class="c3m-field-head"><span>证明材料</span><span class="c3m-counter">'+d.proofs.length+'/9</span></div><input type="file" accept="image/jpeg,image/jpg,image/png" multiple hidden><div class="c3m-photos" data-photos></div><small>支持JPEG、JPG、PNG格式图片，最多九张，每张不超过10M</small><div class="c3m-reading" data-reading hidden>图片读取中…</div><div class="c3m-err" data-error="proofs"></div></div>'+
       '</section><div class="c3m-err" data-error="save" style="text-align:center"></div>';
@@ -355,7 +355,7 @@
       if(k==='sources')openPicker({field:'关爱来源',multiple:true,options:SOURCES.map(function(x){return {value:x,label:x}}),selected:d.sources,onConfirm:function(v){d.sources=v;renderTeacherForm()}});
       if(k==='types')openPicker({field:'关爱类型',multiple:true,options:TYPES.map(function(x){return {value:x,label:x}}),selected:d.types,onConfirm:function(v){d.types=v;renderTeacherForm()}});
       if(k==='people')openPicker({field:'执行人员',multiple:true,options:Array.from(new Set(TEACHERS.concat(d.people))).map(function(x){return {value:x,label:x}}),selected:d.people,onConfirm:function(v){d.people=v;renderTeacherForm()}});
-      if(k==='method')openPicker({field:'关爱方式',options:METHODS.map(function(x){return {value:x,label:x}}),selected:[d.method],onConfirm:function(v){d.method=v;renderTeacherForm()}});
+      if(k==='methods')openPicker({field:'关爱方式',multiple:true,options:METHODS.map(function(x){return {value:x,label:x}}),selected:d.methods,onConfirm:function(v){d.methods=v;renderTeacherForm()}});
       if(k==='careDate')openCalendar(d.careDate,function(v){d.careDate=v;renderTeacherForm()});
     }});
     pad.querySelectorAll('textarea').forEach(function(t){t.oninput=function(){d[t.name]=t.value;pad.querySelector('[data-count='+t.name+']').textContent=len(t.value)+'/100';clearErr(t.name)}});
@@ -400,7 +400,7 @@
     if(len(d.reason.trim())>100)return ['reason','关爱原因最多100字'];
     if(!validDate(d.careDate))return ['careDate','请选择有效关爱时间'];
     if(!d.people.length)return ['people','请选择执行人员'];
-    if(!d.method)return ['method','请选择关爱方式'];
+    if(!d.methods.length)return ['methods','请选择关爱方式'];
     if(!d.result.trim())return ['result','请填写关爱结果'];
     if(len(d.result.trim())>100)return ['result','关爱结果最多100字'];
     return null;
@@ -428,7 +428,7 @@
       snap={id:st.id,name:st.name,grade:st.grade,className:st.className,org:st.org.slice()};
     }else snap=clone(current.student);
     if(current&&current.version!==T.editing.version){toast(MSG.updatedEdit);return showErr('save',MSG.updatedEdit)}
-    var value={studentId:snap.id,student:snap,sources:ordered(d.sources,SOURCES),types:ordered(d.types,TYPES),reason:d.reason.trim(),careDate:d.careDate,people:ordered(d.people,TEACHERS),method:d.method,result:d.result.trim(),proofs:clone(d.proofs||[])};
+    var value={studentId:snap.id,student:snap,sources:ordered(d.sources,SOURCES),types:ordered(d.types,TYPES),reason:d.reason.trim(),careDate:d.careDate,people:ordered(d.people,TEACHERS),methods:ordered(d.methods,METHODS),result:d.result.trim(),proofs:clone(d.proofs||[])};
     var saved;
     if(current){saved=Object.assign({},current,value,{updatedAt:now(),updatedBy:account.name,version:current.version+1});audit.push({action:'编辑',operator:account.name,operatorId:account.id,operatedAt:saved.updatedAt,before:clone(current),after:clone(saved)});records.splice(records.indexOf(current),1,saved)}
     else{saved=Object.assign(value,{id:'r-'+String(++seq).padStart(5,'0'),createdBy:account.id,createdName:account.name,createdAt:now(),updatedAt:null,updatedBy:null,version:1});records.push(saved);audit.push({action:'新增',operator:account.name,operatorId:account.id,operatedAt:saved.createdAt,before:null,after:clone(saved)})}
@@ -439,7 +439,7 @@
   function spareStudent(){return students.find(function(s){return studentInScope(s)&&s.status==='在读'&&s.org[3]===MAIN_SCHOOL&&!records.some(function(r){return r.studentId===s.id})})||scopeStudents()[0]}
   function fillSample(st){
     var d=T.draft;if(!d)return false;st=st||spareStudent();if(!st){toast('当前账号没有可选学生，请切换为王老师后演示');return false}
-    Object.assign(d,{grade:st.grade,className:st.className,studentId:st.id,people:[st.teacher],sources:d.sources.length?d.sources:['班主任发现'],types:d.types.length?d.types:['学业困难学生'],reason:d.reason.trim()?d.reason:'近期作业完成率下降，课堂注意力不集中。',careDate:validDate(d.careDate)?d.careDate:today(),method:d.method||'学业帮扶与个性化辅导',result:d.result.trim()?d.result:'已安排每周两次课后辅导，学生作业完成情况好转。'});
+    Object.assign(d,{grade:st.grade,className:st.className,studentId:st.id,people:[st.teacher],sources:d.sources.length?d.sources:['班主任发现'],types:d.types.length?d.types:['学业困难学生'],reason:d.reason.trim()?d.reason:'近期作业完成率下降，课堂注意力不集中。',careDate:validDate(d.careDate)?d.careDate:today(),methods:d.methods.length?d.methods:['学业帮扶与个性化辅导','常态化家访与家校沟通'],result:d.result.trim()?d.result:'已安排每周两次课后辅导，学生作业完成情况好转。'});
     renderTeacherForm();return st;
   }
   function submitNow(){setTimeout(saveTeacher,60)}
@@ -493,7 +493,7 @@
     }
     items.push({group:'网络与提交',label:'提交时网络异常',sub:'提示“网络异常，请稍后重试”，按钮恢复，内容保留',run:function(){if(!fillSample(keepStudent()))return;FAULT.net=true;submitNow()}});
     items.push({label:'防重复提交',sub:'提交中按钮显示“提交中…”且不可再点',run:function(){if(!fillSample(keepStudent()))return;FAULT.net=true;saveTeacher();saveTeacher();hint('按钮已置为“提交中…”，重复点击无效')}});
-    var fields=[['grade','请选择年级',function(d){d.grade='';d.className='';d.studentId='';d.people=[]}],['className','请选择班级',function(d){d.className='';d.studentId='';d.people=[]}],['studentId','请选择学生姓名',function(d){d.studentId='';d.people=[]}],['sources','请选择关爱来源',function(d){d.sources=[]}],['types','请选择关爱类型',function(d){d.types=[]}],['reason','请填写关爱原因',function(d){d.reason='   '}],['reason','关爱原因最多100字',function(d){d.reason=new Array(102).join('情')}],['careDate','请选择有效关爱时间',function(d){d.careDate='2026-02-30'}],['people','请选择执行人员',function(d){d.people=[]}],['method','请选择关爱方式',function(d){d.method=''}],['result','请填写关爱结果',function(d){d.result=''}],['result','关爱结果最多100字',function(d){d.result=new Array(102).join('果')}]];
+    var fields=[['grade','请选择年级',function(d){d.grade='';d.className='';d.studentId='';d.people=[]}],['className','请选择班级',function(d){d.className='';d.studentId='';d.people=[]}],['studentId','请选择学生姓名',function(d){d.studentId='';d.people=[]}],['sources','请选择关爱来源',function(d){d.sources=[]}],['types','请选择关爱类型',function(d){d.types=[]}],['reason','请填写关爱原因',function(d){d.reason='   '}],['reason','关爱原因最多100字',function(d){d.reason=new Array(102).join('情')}],['careDate','请选择有效关爱时间',function(d){d.careDate='2026-02-30'}],['people','请选择执行人员',function(d){d.people=[]}],['methods','请选择关爱方式',function(d){d.methods=[]}],['result','请填写关爱结果',function(d){d.result=''}],['result','关爱结果最多100字',function(d){d.result=new Array(102).join('果')}]];
     var fieldItems=fields.map(function(f,i){return {group:i===0?'字段校验（点击即演示，红字定位到对应字段）':'',label:f[1],run:fieldDemo(f[0],f[2])}});
     fieldItems.push({group:'',label:'全部为空直接提交',sub:'只提示第一处“请选择年级”',run:function(){T.draft=freshDraft();T.draft.careDate='';renderTeacherForm();submitNow()}});
     var fake=function(n,type,size,fail){return Array.from({length:n},function(_,i){return {name:'示例'+(i+1)+(type==='image/png'?'.png':'.gif'),type:type,size:size,src:DEMO_PROOFS[i%2].src,fail:fail}})};
@@ -665,7 +665,7 @@
     if(takeFault('net')){toast(MSG.net);return}
     var r=records.find(function(x){return x.id===id&&inPath(x.student.org,W.org)});if(!r){document.querySelectorAll('.c3w-mask').forEach(function(m){m.remove()});toast(MSG.changed);renderWeb();return}
     webDetailId=id;
-    var m=openModal('关爱记录详情','<div class="c3w-sec">学生信息</div><div class="c3w-card">'+wrow('学生姓名',r.student.name)+wrow('学校',r.student.org[3])+wrow('年级',r.student.grade)+wrow('班级',r.student.className)+'</div><div class="c3w-sec">关爱内容</div><div class="c3w-card">'+wrow('关爱来源',ordered(r.sources,SOURCES).join('、'))+wrow('关爱类型',ordered(r.types,TYPES).join('、'))+wrow('关爱原因',r.reason)+wrow('关爱时间',r.careDate)+wrow('执行人员',ordered(r.people,TEACHERS).join('、'))+wrow('关爱方式',r.method)+wrow('关爱结果',r.result)+wrow('证明材料',(r.proofs||[]).length?'<div class="c3w-proofs">'+r.proofs.map(function(p,i){return '<img data-proof="'+i+'" alt="证明材料'+(i+1)+'" src="'+esc(broken?BROKEN_IMG:(p.src||''))+'">'}).join('')+'</div>':'--',true)+wrow('创建人',r.createdName)+wrow('创建时间',r.createdAt.slice(0,16))+'</div>','detail');
+    var m=openModal('关爱记录详情','<div class="c3w-sec">学生信息</div><div class="c3w-card">'+wrow('学生姓名',r.student.name)+wrow('学校',r.student.org[3])+wrow('年级',r.student.grade)+wrow('班级',r.student.className)+'</div><div class="c3w-sec">关爱内容</div><div class="c3w-card">'+wrow('关爱来源',ordered(r.sources,SOURCES).join('、'))+wrow('关爱类型',ordered(r.types,TYPES).join('、'))+wrow('关爱原因',r.reason)+wrow('关爱时间',r.careDate)+wrow('执行人员',ordered(r.people,TEACHERS).join('、'))+wrow('关爱方式',ordered(r.methods,METHODS).join('、'))+wrow('关爱结果',r.result)+wrow('证明材料',(r.proofs||[]).length?'<div class="c3w-proofs">'+r.proofs.map(function(p,i){return '<img data-proof="'+i+'" alt="证明材料'+(i+1)+'" src="'+esc(broken?BROKEN_IMG:(p.src||''))+'">'}).join('')+'</div>':'--',true)+wrow('创建人',r.createdName)+wrow('创建时间',r.createdAt.slice(0,16))+'</div>','detail');
     bindImgFail(m);m.querySelectorAll('img[data-proof]').forEach(function(img){img.onclick=function(){viewImage(img.src,img.alt,document.body)}});
   }
   /* ----- Web 演示：场景 / 异常 ----- */
