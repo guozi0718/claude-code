@@ -330,3 +330,11 @@ section.c3t .justify-end>button[data-dom-id*="search"]{order:1}
 .phone,.phone *,.c3w-section,.c3w-section *,.c3w-mask,.c3w-mask *,.c3x-bar,.c3x-bar *,.c3t-host,.c3t-host *,.c3t-modal,.c3t-modal *{scrollbar-width:none;-ms-overflow-style:none}
 .phone ::-webkit-scrollbar,.phone::-webkit-scrollbar,.c3w-section ::-webkit-scrollbar,.c3w-section::-webkit-scrollbar,.c3w-mask ::-webkit-scrollbar,.c3x-bar ::-webkit-scrollbar,.c3t-host ::-webkit-scrollbar,.c3t-host::-webkit-scrollbar,.c3t-modal ::-webkit-scrollbar{display:none;width:0;height:0}
 .c3m-options{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+/* 老师端执行人员：手动输入（与选择字段同一行样式，右对齐） */
+.c3m-field input.c3m-input{flex:1;min-width:0;height:44px;border:0;background:transparent;text-align:right;font:inherit;font-size:12px;color:#1e3556;outline:none;padding:0 2px}
+.c3m-field input.c3m-input::placeholder{color:#9aa8bb}
+.c3m-field.has-err input.c3m-input{color:#1e3556}
+/* Web：统计维度组合下拉 */
+.c3w-dim{display:flex;gap:8px;align-items:center}
+.c3w-dim select[name=dim]{min-width:84px!important}
+.c3w-dim select[name=period]{min-width:212px!important}
