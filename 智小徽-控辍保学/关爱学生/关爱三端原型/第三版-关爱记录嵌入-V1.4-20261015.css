@@ -338,3 +338,7 @@ section.c3t .justify-end>button[data-dom-id*="search"]{order:1}
 .c3w-dim{display:flex;gap:8px;align-items:center}
 .c3w-dim select[name=dim]{min-width:84px!important}
 .c3w-dim select[name=period]{min-width:212px!important}
+/* 执行人员输入框：字号、字重、行高、占位色与其他选择项完全一致 */
+.c3m-field input.c3m-input{font-family:inherit!important;font-size:12px!important;font-weight:400!important;line-height:normal!important;letter-spacing:normal!important;color:#1e3556!important;-webkit-text-size-adjust:100%;text-size-adjust:100%;padding:0 18px 0 2px!important;-webkit-appearance:none;appearance:none}
+.c3m-field input.c3m-input::placeholder{font-size:12px!important;font-weight:400!important;color:#9aa8bb!important;opacity:1}
+.c3m-phone,.c3m-phone *{-webkit-text-size-adjust:100%;text-size-adjust:100%}

@@ -69,6 +69,8 @@
   function hint(message){var h=document.querySelector('.c3x-hint');if(h)h.remove();h=document.createElement('div');h.className='c3x-hint';h.textContent=message;document.body.appendChild(h);setTimeout(function(){h.remove()},4200)}
 
   /* ---------- 参数式路由 ---------- */
+  /* 老师端表单年级只显示“X年级”，不带入学年级 */
+  function gradeShort(g){return String(g||'').replace(/[（(][^（()）]*级[）)]\s*$/,'')}
   function param(k){return new URLSearchParams(location.search).get(k)}
   function pageKey(){var p=param('page')||'';return p.indexOf(PREFIX+'-')===0?p.slice(PREFIX.length+1):''}
   function setUrl(key,extra,push){
@@ -347,7 +349,7 @@
   function renderTeacherForm(){
     var d=T.draft,pad=formScreen.querySelector('.c3m-pad');
     pad.innerHTML='<div class="c3m-title">学生信息</div><section class="c3m-card">'+
-      row('年级','grade',trigger('grade',d.grade,'请选择年级'))+
+      row('年级','grade',trigger('grade',gradeShort(d.grade),'请选择年级'))+
       row('班级','className',trigger('className',d.className,'请选择班级',!d.grade))+
       row('学生姓名','studentId',trigger('studentId',d.studentId?draftStudentName(d):'','请选择学生姓名',!d.className))+
       '</section><div class="c3m-title">关爱内容</div><section class="c3m-card">'+
@@ -355,7 +357,7 @@
       row('关爱类型','types',trigger('types',ordered(d.types,TYPES).join('、'),'请选择关爱类型'))+
       area('关爱原因','reason','请填写学生的真实情况',d.reason)+
       row('关爱时间','careDate',trigger('careDate',d.careDate,'请选择关爱时间'))+
-      row('执行人员','people','<input class="c3m-input" name="people" maxlength="50" autocomplete="off" placeholder="请输入执行人员，多人用顿号分隔" value="'+esc(d.people.join('、'))+'">')+
+      row('执行人员','people','<input class="c3m-input" name="people" maxlength="50" autocomplete="off" placeholder="请填写执行人员名称" value="'+esc(d.people.join('、'))+'">')+
       row('关爱方式','methods',trigger('methods',ordered(d.methods,METHODS).join('、'),'请选择关爱方式'))+
       area('关爱结果','result','请填写关爱过程和结果',d.result)+
       '<div class="c3m-field stack" data-field="proofs"><div class="c3m-field-head"><span>证明材料</span><span class="c3m-counter">'+d.proofs.length+'/9</span></div><input type="file" accept="image/jpeg,image/jpg,image/png" multiple hidden><div class="c3m-photos" data-photos></div><small>支持JPEG、JPG、PNG格式图片，最多九张，每张不超过10M</small><div class="c3m-reading" data-reading hidden>图片读取中…</div><div class="c3m-err" data-error="proofs"></div></div>'+
@@ -367,7 +369,7 @@
     var d=T.draft;
     pad.querySelectorAll('[data-pick]').forEach(function(b){b.onclick=function(){
       var k=b.dataset.pick,scope=scopeStudents();clearErr(k);
-      if(k==='grade')openPicker({field:'年级',options:Array.from(new Set(scope.map(function(s){return s.grade}))).map(function(g){return {value:g,label:g}}),selected:[d.grade],onConfirm:function(v){if(v!==d.grade){d.grade=v;d.className='';d.studentId=''}renderTeacherForm()}});
+      if(k==='grade')openPicker({field:'年级',options:Array.from(new Set(scope.map(function(s){return s.grade}))).map(function(g){return {value:g,label:gradeShort(g)}}),selected:[d.grade],onConfirm:function(v){if(v!==d.grade){d.grade=v;d.className='';d.studentId=''}renderTeacherForm()}});
       if(k==='className')openPicker({field:'班级',options:Array.from(new Set(scope.filter(function(s){return s.grade===d.grade}).map(function(s){return s.className}))).sort().map(function(c){return {value:c,label:c}}),selected:[d.className],onConfirm:function(v){if(v!==d.className){d.className=v;d.studentId=''}renderTeacherForm()}});
       if(k==='studentId')openPicker({field:'学生姓名',options:scope.filter(function(s){return s.grade===d.grade&&s.className===d.className}).map(function(s){return {value:s.id,label:s.name}}),selected:[d.studentId],onConfirm:function(v){if(v!==d.studentId){var s=findStudent(v);d.studentId=v;if(!d.people.length&&s)d.people=[s.teacher]}renderTeacherForm()}});
       if(k==='sources')openPicker({field:'关爱来源',multiple:true,options:SOURCES.map(function(x){return {value:x,label:x}}),selected:d.sources,onConfirm:function(v){d.sources=v;renderTeacherForm()}});
@@ -443,7 +445,7 @@
       if(!st){d.studentId='';renderTeacherForm();return showErr('studentId','学生信息已更新，请重新选择学生。')}
       if(st.status!=='在读'){d.studentId='';renderTeacherForm();return showErr('studentId','该学生当前不是在读状态，不能'+(current?'保存':'新增')+'关爱记录，请重新选择学生。')}
       if(!studentInScope(st)){d.studentId='';renderTeacherForm();return showErr('studentId','该学生已不在您的数据范围内，请重新选择学生。')}
-      if(st.grade!==d.grade||st.className!==d.className){d.grade=st.grade;d.className=st.className;renderTeacherForm();return showErr('studentId','该学生的年级或班级已发生变化，已更新为“'+st.grade+'·'+st.className+'”，请确认后重新提交。')}
+      if(st.grade!==d.grade||st.className!==d.className){d.grade=st.grade;d.className=st.className;renderTeacherForm();return showErr('studentId','该学生的年级或班级已发生变化，已更新为“'+gradeShort(st.grade)+'·'+st.className+'”，请确认后重新提交。')}
       snap={id:st.id,name:st.name,grade:st.grade,className:st.className,org:st.org.slice()};
     }else snap=clone(current.student);
     if(current&&current.version!==T.editing.version){toast(MSG.updatedEdit);return showErr('save',MSG.updatedEdit)}
