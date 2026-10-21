@@ -344,3 +344,8 @@ section.c3t .justify-end>button[data-dom-id*="search"]{order:1}
 .c3m-phone,.c3m-phone *{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 /* 编辑时学生信息只读 */
 .c3m-ro{flex:1;min-width:0;text-align:right;font-size:12px;color:#1e3556;padding:0 18px 0 2px;min-height:45px;line-height:45px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* 学校端删除 */
+.c3w-link.c3w-del{color:#e5484d!important}
+.c3w-modal.c3w-confirm{width:400px}
+.c3w-modal.c3w-confirm .c3w-modal-body p{margin:6px 0;font-size:14px;color:#354052;line-height:22px}
+.c3w-modal-foot button.c3w-ok{background:#009a3d!important;border-color:#009a3d!important;color:#fff!important}

@@ -147,7 +147,7 @@
   function canEdit(r){return !!r&&account.write&&account.operate&&r.createdBy===account.id&&visibleTeacher(r)}
   function studentInScope(s){return !!s&&account.view!=='none'&&inPath(s.org,ROOT)&&(account.view==='all'||s.teacher===account.name)}
   var RULES=['关爱记录位于控辍保学页面，与预警记录、劝返记录并列；预警、劝返内容中不含关爱。','每条记录独立保存，不形成可追加的关爱个案。','只展示本学年（按关爱时间，9月1日至次年8月31日）关爱记录，首批20条，下滑每次再加载20条。','查看范围受学生数据权限控制；本人创建且同时有新增（写入）和记录操作权限的记录，才在记录卡学生信息右侧显示“...”。','创建时间由服务端写入且永不因编辑改变，列表按创建时间倒序（同秒按记录ID倒序）。','提交时服务端重新校验账号权限、学生在读状态、年级班级、数据范围和记录版本。','每次新增、编辑、删除均由后端保存操作人、操作时间及前后快照。'];
-  var WEB_RULES=['本页只读：不提供新增、编辑、删除或处理按钮，操作列唯一按钮为“详情”。','一条记录对应一次关爱；同一学生可有多行，不合并为个案，不显示关联信息或关爱次数。','列表按服务端首次创建时间倒序，显示到分钟；编辑不改变创建时间。','统计维度可选周/月/学期/学年，并在对应日期区间中选择，默认按月、本月；按创建日期统计，含起止当天。查询/重置回第1页，每页10条。','监管汇总按组织名称逐层下钻：关爱学生数按学生ID去重，关爱次数按独立记录计数，不按执行人数计次。','下钻继承上级统计维度和日期；返回恢复上一层原条件与页码。地址参数只用于定位页面，不能扩大授权范围。'];
+  var WEB_RULES=[(role==='school'?'学校端不提供新增、编辑；操作列为“详情”“删除”。删除需账号职务具备关爱删除权限，二次确认后删除，不可恢复，老师端、监管端同步减少。':'本页只读：不提供新增、编辑、删除或处理按钮，操作列唯一按钮为“详情”。'),'一条记录对应一次关爱；同一学生可有多行，不合并为个案，不显示关联信息或关爱次数。','列表按服务端首次创建时间倒序，显示到分钟；编辑不改变创建时间。','统计维度可选周/月/学期/学年，并在对应日期区间中选择，默认按月、本月；按创建日期统计，含起止当天。查询/重置回第1页，每页10条。','监管汇总按组织名称逐层下钻：关爱学生数按学生ID去重，关爱次数按独立记录计数，不按执行人数计次。','下钻继承上级统计维度和日期；返回恢复上一层原条件与页码。地址参数只用于定位页面，不能扩大授权范围。'];
   function rulesDialog(list){if(isTeacher)mobileDialog('规则说明','<ul>'+list.map(function(r){return '<li>'+esc(r)+'</li>'}).join('')+'</ul>',null,'知道了');else openModal('规则说明','<div class="c3w-card"><ul style="margin:0;padding-left:18px;line-height:1.9">'+list.map(function(r){return '<li>'+esc(r)+'</li>'}).join('')+'</ul></div>')}
 
   /* ======================================================================
@@ -640,9 +640,9 @@
       '<div class="c3w-filter"><label>学生姓名</label><span style="position:relative"><input class="c3w-name" name="name" placeholder="请输入学生姓名" value="'+esc(f.name)+'" autocomplete="off"><div class="c3w-suggest" hidden></div></span></div>'+
       '<div class="c3w-filter"><label>关爱来源</label><select name="source">'+opts(SOURCES,f.source,'全部')+'</select></div>'+
       '<div class="c3w-err" data-err></div></div><div class="c3w-actions"><button class="c3w-btn query" type="submit">查询</button><button class="c3w-btn reset" type="button" data-reset>重置</button></div></form>'+
-      '<div class="c3w-count">共 '+list.length+' 条关爱记录</div>'+
-      '<div class="c3w-table-wrap" tabindex="0" aria-label="关爱记录列表，可左右滑动"><table class="c3w-table c3w-list"><colgroup><col style="width:100px"><col style="width:150px"><col style="width:80px"><col style="width:150px"><col style="width:150px"><col style="width:150px"><col style="width:220px"><col style="width:110px"><col style="width:250px"><col style="width:100px"></colgroup><thead><tr><th>学生姓名</th><th>年级</th><th>班级</th><th>创建日期</th><th>关爱来源</th><th>关爱类型</th><th>关爱原因</th><th>关爱时间</th><th>关爱结果</th><th class="c3w-op">操作</th></tr></thead><tbody>'+
-      (rows.length?rows.map(function(r){var src=ordered(r.sources,SOURCES).join('、'),tp=ordered(r.types,TYPES).join('、');return '<tr><td>'+esc(r.student.name||'--')+'</td><td>'+esc(r.student.grade||'--')+'</td><td>'+esc(r.student.className||'--')+'</td><td>'+esc(r.createdAt.slice(0,16))+'</td><td title="'+esc(src)+'">'+esc(short(src))+'</td><td title="'+esc(tp)+'">'+esc(short(tp))+'</td><td class="left" title="'+esc(r.reason)+'">'+esc(r.reason||'--')+'</td><td>'+esc(r.careDate||'--')+'</td><td class="left" title="'+esc(r.result)+'">'+esc(r.result||'--')+'</td><td class="c3w-op"><button type="button" class="c3w-link" data-web-detail="'+esc(r.id)+'">详情</button></td></tr>'}).join(''):'<tr><td colspan="9" class="c3w-empty">'+MSG.empty+'</td><td class="c3w-op c3w-empty"></td></tr>')+
+      (isSchool?'':'<div class="c3w-count">共 '+list.length+' 条关爱记录</div>')+
+      '<div class="c3w-table-wrap" tabindex="0" aria-label="关爱记录列表，可左右滑动"><table class="c3w-table c3w-list"><colgroup><col style="width:100px"><col style="width:150px"><col style="width:80px"><col style="width:150px"><col style="width:150px"><col style="width:150px"><col style="width:220px"><col style="width:110px"><col style="width:250px"><col style="width:'+(isSchool?130:100)+'px"></colgroup><thead><tr><th>学生姓名</th><th>年级</th><th>班级</th><th>创建日期</th><th>关爱来源</th><th>关爱类型</th><th>关爱原因</th><th>关爱时间</th><th>关爱结果</th><th class="c3w-op">操作</th></tr></thead><tbody>'+
+      (rows.length?rows.map(function(r){var src=ordered(r.sources,SOURCES).join('、'),tp=ordered(r.types,TYPES).join('、');return '<tr><td>'+esc(r.student.name||'--')+'</td><td>'+esc(r.student.grade||'--')+'</td><td>'+esc(r.student.className||'--')+'</td><td>'+esc(r.createdAt.slice(0,16))+'</td><td title="'+esc(src)+'">'+esc(short(src))+'</td><td title="'+esc(tp)+'">'+esc(short(tp))+'</td><td class="left" title="'+esc(r.reason)+'">'+esc(r.reason||'--')+'</td><td>'+esc(r.careDate||'--')+'</td><td class="left" title="'+esc(r.result)+'">'+esc(r.result||'--')+'</td><td class="c3w-op"><button type="button" class="c3w-link" data-web-detail="'+esc(r.id)+'">详情</button>'+(isSchool?'<button type="button" class="c3w-link c3w-del" data-web-del="'+esc(r.id)+'">删除</button>':'')+'</td></tr>'}).join(''):'<tr><td colspan="9" class="c3w-empty">'+MSG.empty+'</td><td class="c3w-op c3w-empty"></td></tr>')+
       '</tbody></table></div><div class="c3w-pager"><span>共 '+list.length+' 条，每页10条</span><span><button type="button" data-prev '+(W.page<=1?'disabled':'')+'>上一页</button>'+W.page+' / '+total+'<button type="button" data-next '+(W.page>=total?'disabled':'')+'>下一页</button></span></div>';
   }
   function submitQuery(){var f=section.querySelector('[data-form]');if(f)f.requestSubmit?f.requestSubmit():f.dispatchEvent(new Event('submit',{cancelable:true}))}
@@ -667,6 +667,32 @@
     var turn=function(step){if(takeFault('net')){toast(MSG.net);return}W.page+=step;renderWeb()};
     if(prev)prev.onclick=function(){turn(-1)};if(next)next.onclick=function(){turn(1)};
     section.querySelectorAll('[data-web-detail]').forEach(function(b){b.onclick=function(){openWebDetail(b.dataset.webDetail)}});
+    section.querySelectorAll('[data-web-del]').forEach(function(b){b.onclick=function(){webAskDelete(b.dataset.webDel)}});
+  }
+  /* ----- 学校端删除：二次确认，参照老师端删除弹窗 ----- */
+  var SCHOOL_PERM={del:true};
+  function webConfirm(title,text,onOk){
+    document.querySelectorAll('.c3w-mask[data-kind=confirm]').forEach(function(x){x.remove()});
+    var m=document.createElement('div');m.className='c3w-mask';m.dataset.kind='confirm';
+    m.innerHTML='<div class="c3w-modal c3w-confirm" role="dialog" aria-modal="true" aria-label="'+esc(title)+'"><div class="c3w-modal-head"><h3>'+esc(title)+'</h3><button type="button" class="c3w-close" data-close aria-label="关闭">×</button></div><div class="c3w-modal-body"><p>'+esc(text)+'</p></div><div class="c3w-modal-foot"><button type="button" data-close>取消</button><button type="button" class="c3w-ok" data-ok>确定</button></div></div>';
+    m.querySelectorAll('[data-close]').forEach(function(b){b.onclick=function(){m.remove();refreshHelp()}});
+    m.querySelector('[data-ok]').onclick=function(){m.remove();onOk();refreshHelp()};
+    document.body.appendChild(m);refreshHelp();return m;
+  }
+  function webFind(id){return records.find(function(x){return x.id===id&&inPath(x.student.org,W.org)})}
+  function webAskDelete(id){
+    if(!webFind(id)){toast(MSG.changed);renderWeb();return}
+    if(!SCHOOL_PERM.del){toast(MSG.noAuth);renderWeb();return}
+    webConfirm('删除关爱记录','确认删除该关爱记录吗？删除后不可恢复！',function(){
+      if(takeFault('net')){toast(MSG.net);return}
+      var current=webFind(id);
+      if(!current){toast(MSG.changed);renderWeb();return}
+      if(!SCHOOL_PERM.del){toast(MSG.noAuth);renderWeb();return}
+      audit.push({action:'删除',operator:'学校管理员',operatorId:'school-admin',operatedAt:now(),before:clone(current),after:null});
+      records.splice(records.indexOf(current),1);
+      document.querySelectorAll('.c3w-mask').forEach(function(x){x.remove()});
+      renderWeb();toast('删除成功');
+    });
   }
   function webCalendar(input){
     document.querySelectorAll('.c3w-cal').forEach(function(x){x.remove()});
@@ -722,7 +748,12 @@
         {group:'无结果',label:MSG.empty,sub:'姓名“不存在的学生”查询，总数0、分页1/1',run:fillAndQuery({name:'不存在的学生'})},
         {group:'数据变化',label:MSG.changed,sub:'第一行记录已在老师端删除，点击其“详情”后提示并刷新列表',run:function(){var r=firstRow();if(!r){toast('当前结果为空，请先切换为按学年统计');return}records.splice(records.indexOf(r),1);section.querySelector('[data-web-detail]').click()}},
         netItem('下一次查询/重置/翻页/详情失败，保留原条件与原结果')
-      ])}
+      ],isSchool?[
+        {group:'删除（学校端）',label:'删除第一行记录',sub:'弹出“删除关爱记录”二次确认，确定后提示“删除成功”并刷新列表',run:function(){var b=section.querySelector('[data-web-del]');if(!b){toast('当前结果为空，请先切换为按学年统计');return}b.click()}},
+        {label:'删除时记录已被删除',sub:'确认删除时提示“'+MSG.changed+'”并刷新列表',run:function(){var b=section.querySelector('[data-web-del]');if(!b){toast('当前结果为空，请先切换为按学年统计');return}var id=b.dataset.webDel;b.click();var r=findRecord(id);if(r)records.splice(records.indexOf(r),1);hint('已模拟：该记录已在其他端删除，请在弹窗中点“确定”')}},
+        {label:'删除时权限已被收回',sub:'确认删除时提示“'+MSG.noAuth+'”，不删除',run:function(){var b=section.querySelector('[data-web-del]');if(!b){toast('当前结果为空，请先切换为按学年统计');return}b.click();SCHOOL_PERM.del=false;setTimeout(function(){SCHOOL_PERM.del=true},15000);hint('已模拟：删除权限已收回，请在弹窗中点“确定”')}},
+        {label:'删除时网络异常',sub:'确认删除时提示“'+MSG.net+'”，不删除',run:function(){var b=section.querySelector('[data-web-del]');if(!b){toast('当前结果为空，请先切换为按学年统计');return}b.click();FAULT.net=true;hint('已模拟：网络异常，请在弹窗中点“确定”')}}
+      ]:[])}
     ]};
   }
   function webSummaryHelp(){
