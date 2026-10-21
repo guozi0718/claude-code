@@ -343,15 +343,19 @@
     renderTeacherForm();showScreen('sc-care3-form');setUrl(r?'care-edit':'care-new',r?{id:r.id}:null);
   }
   function trigger(name,value,placeholder,disabled){return '<button type="button" class="c3m-trigger'+(value?'':' placeholder')+'" data-pick="'+name+'" '+(disabled?'disabled':'')+' title="'+esc(value||placeholder)+'"><span>'+esc(value||placeholder)+'</span></button>'}
+  /* 编辑时学生信息只读，保持创建时快照 */
+  function fixedVal(v){return '<div class="c3m-ro" title="'+esc(v||'--')+'">'+esc(v||'--')+'</div>'}
   function row(label,name,inner){return '<div class="c3m-field" data-field="'+name+'"><label>'+esc(label)+'<span class="c3m-req">*</span></label>'+inner+'</div><div class="c3m-err" data-error="'+name+'"></div>'}
   function area(label,name,placeholder,value){return '<div class="c3m-field stack" data-field="'+name+'"><div class="c3m-field-head"><span>'+esc(label)+'<span class="c3m-req">*</span></span><span class="c3m-counter" data-count="'+name+'">'+len(value)+'/100</span></div><textarea name="'+name+'" maxlength="100" placeholder="'+esc(placeholder)+'">'+esc(value)+'</textarea><div class="c3m-err" data-error="'+name+'"></div></div>'}
   function draftStudentName(d){var st=findStudent(d.studentId);if(st)return st.name;var cur=T.editing&&findRecord(T.editing.id);return cur&&cur.studentId===d.studentId?cur.student.name:''}
   function renderTeacherForm(){
     var d=T.draft,pad=formScreen.querySelector('.c3m-pad');
     pad.innerHTML='<div class="c3m-title">学生信息</div><section class="c3m-card">'+
-      row('年级','grade',trigger('grade',gradeShort(d.grade),'请选择年级'))+
-      row('班级','className',trigger('className',d.className,'请选择班级',!d.grade))+
-      row('学生姓名','studentId',trigger('studentId',d.studentId?draftStudentName(d):'','请选择学生姓名',!d.className))+
+      (T.editing?
+        row('年级','grade',fixedVal(gradeShort(d.grade)))+row('班级','className',fixedVal(d.className))+row('学生姓名','studentId',fixedVal(draftStudentName(d))):
+        row('年级','grade',trigger('grade',gradeShort(d.grade),'请选择年级'))+
+        row('班级','className',trigger('className',d.className,'请选择班级',!d.grade))+
+        row('学生姓名','studentId',trigger('studentId',d.studentId?draftStudentName(d):'','请选择学生姓名',!d.className)))+
       '</section><div class="c3m-title">关爱内容</div><section class="c3m-card">'+
       row('关爱来源','sources',trigger('sources',ordered(d.sources,SOURCES).join('、'),'请选择关爱来源'))+
       row('关爱类型','types',trigger('types',ordered(d.types,TYPES).join('、'),'请选择关爱类型'))+
@@ -440,7 +444,7 @@
     if(T.editing&&(!current||!visibleTeacher(current))){toast(MSG.changed);backToCare();return}
     if(current&&!canEdit(current)){toast(MSG.noAuth);return showErr('save',MSG.noAuth)}
     if(!current&&!account.write){toast(MSG.noWrite);return showErr('save',MSG.noWrite)}
-    var changedStudent=!current||d.studentId!==current.studentId,st=findStudent(d.studentId),snap;
+    var changedStudent=!current,st=findStudent(d.studentId),snap;
     if(changedStudent){
       if(!st){d.studentId='';renderTeacherForm();return showErr('studentId','学生信息已更新，请重新选择学生。')}
       if(st.status!=='在读'){d.studentId='';renderTeacherForm();return showErr('studentId','该学生当前不是在读状态，不能'+(current?'保存':'新增')+'关爱记录，请重新选择学生。')}
@@ -459,8 +463,10 @@
   /* ----- 老师端演示：场景 / 异常 ----- */
   function spareStudent(){return students.find(function(s){return studentInScope(s)&&s.status==='在读'&&s.org[3]===MAIN_SCHOOL&&!records.some(function(r){return r.studentId===s.id})})||scopeStudents()[0]}
   function fillSample(st){
-    var d=T.draft;if(!d)return false;st=st||spareStudent();if(!st){toast('当前账号没有可选学生，请切换为王老师后演示');return false}
+    var d=T.draft;if(!d)return false;
+    if(T.editing){var keep={grade:d.grade,className:d.className,studentId:d.studentId};st=findStudent(d.studentId)||{teacher:d.people[0]||'李老师',grade:d.grade,className:d.className,id:d.studentId}}else st=st||spareStudent();if(!st){toast('当前账号没有可选学生，请切换为王老师后演示');return false}
     Object.assign(d,{grade:st.grade,className:st.className,studentId:st.id,people:[st.teacher],sources:d.sources.length?d.sources:['班主任发现'],types:d.types.length?d.types:['学业困难学生'],reason:d.reason.trim()?d.reason:'近期作业完成率下降，课堂注意力不集中。',careDate:validDate(d.careDate)?d.careDate:today(),methods:d.methods.length?d.methods:['学业帮扶与个性化辅导','常态化家访与家校沟通'],result:d.result.trim()?d.result:'已安排每周两次课后辅导，学生作业完成情况好转。'});
+    if(keep)Object.assign(d,keep);
     renderTeacherForm();return st;
   }
   function submitNow(){setTimeout(saveTeacher,60)}
@@ -501,7 +507,7 @@
     var editing=!!T.editing;
     var studentChange=function(label,sub,mutate,group){return {group:group,label:label,sub:sub,run:function(){var st=fillSample();if(!st)return;mutate(st);submitNow()}}};
     var keepStudent=function(){return T.draft.studentId?findStudent(T.draft.studentId)||undefined:undefined};
-    var items=[
+    var items=editing?[]:[
       studentChange('学生已非在读（休学/转出/毕业）','清空学生，需重新选择；关爱内容保留',function(st){st.status='休学'},'学生复核（提交时服务端校验；点击后自动填写示例并提交）'),
       studentChange('学生年级或班级已变化（升级/调班）','自动刷新为最新年级班级，确认后再次点“确定”即可保存',function(st){st.className=st.className==='1班'?'3班':'4班'}),
       studentChange('学生已不在您的数据范围内','学生已转出本校或调离本人班级；不显示转入学校',function(st){st.org=st.org.slice(0,3).concat([OTHER_SCHOOL])}),
@@ -515,8 +521,9 @@
     items.push({group:'网络与提交',label:'提交时网络异常',sub:'提示“网络异常，请稍后重试”，按钮恢复，内容保留',run:function(){if(!fillSample(keepStudent()))return;FAULT.net=true;submitNow()}});
     items.push({label:'防重复提交',sub:'提交中按钮显示“提交中…”且不可再点',run:function(){if(!fillSample(keepStudent()))return;FAULT.net=true;saveTeacher();saveTeacher();hint('按钮已置为“提交中…”，重复点击无效')}});
     var fields=[['grade','请选择年级',function(d){d.grade='';d.className='';d.studentId=''}],['className','请选择班级',function(d){d.className='';d.studentId=''}],['studentId','请选择学生姓名',function(d){d.studentId=''}],['sources','请选择关爱来源',function(d){d.sources=[]}],['types','请选择关爱类型',function(d){d.types=[]}],['reason','请填写关爱原因',function(d){d.reason='   '}],['reason','关爱原因最多100字',function(d){d.reason=new Array(102).join('情')}],['careDate','请选择有效关爱时间',function(d){d.careDate='2026-02-30'}],['people','请填写执行人员',function(d){d.people=[]}],['people','执行人员最多50字',function(d){d.people=[new Array(52).join('师')]}],['methods','请选择关爱方式',function(d){d.methods=[]}],['result','请填写关爱结果',function(d){d.result=''}],['result','关爱结果最多100字',function(d){d.result=new Array(102).join('果')}]];
+    if(editing)fields=fields.filter(function(f){return ['grade','className','studentId'].indexOf(f[0])<0});
     var fieldItems=fields.map(function(f,i){return {group:i===0?'字段校验（点击即演示，红字定位到对应字段）':'',label:f[1],run:fieldDemo(f[0],f[2])}});
-    fieldItems.push({group:'',label:'全部为空直接提交',sub:'只提示第一处“请选择年级”',run:function(){T.draft=freshDraft();T.draft.careDate='';renderTeacherForm();submitNow()}});
+    if(!editing)fieldItems.push({group:'',label:'全部为空直接提交',sub:'只提示第一处“请选择年级”',run:function(){T.draft=freshDraft();T.draft.careDate='';renderTeacherForm();submitNow()}});
     var fake=function(n,type,size,fail){return Array.from({length:n},function(_,i){return {name:'示例'+(i+1)+(type==='image/png'?'.png':'.gif'),type:type,size:size,src:DEMO_PROOFS[i%2].src,fail:fail}})};
     var proofItems=[
       {group:'证明材料（点击即演示）',label:'最多上传9张图片',sub:'一次选择10张，本次不加入',run:function(){addFiles(fake(10,'image/png',1000))}},
