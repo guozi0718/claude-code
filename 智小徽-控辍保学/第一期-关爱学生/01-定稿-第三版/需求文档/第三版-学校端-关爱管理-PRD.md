@@ -37,7 +37,7 @@
 
 | 资料 | 链接 / 文件 | 说明 |
 |---|---|---|
-| 本端原型 | [打开在线原型](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-学校端关爱管理-V1.4-20261015.html?page=school-care) | 控辍保学下“关爱管理”菜单，记录列表、详情与删除。 |
+| 本端原型 | [打开在线原型](https://guozi0718.github.io/claude-code/care3/school-care.html) | 控辍保学下“关爱管理”菜单，记录列表、详情与删除。 |
 | 视觉与接口 | 无独立视觉稿；接口待补充 | 原型为前端演示，数据只在当前页面内存中，不落库。 |
 
 ## 5. 当前版本需求范围
@@ -54,7 +54,7 @@
 
 ### 6.1 本校关爱记录列表
 
-[本页原型](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-学校端关爱管理-V1.4-20261015.html?page=school-care)
+[本页原型](https://guozi0718.github.io/claude-code/care3/school-care.html)
 
 #### 6.1.1 页面说明
 
@@ -125,7 +125,7 @@
 
 ### 6.2 关爱记录详情
 
-[本页原型](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-学校端关爱管理-V1.4-20261015.html?page=school-care)
+[本页原型](https://guozi0718.github.io/claude-code/care3/school-care.html)
 
 #### 6.2.1 页面说明
 

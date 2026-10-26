@@ -37,10 +37,10 @@
 
 | 资料 | 链接 / 文件 | 说明 |
 |---|---|---|
-| 部级原型 | [打开部级](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-部级监管端关爱管理-V1.4-20261015.html?page=ministry-care) | 从省份汇总起逐层下钻。 |
-| 省级原型 | [打开省级](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-省级监管端关爱管理-V1.4-20261015.html?page=province-care) | 从授权省内地市起逐层下钻。 |
-| 地市级原型 | [打开地市级](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-地市监管端关爱管理-V1.4-20261015.html?page=city-care) | 从授权市内区县起逐层下钻。 |
-| 区县级原型 | [打开区县级](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-区县监管端关爱管理-V1.4-20261015.html?page=district-care) | 从授权区县内学校起逐层下钻。 |
+| 部级原型 | [打开部级](https://guozi0718.github.io/claude-code/care3/ministry-care.html) | 从省份汇总起逐层下钻。 |
+| 省级原型 | [打开省级](https://guozi0718.github.io/claude-code/care3/province-care.html) | 从授权省内地市起逐层下钻。 |
+| 地市级原型 | [打开地市级](https://guozi0718.github.io/claude-code/care3/city-care.html) | 从授权市内区县起逐层下钻。 |
+| 区县级原型 | [打开区县级](https://guozi0718.github.io/claude-code/care3/district-care.html) | 从授权区县内学校起逐层下钻。 |
 | 视觉与接口 | 无独立视觉稿；接口待补充 | 原型为前端演示，数据只在当前页面内存中，不落库。 |
 
 ## 5. 当前版本需求范围
@@ -57,7 +57,7 @@
 
 ### 6.1 组织关爱汇总与逐层下钻
 
-[本页原型](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-部级监管端关爱管理-V1.4-20261015.html?page=ministry-care)
+[本页原型](https://guozi0718.github.io/claude-code/care3/ministry-care.html)
 
 #### 6.1.1 页面说明
 
@@ -104,7 +104,7 @@
 
 ### 6.2 学校底层关爱记录列表
 
-[本页原型](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-区县监管端关爱管理-V1.4-20261015.html?page=district-care&org=凤翔区第一实验小学)
+[本页原型](https://guozi0718.github.io/claude-code/care3/district-care.html?org=凤翔区第一实验小学)
 
 #### 6.2.1 页面说明
 
@@ -169,7 +169,7 @@
 
 ### 6.3 关爱记录详情
 
-[本页原型](https://guozi0718.github.io/claude-code/智小徽-控辍保学/关爱学生/关爱三端原型/第三版-区县监管端关爱管理-V1.4-20261015.html?page=district-care&org=凤翔区第一实验小学)
+[本页原型](https://guozi0718.github.io/claude-code/care3/district-care.html?org=凤翔区第一实验小学)
 
 #### 6.3.1 页面说明
 

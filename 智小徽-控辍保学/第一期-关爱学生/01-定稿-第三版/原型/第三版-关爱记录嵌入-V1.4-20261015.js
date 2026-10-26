@@ -345,6 +345,7 @@
   function trigger(name,value,placeholder,disabled){return '<button type="button" class="c3m-trigger'+(value?'':' placeholder')+'" data-pick="'+name+'" '+(disabled?'disabled':'')+' title="'+esc(value||placeholder)+'"><span>'+esc(value||placeholder)+'</span></button>'}
   /* 编辑时学生信息只读，保持创建时快照 */
   function fixedVal(v){return '<div class="c3m-ro" title="'+esc(v||'--')+'">'+esc(v||'--')+'</div>'}
+  function roRow(label,name,v){return '<div class="c3m-field" data-field="'+name+'"><label>'+esc(label)+'</label>'+fixedVal(v)+'</div>'}
   function row(label,name,inner){return '<div class="c3m-field" data-field="'+name+'"><label>'+esc(label)+'<span class="c3m-req">*</span></label>'+inner+'</div><div class="c3m-err" data-error="'+name+'"></div>'}
   function area(label,name,placeholder,value){return '<div class="c3m-field stack" data-field="'+name+'"><div class="c3m-field-head"><span>'+esc(label)+'<span class="c3m-req">*</span></span><span class="c3m-counter" data-count="'+name+'">'+len(value)+'/100</span></div><textarea name="'+name+'" maxlength="100" placeholder="'+esc(placeholder)+'">'+esc(value)+'</textarea><div class="c3m-err" data-error="'+name+'"></div></div>'}
   function draftStudentName(d){var st=findStudent(d.studentId);if(st)return st.name;var cur=T.editing&&findRecord(T.editing.id);return cur&&cur.studentId===d.studentId?cur.student.name:''}
@@ -352,7 +353,7 @@
     var d=T.draft,pad=formScreen.querySelector('.c3m-pad');
     pad.innerHTML='<div class="c3m-title">学生信息</div><section class="c3m-card">'+
       (T.editing?
-        row('年级','grade',fixedVal(gradeShort(d.grade)))+row('班级','className',fixedVal(d.className))+row('学生姓名','studentId',fixedVal(draftStudentName(d))):
+        roRow('年级','grade',gradeShort(d.grade))+roRow('班级','className',d.className)+roRow('学生姓名','studentId',draftStudentName(d)):
         row('年级','grade',trigger('grade',gradeShort(d.grade),'请选择年级'))+
         row('班级','className',trigger('className',d.className,'请选择班级',!d.grade))+
         row('学生姓名','studentId',trigger('studentId',d.studentId?draftStudentName(d):'','请选择学生姓名',!d.className)))+

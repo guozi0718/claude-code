@@ -72,7 +72,7 @@ if not errorlevel 1 (
     exit /b 1
   )
 )
-git push -u origin !BRANCH!
+git push -u --follow-tags origin !BRANCH!
 if errorlevel 1 (
   echo.
   echo [错误] 推送失败。若弹出了浏览器登录窗口，请登录 GitHub 后再双击本文件重试；
