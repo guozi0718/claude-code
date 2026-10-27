@@ -349,3 +349,5 @@ section.c3t .justify-end>button[data-dom-id*="search"]{order:1}
 .c3w-modal.c3w-confirm{width:400px}
 .c3w-modal.c3w-confirm .c3w-modal-body p{margin:6px 0;font-size:14px;color:#354052;line-height:22px}
 .c3w-modal-foot button.c3w-ok{background:#009a3d!important;border-color:#009a3d!important;color:#fff!important}
+/* 页面切换兜底：样式库加载失败时，未选中的页面也保持隐藏 */
+[id^="section-"].hidden,[data-dom-id="badge-drilldown"].hidden{display:none!important}
